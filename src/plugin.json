@@ -1,0 +1,36 @@
+{
+  "type": "datasource",
+  "name": "Static",
+  "id": "marcusolsson-static-datasource",
+  "metrics": true,
+  "logs": true,
+  "info": {
+    "description": "A data source plugin for Grafana for static data.",
+    "author": {
+      "name": "Marcus Olsson",
+      "url": "https://marcus.se.net"
+    },
+    "keywords": [],
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "links": [
+      {
+        "name": "Website",
+        "url": "https://github.com/marcusolsson/grafana-static-datasource"
+      },
+      {
+        "name": "License",
+        "url": "https://github.com/marcusolsson/grafana-static-datasource/blob/master/LICENSE"
+      }
+    ],
+    "screenshots": [],
+    "version": "%VERSION%",
+    "updated": "%TODAY%"
+  },
+  "dependencies": {
+    "grafanaVersion": "7.0.x",
+    "plugins": []
+  }
+}
