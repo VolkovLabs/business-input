@@ -4,15 +4,27 @@ import { QueryEditorProps, FieldType } from '@grafana/data';
 import { Segment } from '@grafana/ui';
 import { DataSource } from './DataSource';
 
-import { Form, FormGroup, FormLabel, FormField, FormSection, FormSpacer, FormButton, FormIndent } from './Forms';
+import {
+  Form,
+  FormGroup,
+  FormLabel,
+  FormField,
+  FormInput,
+  FormSection,
+  FormSpacer,
+  FormButton,
+  FormIndent,
+} from './Forms';
 
 import { MyDataSourceOptions, MyQuery, defaultQuery, MyDataFrame } from './types';
 
 type Props = QueryEditorProps<DataSource, MyQuery, MyDataSourceOptions>;
 
 export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) => {
+  // Clone the frame object. Otherwise you'll modify the frame for all queries.
   const frame: MyDataFrame = JSON.parse(JSON.stringify(defaults(query, defaultQuery).frame));
 
+  // Call this whenever you modify the frame object.
   const onQueryChange = (query: any) => {
     onChange(query);
     onRunQuery();
@@ -30,22 +42,29 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
    * Field manipulations
    */
   const addField = (pos: number) => {
+    // Insert a field after the current position.
     frame.fields.splice(pos + 1, 0, {
       name: '',
       type: FieldType.string,
     });
-    for (let i = 0; i < frame.rows.length; i++) {
-      frame.rows[i].splice(pos + 1, 0, null);
-    }
+
+    // Rebuild rows with the added field.
+    frame.rows.forEach(row => {
+      row.splice(pos + 1, 0, null);
+    });
+
     onQueryChange({ ...query, frame });
   };
 
-  const removeField = (field: number) => {
-    frame.fields.splice(field, 1);
+  const removeField = (pos: number) => {
+    // Remove the field at given position.
+    frame.fields.splice(pos, 1);
 
-    for (let i = 0; i < frame.rows.length; i++) {
-      frame.rows[i].splice(field, 1);
-    }
+    // Rebuild rows without the removed field.
+    frame.rows.forEach(row => {
+      row.splice(pos, 1);
+    });
+
     onQueryChange({ ...query, frame });
   };
 
@@ -63,12 +82,13 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
    * Row manipulations
    */
   const addRow = (pos: number) => {
-    frame.rows.splice(pos + 1, 0, Array.from({ length: frame.fields.length }));
+    const emptyRow = Array.from({ length: frame.fields.length });
+    frame.rows.splice(pos + 1, 0, emptyRow);
     onQueryChange({ ...query, frame });
   };
 
-  const removeRow = (row: number) => {
-    frame.rows.splice(row, 1);
+  const removeRow = (pos: number) => {
+    frame.rows.splice(pos, 1);
     onQueryChange({ ...query, frame });
   };
 
@@ -80,19 +100,24 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
   return (
     <>
       <Form>
+        {/* Data frame configuration */}
         <FormGroup>
           <FormField label="Name">
-            <input onChange={e => renameFrame(e.target.value)} value={frame.name} className="gf-form-input" />
+            <FormInput onChange={e => renameFrame(e.target.value)} value={frame.name} />
           </FormField>
           <FormSpacer />
         </FormGroup>
+
+        {/* Schema configuration */}
         <FormSection label="Schema">
           {frame.fields.map((field, i) => (
             <FormGroup>
               <FormIndent level={2} />
+
               <FormField label="Field">
-                <input onChange={e => renameField(e.target.value, i)} value={field.name} className="gf-form-input" />
+                <FormInput onChange={e => renameField(e.target.value, i)} value={field.name} />
               </FormField>
+
               <FormLabel text="Type" keyword />
               <Segment
                 className="width-8"
@@ -112,11 +137,14 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
                   value: t,
                 }))}
               ></Segment>
+
               <FormSpacer />
               <FormButton icon="plus" onClick={() => addField(i)} />
               <FormButton icon="trash-alt" onClick={() => removeField(i)} />
             </FormGroup>
           ))}
+
+          {/* Display a helper button if no fields have been added. */}
           {frame.fields.length === 0 ? (
             <FormGroup>
               <FormIndent level={2} />
@@ -125,16 +153,17 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
             </FormGroup>
           ) : null}
         </FormSection>
+
+        {/* Value configuration */}
         <FormSection label="Values">
           {frame.fields.length > 0 ? (
             <>
+              {/* Display the name of each field as a column header. */}
               <FormGroup>
                 <FormIndent level={2} />
-                <div className="gf-form">
-                  {frame.fields.map((field, i) => (
-                    <FormLabel text={field.name || '<no name>'} keyword />
-                  ))}
-                </div>
+                {frame.fields.map((field, i) => (
+                  <FormLabel text={field.name || '<no name>'} keyword />
+                ))}
                 <FormSpacer />
               </FormGroup>
 
@@ -150,11 +179,14 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
                       />
                     </div>
                   ))}
+
                   <FormSpacer />
                   <FormButton icon="plus" onClick={() => addRow(i)} />
                   <FormButton icon="trash-alt" onClick={() => removeRow(i)} />
                 </FormGroup>
               ))}
+
+              {/* Display a helper button if no rows have been added. */}
               {frame.rows.length === 0 ? (
                 <FormGroup>
                   <FormIndent level={2} />

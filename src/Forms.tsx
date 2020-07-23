@@ -1,5 +1,5 @@
 import React, { useState, InputHTMLAttributes } from 'react';
-import { InlineFormLabel, Icon, IconName } from '@grafana/ui';
+import { Icon, IconName } from '@grafana/ui';
 import { cx } from 'emotion';
 
 export interface FormFieldProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -78,14 +78,12 @@ export const FormIndent: React.FC<Partial<FormIndentProps>> = ({ level }) => (
 );
 
 export interface FormInputProps {
-  onChange: () => void;
   value: any;
+  onChange: (e: any) => void;
 }
 
 export const FormInput: React.FC<Partial<FormInputProps>> = ({ onChange, value }) => (
-  <div className="gf-form">
-    <input className="gf-form-input" onChange={onChange} value={value} />
-  </div>
+  <input className="gf-form-input" onChange={onChange} value={value} />
 );
 
 export interface FormSectionProps {
