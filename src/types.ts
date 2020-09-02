@@ -1,30 +1,22 @@
-import { DataQuery, DataSourceJsonData, FieldType } from '@grafana/data';
+import { DataQuery, DataSourceJsonData, DataFrame, FieldType } from '@grafana/data';
 
-export interface MyField {
+export type NullableString = string | null;
+
+export interface Field {
   name: string;
   type: FieldType;
 }
 
-export type FieldValue = string | number | boolean | null;
-
-export interface MyDataFrame {
-  name: string;
-  fields: MyField[];
-  rows: FieldValue[][];
+export interface DataFrameViewModel {
+  name?: string;
+  fields: Field[];
+  rows: NullableString[][];
 }
 
-export interface MyQuery extends DataQuery {
-  frame: MyDataFrame;
+export interface StaticQuery extends DataQuery {
+  frame: DataFrame;
 }
 
-export const defaultQuery: Partial<MyQuery> = {
-  frame: {
-    name: '',
-    fields: [],
-    rows: [],
-  },
-};
+export interface StaticDataSourceOptions extends DataSourceJsonData {}
 
-export interface MyDataSourceOptions extends DataSourceJsonData {}
-
-export interface MySecureJsonData {}
+export interface StaticSecureJsonData {}

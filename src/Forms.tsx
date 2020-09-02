@@ -1,19 +1,15 @@
 import React, { useState, InputHTMLAttributes } from 'react';
 import { Icon, IconName, useTheme } from '@grafana/ui';
+import { NullableString } from './types';
 import { css, cx } from 'emotion';
 
-export interface FormFieldProps extends InputHTMLAttributes<HTMLInputElement> {
-  label: string;
-  tooltip?: string;
-  children?: React.ReactNode;
+interface InlineFormProps {
+  children: React.ReactNode;
 }
 
-export const FormField: React.FC<Partial<FormFieldProps>> = ({ label, tooltip, children }) => (
-  <div className="gf-form">
-    <FormLabel width={4} text={label} keyword />
-    {children}
-  </div>
-);
+export const InlineForm: React.FC<InlineFormProps> = ({ children }) => {
+  return <div className="gf-form">{children}</div>;
+};
 
 export interface FormGroupProps extends InputHTMLAttributes<HTMLInputElement> {
   children?: React.ReactNode;
@@ -74,9 +70,9 @@ export interface FormIndentProps {
 }
 
 export const FormIndent: React.FC<Partial<FormIndentProps>> = ({ level }) => (
-  <div className="gf-form">
+  <InlineForm>
     <span className={`width-${level}`}></span>
-  </div>
+  </InlineForm>
 );
 
 export interface FormInputProps {
@@ -110,15 +106,16 @@ export const FormInput: React.FC<Partial<FormInputProps>> = ({ onChange, value }
 };
 
 export interface FormNullableInputProps {
-  value: string | null;
-  onChange: (value: string | null) => void;
-  invalid: boolean;
+  value: NullableString;
+  onChange: (value: NullableString) => void;
+  onValidate: (value: NullableString) => boolean;
 }
 
-export const FormNullableInput: React.FC<Partial<FormNullableInputProps>> = ({ onChange, value, invalid = false }) => {
+export const FormNullableInput: React.FC<Partial<FormNullableInputProps>> = ({ onChange, value, onValidate }) => {
   const theme = useTheme();
   const [disabled, setDisabled] = useState(value === null);
   const [lastValue, setLastValue] = useState(value);
+  const [valid, setValid] = useState(onValidate ? onValidate(value ?? null) : true);
 
   const styles = {
     root: css`
@@ -126,7 +123,7 @@ export const FormNullableInput: React.FC<Partial<FormNullableInputProps>> = ({ o
       display: flex;
 
       background-color: ${disabled ? theme.colors.formInputBgDisabled : theme.colors.formInputBg};
-      border: 1px solid ${invalid ? theme.colors.formInputBorderInvalid : theme.colors.formInputBorder};
+      border: 1px solid ${valid ? theme.colors.formInputBorder : theme.colors.formInputBorderInvalid};
       padding: 0 ${theme.spacing.sm};
 
       border-radius: 4px;
@@ -153,7 +150,6 @@ export const FormNullableInput: React.FC<Partial<FormNullableInputProps>> = ({ o
     input: css`
       font-size: ${theme.typography.size.md};
       background-color: transparent;
-      width: 100%;
       min-width: 0;
       &:focus {
         outline: none;
@@ -164,8 +160,8 @@ export const FormNullableInput: React.FC<Partial<FormNullableInputProps>> = ({ o
     `,
     button: css`
       display: inline-block;
-      position: absolute;
-      right: 10px;
+      position: relative;
+      right: 0px;
       border: 0;
       color: transparent;
 
@@ -181,6 +177,9 @@ export const FormNullableInput: React.FC<Partial<FormNullableInputProps>> = ({ o
         disabled={disabled}
         className={styles.input}
         onChange={e => {
+          if (onValidate) {
+            setValid(onValidate(e.target.value));
+          }
           if (onChange) {
             setLastValue(e.target.value);
             onChange(e.target.value);

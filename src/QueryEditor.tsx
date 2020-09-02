@@ -1,25 +1,62 @@
-import defaults from 'lodash/defaults';
-import React from 'react';
-import { QueryEditorProps, FieldType } from '@grafana/data';
-import { Select, Input } from '@grafana/ui';
+import React, { useState } from 'react';
+import { QueryEditorProps, FieldType, DataFrame, MutableDataFrame } from '@grafana/data';
+import { Select, Input, useTheme } from '@grafana/ui';
 import { DataSource } from './DataSource';
-import { AddRemoveRow } from './AddRemoveRow';
-import { FieldValue } from './types';
+import { withHoverActions } from './withHoverActions';
+import { NullableString, DataFrameViewModel } from './types';
 import { css, cx } from 'emotion';
+import { Form, InlineForm, FormLabel, FormSection, FormButton, FormIndent, FormNullableInput } from './Forms';
+import { StaticDataSourceOptions, StaticQuery } from './types';
 
-import { Form, FormGroup, FormLabel, FormField, FormSection, FormButton, FormIndent, FormNullableInput } from './Forms';
+const allFieldTypes = [
+  FieldType.boolean,
+  FieldType.number,
+  FieldType.other,
+  FieldType.string,
+  FieldType.time,
+  FieldType.trace,
+];
 
-import { MyDataSourceOptions, MyQuery, defaultQuery, MyDataFrame } from './types';
+type Props = QueryEditorProps<DataSource, StaticQuery, StaticDataSourceOptions>;
 
-type Props = QueryEditorProps<DataSource, MyQuery, MyDataSourceOptions>;
+const toDataFrame = (model: DataFrameViewModel): DataFrame => {
+  const frame = new MutableDataFrame({
+    name: model.name,
+    fields: model.fields.map(_ => ({ name: _.name, type: _.type })),
+  });
+  model.rows.forEach(_ => frame.appendRow(_));
+  return frame;
+};
+
+const fromDataFrame = (frame: DataFrame): DataFrameViewModel => {
+  const fields = frame.fields.map(_ => ({ name: _.name, type: _.type }));
+  const rows: NullableString[][] = Array.from({ length: frame.length }).map((_, i) =>
+    frame.fields.map(f => f.values.get(i)).map(_ => _?.toString())
+  );
+
+  return {
+    name: frame.name,
+    fields,
+    rows,
+  };
+};
 
 export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) => {
-  // Clone the frame object. Otherwise you'll modify the frame for all queries.
-  const frame: MyDataFrame = JSON.parse(JSON.stringify(defaults(query, defaultQuery).frame));
+  // Load existing data frame, or create a new one.
+  const frame: DataFrame = query.frame || new MutableDataFrame();
 
-  // Call this whenever you modify the frame object.
-  const onQueryChange = (query: any) => {
-    onChange(query);
+  // Create a view model for the data frame.
+  const [frameModel, setFrameModel] = useState<DataFrameViewModel>(fromDataFrame(frame));
+
+  // Call this whenever you modify the view model object.
+  const onFrameChange = (frameModel: DataFrameViewModel) => {
+    setFrameModel(frameModel);
+    onSaveFrame(frameModel);
+  };
+
+  // Call this whenever you want to save the changes to the view model.
+  const onSaveFrame = (frameModel: DataFrameViewModel) => {
+    onChange({ ...query, frame: toDataFrame(frameModel) });
     onRunQuery();
   };
 
@@ -27,8 +64,8 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
    * Frame manipulations
    */
   const renameFrame = (name: string) => {
-    frame.name = name;
-    onQueryChange({ ...query, frame });
+    frameModel.name = name;
+    onFrameChange(frameModel);
   };
 
   /*
@@ -36,161 +73,145 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
    */
   const addField = (pos: number) => {
     // Insert a field after the current position.
-    frame.fields.splice(pos + 1, 0, {
+    frameModel.fields.splice(pos + 1, 0, {
       name: '',
       type: FieldType.string,
     });
 
     // Rebuild rows with the added field.
-    frame.rows.forEach(row => {
+    frameModel.rows.forEach(row => {
       row.splice(pos + 1, 0, '');
     });
 
-    onQueryChange({ ...query, frame });
+    onFrameChange(frameModel);
   };
 
   const removeField = (pos: number) => {
     // Remove the field at given position.
-    frame.fields.splice(pos, 1);
+    frameModel.fields.splice(pos, 1);
 
     // Rebuild rows without the removed field.
-    frame.rows.forEach(row => {
+    frameModel.rows.forEach(row => {
       row.splice(pos, 1);
     });
 
-    onQueryChange({ ...query, frame });
+    onFrameChange(frameModel);
   };
 
   const renameField = (text: string, i: number) => {
-    frame.fields[i].name = text;
-    onQueryChange({ ...query, frame });
+    frameModel.fields[i].name = text;
+    onFrameChange(frameModel);
   };
 
   const changeFieldType = (t: FieldType, i: number) => {
-    frame.fields[i].type = t;
-    onQueryChange({ ...query, frame });
+    frameModel.fields[i].type = t;
+    onFrameChange(frameModel);
   };
 
   /*
    * Row manipulations
    */
   const addRow = (pos: number) => {
-    const emptyRow: FieldValue[] = Array.from({ length: frame.fields.length }).map((_, i) => {
-      switch (frame.fields[i].type) {
+    const emptyRow: NullableString[] = Array.from({ length: frameModel.fields.length }).map((_, i) => {
+      switch (frameModel.fields[i].type) {
         case 'number':
-          return 0;
+          return '0';
         case 'time':
-          return Date.now().valueOf();
+          return Date.now()
+            .valueOf()
+            .toString();
         case 'boolean':
-          return false;
+          return 'false';
       }
       return '';
     });
-    frame.rows.splice(pos + 1, 0, emptyRow);
-    onQueryChange({ ...query, frame });
+    frameModel.rows.splice(pos + 1, 0, emptyRow);
+    onFrameChange(frameModel);
   };
 
   const removeRow = (pos: number) => {
-    frame.rows.splice(pos, 1);
-    onQueryChange({ ...query, frame });
+    frameModel.rows.splice(pos, 1);
+    onFrameChange(frameModel);
   };
 
-  const editCell = (value: string | null, rowIndex: number, fieldIndex: number) => {
-    frame.fields[fieldIndex].type;
-    frame.rows[rowIndex][fieldIndex] = value;
-    onQueryChange({ ...query, frame });
+  /*
+   * Cell manipulations
+   */
+  const editCell = (value: NullableString, rowIndex: number, fieldIndex: number) => {
+    frameModel.rows[rowIndex][fieldIndex] = value;
+    onFrameChange(frameModel);
   };
+
+  const schema = frameModel.fields.map(f => f.type);
 
   return (
     <>
       <Form>
         {/* Data frame configuration */}
-        <FormGroup>
-          <FormField label="Name">
-            <Input onChange={e => renameFrame(e.currentTarget.value)} value={frame.name} />
-          </FormField>
-        </FormGroup>
+        <InlineForm>
+          <FormLabel width={4} text="Name" keyword />
+          <Input onChange={e => renameFrame(e.currentTarget.value)} value={frameModel.name} />
+        </InlineForm>
 
         {/* Schema configuration */}
         <FormSection label="Schema">
-          {frame.fields.map((field, i) => (
-            <AddRemoveRow onAdd={() => addField(i)} onRemove={() => removeField(i)}>
-              <div className="gf-form">
-                <Select
-                  className={cx(
-                    'width-6',
-                    css`
-                      margin-right: 4px;
-                    `
-                  )}
-                  onChange={e => {
-                    changeFieldType(e.value as FieldType, i);
-                  }}
-                  value={field.type}
-                  options={[
-                    FieldType.boolean,
-                    FieldType.number,
-                    FieldType.other,
-                    FieldType.string,
-                    FieldType.time,
-                    FieldType.trace,
-                  ].map(t => ({
-                    label: t,
-                    value: t,
-                  }))}
-                ></Select>
-              </div>
-              <div className="gf-form">
-                <Input
-                  className={cx(css`
-                    margin-right: 4px;
-                  `)}
-                  onChange={e => renameField(e.currentTarget.value, i)}
-                  value={field.name}
-                />
-              </div>
-            </AddRemoveRow>
-          ))}
+          {frameModel.fields.map((field, i) => {
+            return (
+              <FieldSchemaInput
+                key={i}
+                name={field.name}
+                type={field.type}
+                onNameChange={name => renameField(name, i)}
+                onTypeChange={type => changeFieldType(type, i)}
+                onAdd={() => addField(i)}
+                onRemove={() => removeField(i)}
+              />
+            );
+          })}
 
           {/* Display a helper button if no fields have been added. */}
-          {frame.fields.length === 0 ? (
-            <FormGroup>
+          {frameModel.fields.length === 0 ? (
+            <InlineForm>
               <FormIndent level={2} />
               <FormButton text="Add a field" icon="plus" onClick={() => addField(0)} />
-            </FormGroup>
+            </InlineForm>
           ) : null}
         </FormSection>
 
         {/* Value configuration */}
         <FormSection label="Values">
-          {frame.fields.length > 0 ? (
+          {frameModel.fields.length > 0 ? (
             <>
               {/* Display the name of each field as a column header. */}
-              <FormGroup>
+              <InlineForm>
                 <FormIndent level={2} />
-                {frame.fields.map((field, i) => (
-                  <div className="gf-form">
-                    <FormLabel text={field.name || '<no name>'} keyword />
-                  </div>
+                {frameModel.fields.map((field, i) => (
+                  <FormLabel key={i} text={field.name || '<no name>'} keyword />
                 ))}
-              </FormGroup>
+              </InlineForm>
 
-              {frame.rows.map((row, i) => (
-                <AddRemoveRow onAdd={() => addRow(i)} onRemove={() => removeRow(i)}>
-                  {row.map((cellValue, j) => (
-                    <div className="gf-form">
-                      <FormNullableInput onChange={value => editCell(value, i, j)} value={cellValue?.toString()} />
-                    </div>
-                  ))}
-                </AddRemoveRow>
-              ))}
+              {/* Add all the rows. */}
+              {frameModel.rows.map((row, i) => {
+                return (
+                  <RowValuesInput
+                    key={i}
+                    schema={schema}
+                    values={row}
+                    onValueChange={(value, fieldIndex) => {
+                      editCell(value, i, fieldIndex);
+                    }}
+                    onAdd={() => addRow(i)}
+                    onRemove={() => removeRow(i)}
+                  />
+                );
+              })}
 
               {/* Display a helper button if no rows have been added. */}
-              {frame.rows.length === 0 ? (
-                <FormGroup>
+              {frameModel.rows.length === 0 ? (
+                <InlineForm>
                   <FormIndent level={2} />
                   <FormButton text="Add a row" icon="plus" onClick={() => addRow(0)} />
-                </FormGroup>
+                </InlineForm>
               ) : null}
             </>
           ) : null}
@@ -199,3 +220,97 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
     </>
   );
 };
+
+interface RowValuesInputProps {
+  schema: FieldType[];
+  values: NullableString[];
+  onValueChange: (value: NullableString, fieldIndex: number) => void;
+}
+
+const RowValuesInput = withHoverActions(({ values, onValueChange, schema }: RowValuesInputProps) => {
+  return (
+    <InlineForm>
+      {values.map((value: NullableString, j: number) => {
+        return (
+          <FormNullableInput
+            key={j}
+            onChange={value => {
+              onValueChange(value, j);
+            }}
+            value={value}
+          />
+        );
+      })}
+    </InlineForm>
+  );
+});
+
+// const toFieldValue = (
+//   value: NullableString,
+//   type: FieldType
+// ): { ok: boolean; value?: NullableString; error?: string } => {
+//   if (value === null) {
+//     return { ok: true, value };
+//   }
+
+//   switch (type) {
+//     case FieldType.number:
+//       const num = Number(value);
+//       return isNaN(num) ? { ok: false, error: 'Invalid number' } : { ok: true, value: num };
+//     case FieldType.time:
+//       const time = Number(value);
+//       return isNaN(time) ? { ok: false, error: 'Invalid timestamp' } : { ok: true, value: time };
+//     case FieldType.boolean:
+//       const truthy = !!['1', 'true'].find(_ => _ === value);
+//       const falsy = !!['0', 'false'].find(_ => _ === value);
+
+//       if (!truthy && !falsy) {
+//         return { ok: false, error: 'Invalid boolean' };
+//       }
+//       return { ok: true, value: truthy };
+//   }
+
+//   return { ok: false, error: 'No such type' };
+// };
+
+interface FieldSchemaInputProps {
+  onNameChange: (name: string) => void;
+  name: string;
+
+  onTypeChange: (t: FieldType) => void;
+  type: FieldType;
+}
+
+const FieldSchemaInput = withHoverActions(({ onNameChange, name, onTypeChange, type }: FieldSchemaInputProps) => {
+  const theme = useTheme();
+
+  return (
+    <InlineForm>
+      <Select
+        className={cx(
+          'width-8',
+          css`
+            margin-right: ${theme.spacing.xs};
+          `
+        )}
+        onChange={e => {
+          onTypeChange(e.value as FieldType);
+        }}
+        value={type}
+        options={allFieldTypes.map(t => ({
+          label: t,
+          value: t,
+        }))}
+      ></Select>
+      <Input
+        className={cx(css`
+          margin-right: ${theme.spacing.xs};
+        `)}
+        onChange={e => {
+          onNameChange(e.currentTarget.value);
+        }}
+        value={name}
+      />
+    </InlineForm>
+  );
+});
