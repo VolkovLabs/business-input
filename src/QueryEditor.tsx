@@ -1,22 +1,13 @@
 import defaults from 'lodash/defaults';
 import React from 'react';
 import { QueryEditorProps, FieldType } from '@grafana/data';
-import { Segment } from '@grafana/ui';
+import { Select, Input } from '@grafana/ui';
 import { DataSource } from './DataSource';
+import { AddRemoveRow } from './AddRemoveRow';
 import { FieldValue } from './types';
+import { css, cx } from 'emotion';
 
-import {
-  Form,
-  FormGroup,
-  FormLabel,
-  FormField,
-  FormInput,
-  FormSection,
-  FormSpacer,
-  FormButton,
-  FormIndent,
-  FormNullableInput,
-} from './Forms';
+import { Form, FormGroup, FormLabel, FormField, FormSection, FormButton, FormIndent, FormNullableInput } from './Forms';
 
 import { MyDataSourceOptions, MyQuery, defaultQuery, MyDataFrame } from './types';
 
@@ -104,7 +95,8 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
     onQueryChange({ ...query, frame });
   };
 
-  const editCell = (value: any, rowIndex: number, fieldIndex: number) => {
+  const editCell = (value: string | null, rowIndex: number, fieldIndex: number) => {
+    frame.fields[fieldIndex].type;
     frame.rows[rowIndex][fieldIndex] = value;
     onQueryChange({ ...query, frame });
   };
@@ -115,43 +107,49 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
         {/* Data frame configuration */}
         <FormGroup>
           <FormField label="Name">
-            <FormInput onChange={e => renameFrame(e.target.value)} value={frame.name} />
+            <Input onChange={e => renameFrame(e.currentTarget.value)} value={frame.name} />
           </FormField>
         </FormGroup>
 
         {/* Schema configuration */}
         <FormSection label="Schema">
           {frame.fields.map((field, i) => (
-            <FormGroup>
-              <FormIndent level={2} />
-
+            <AddRemoveRow onAdd={() => addField(i)} onRemove={() => removeField(i)}>
               <div className="gf-form">
-                <FormLabel text="Field" width={3} keyword />
-                <FormInput onChange={e => renameField(e.target.value, i)} value={field.name} />
+                <Select
+                  className={cx(
+                    'width-6',
+                    css`
+                      margin-right: 4px;
+                    `
+                  )}
+                  onChange={e => {
+                    changeFieldType(e.value as FieldType, i);
+                  }}
+                  value={field.type}
+                  options={[
+                    FieldType.boolean,
+                    FieldType.number,
+                    FieldType.other,
+                    FieldType.string,
+                    FieldType.time,
+                    FieldType.trace,
+                  ].map(t => ({
+                    label: t,
+                    value: t,
+                  }))}
+                ></Select>
               </div>
-
-              <Segment
-                className="width-4"
-                onChange={e => {
-                  changeFieldType(e.value as FieldType, i);
-                }}
-                value={field.type}
-                options={[
-                  FieldType.boolean,
-                  FieldType.number,
-                  FieldType.other,
-                  FieldType.string,
-                  FieldType.time,
-                  FieldType.trace,
-                ].map(t => ({
-                  label: t,
-                  value: t,
-                }))}
-              ></Segment>
-
-              <FormButton icon="plus" onClick={() => addField(i)} />
-              <FormButton icon="trash-alt" onClick={() => removeField(i)} />
-            </FormGroup>
+              <div className="gf-form">
+                <Input
+                  className={cx(css`
+                    margin-right: 4px;
+                  `)}
+                  onChange={e => renameField(e.currentTarget.value, i)}
+                  value={field.name}
+                />
+              </div>
+            </AddRemoveRow>
           ))}
 
           {/* Display a helper button if no fields have been added. */}
@@ -178,17 +176,13 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
               </FormGroup>
 
               {frame.rows.map((row, i) => (
-                <FormGroup>
-                  <FormIndent level={2} />
+                <AddRemoveRow onAdd={() => addRow(i)} onRemove={() => removeRow(i)}>
                   {row.map((cellValue, j) => (
                     <div className="gf-form">
-                      <FormNullableInput onChange={value => editCell(value, i, j)} value={cellValue} />
+                      <FormNullableInput onChange={value => editCell(value, i, j)} value={cellValue?.toString()} />
                     </div>
                   ))}
-
-                  <FormButton icon="plus" onClick={() => addRow(i)} />
-                  <FormButton icon="trash-alt" onClick={() => removeRow(i)} />
-                </FormGroup>
+                </AddRemoveRow>
               ))}
 
               {/* Display a helper button if no rows have been added. */}
@@ -196,7 +190,6 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
                 <FormGroup>
                   <FormIndent level={2} />
                   <FormButton text="Add a row" icon="plus" onClick={() => addRow(0)} />
-                  <FormSpacer />
                 </FormGroup>
               ) : null}
             </>

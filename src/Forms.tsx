@@ -111,10 +111,11 @@ export const FormInput: React.FC<Partial<FormInputProps>> = ({ onChange, value }
 
 export interface FormNullableInputProps {
   value: string | null;
-  onChange: (e: string | null) => void;
+  onChange: (value: string | null) => void;
+  invalid: boolean;
 }
 
-export const FormNullableInput: React.FC<Partial<FormInputProps>> = ({ onChange, value }) => {
+export const FormNullableInput: React.FC<Partial<FormNullableInputProps>> = ({ onChange, value, invalid = false }) => {
   const theme = useTheme();
   const [disabled, setDisabled] = useState(value === null);
   const [lastValue, setLastValue] = useState(value);
@@ -125,11 +126,12 @@ export const FormNullableInput: React.FC<Partial<FormInputProps>> = ({ onChange,
       display: flex;
 
       background-color: ${disabled ? theme.colors.formInputBgDisabled : theme.colors.formInputBg};
-      border: 1px solid ${theme.colors.formInputBorder};
+      border: 1px solid ${invalid ? theme.colors.formInputBorderInvalid : theme.colors.formInputBorder};
       padding: 0 ${theme.spacing.sm};
 
       border-radius: 4px;
       height: 100%;
+      min-height: 32px;
       align-items: center;
       margin-right: 4px;
 
@@ -192,11 +194,9 @@ export const FormNullableInput: React.FC<Partial<FormInputProps>> = ({ onChange,
           setDisabled(!disabled);
           if (onChange) {
             if (!disabled) {
-              console.log('null');
               onChange(null);
             } else {
-              console.log('lastValue');
-              onChange(lastValue);
+              onChange(lastValue ?? null);
             }
           }
         }}
