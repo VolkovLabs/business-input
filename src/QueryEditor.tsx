@@ -117,7 +117,6 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
           <FormField label="Name">
             <FormInput onChange={e => renameFrame(e.target.value)} value={frame.name} />
           </FormField>
-          <FormSpacer />
         </FormGroup>
 
         {/* Schema configuration */}
@@ -126,13 +125,13 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
             <FormGroup>
               <FormIndent level={2} />
 
-              <FormField label="Field">
+              <div className="gf-form">
+                <FormLabel text="Field" width={3} keyword />
                 <FormInput onChange={e => renameField(e.target.value, i)} value={field.name} />
-              </FormField>
+              </div>
 
-              <FormLabel text="Type" keyword />
               <Segment
-                className="width-8"
+                className="width-4"
                 onChange={e => {
                   changeFieldType(e.value as FieldType, i);
                 }}
@@ -150,7 +149,6 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
                 }))}
               ></Segment>
 
-              <FormSpacer />
               <FormButton icon="plus" onClick={() => addField(i)} />
               <FormButton icon="trash-alt" onClick={() => removeField(i)} />
             </FormGroup>
@@ -161,7 +159,6 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
             <FormGroup>
               <FormIndent level={2} />
               <FormButton text="Add a field" icon="plus" onClick={() => addField(0)} />
-              <FormSpacer />
             </FormGroup>
           ) : null}
         </FormSection>
@@ -174,9 +171,10 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
               <FormGroup>
                 <FormIndent level={2} />
                 {frame.fields.map((field, i) => (
-                  <FormLabel text={field.name || '<no name>'} keyword />
+                  <div className="gf-form">
+                    <FormLabel text={field.name || '<no name>'} keyword />
+                  </div>
                 ))}
-                <FormSpacer />
               </FormGroup>
 
               {frame.rows.map((row, i) => (
@@ -188,7 +186,6 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
                     </div>
                   ))}
 
-                  <FormSpacer />
                   <FormButton icon="plus" onClick={() => addRow(i)} />
                   <FormButton icon="trash-alt" onClick={() => removeRow(i)} />
                 </FormGroup>

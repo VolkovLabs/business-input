@@ -10,7 +10,7 @@ export interface FormFieldProps extends InputHTMLAttributes<HTMLInputElement> {
 
 export const FormField: React.FC<Partial<FormFieldProps>> = ({ label, tooltip, children }) => (
   <div className="gf-form">
-    <FormLabel text={label} keyword />
+    <FormLabel width={4} text={label} keyword />
     {children}
   </div>
 );
@@ -39,12 +39,14 @@ export const FormSpacer: React.FC<Partial<FormSpacerProps>> = () => (
 
 export interface FormLabelProps {
   text: string;
+  width: number;
   keyword: boolean;
 }
 
-export const FormLabel: React.FC<Partial<FormLabelProps>> = ({ text, keyword = false }) => (
-  <span className={cx({ 'width-8': true, 'gf-form-label': true, 'query-keyword': keyword })}>{text}</span>
-);
+export const FormLabel: React.FC<Partial<FormLabelProps>> = ({ text, width = 8, keyword = false }) => {
+  const widthClass = `width-${width}`;
+  return <span className={cx('gf-form-label', widthClass, { 'query-keyword': keyword })}>{text}</span>;
+};
 
 export interface FormButtonProps {
   icon?: IconName;
