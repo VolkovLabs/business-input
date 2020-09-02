@@ -3,6 +3,7 @@ import React from 'react';
 import { QueryEditorProps, FieldType } from '@grafana/data';
 import { Segment } from '@grafana/ui';
 import { DataSource } from './DataSource';
+import { FieldValue } from './types';
 
 import {
   Form,
@@ -14,6 +15,7 @@ import {
   FormSpacer,
   FormButton,
   FormIndent,
+  FormNullableInput,
 } from './Forms';
 
 import { MyDataSourceOptions, MyQuery, defaultQuery, MyDataFrame } from './types';
@@ -50,7 +52,7 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
 
     // Rebuild rows with the added field.
     frame.rows.forEach(row => {
-      row.splice(pos + 1, 0, null);
+      row.splice(pos + 1, 0, '');
     });
 
     onQueryChange({ ...query, frame });
@@ -82,7 +84,17 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
    * Row manipulations
    */
   const addRow = (pos: number) => {
-    const emptyRow = Array.from({ length: frame.fields.length });
+    const emptyRow: FieldValue[] = Array.from({ length: frame.fields.length }).map((_, i) => {
+      switch (frame.fields[i].type) {
+        case 'number':
+          return 0;
+        case 'time':
+          return Date.now().valueOf();
+        case 'boolean':
+          return false;
+      }
+      return '';
+    });
     frame.rows.splice(pos + 1, 0, emptyRow);
     onQueryChange({ ...query, frame });
   };
@@ -172,11 +184,7 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
                   <FormIndent level={2} />
                   {row.map((cellValue, j) => (
                     <div className="gf-form">
-                      <input
-                        className="gf-form-input width-8"
-                        onChange={e => editCell(e.target.value, i, j)}
-                        value={cellValue ?? ''}
-                      />
+                      <FormNullableInput onChange={value => editCell(value, i, j)} value={cellValue} />
                     </div>
                   ))}
 

@@ -1,6 +1,6 @@
 import React, { useState, InputHTMLAttributes } from 'react';
-import { Icon, IconName } from '@grafana/ui';
-import { cx } from 'emotion';
+import { Icon, IconName, useTheme } from '@grafana/ui';
+import { css, cx } from 'emotion';
 
 export interface FormFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -82,9 +82,128 @@ export interface FormInputProps {
   onChange: (e: any) => void;
 }
 
-export const FormInput: React.FC<Partial<FormInputProps>> = ({ onChange, value }) => (
-  <input className="gf-form-input" onChange={onChange} value={value} />
-);
+export const FormInput: React.FC<Partial<FormInputProps>> = ({ onChange, value }) => {
+  const theme = useTheme();
+
+  return (
+    <input
+      className={cx(
+        'gf-form-input',
+        css`
+          padding: 0 ${theme.spacing.sm};
+          border-color: ${theme.colors.formInputBorder};
+          &:focus {
+            border-color: ${theme.colors.formInputBorder};
+            outline: 2px dotted transparent;
+            outline-offset: 2px;
+            box-shadow: 0 0 0 2px ${theme.colors.bodyBg}, 0 0 0 4px ${theme.colors.formFocusOutline};
+            transition: all 0.2s cubic-bezier(0.19, 1, 0.22, 1);
+          }
+        `
+      )}
+      onChange={onChange}
+      value={value}
+    />
+  );
+};
+
+export interface FormNullableInputProps {
+  value: string | null;
+  onChange: (e: string | null) => void;
+}
+
+export const FormNullableInput: React.FC<Partial<FormInputProps>> = ({ onChange, value }) => {
+  const theme = useTheme();
+  const [disabled, setDisabled] = useState(value === null);
+  const [lastValue, setLastValue] = useState(value);
+
+  const styles = {
+    root: css`
+      width: 128px;
+      display: flex;
+
+      background-color: ${disabled ? theme.colors.formInputBgDisabled : theme.colors.formInputBg};
+      border: 1px solid ${theme.colors.formInputBorder};
+      padding: 0 ${theme.spacing.sm};
+
+      border-radius: 4px;
+      height: 100%;
+      align-items: center;
+      margin-right: 4px;
+
+      &:focus-within {
+        outline: 2px dotted transparent;
+        outline-offset: 2px;
+        box-shadow: 0 0 0 2px ${theme.colors.bodyBg}, 0 0 0px 4px ${theme.colors.formFocusOutline};
+        transition: all 0.2s cubic-bezier(0.19, 1, 0.22, 1);
+      }
+
+      & > svg {
+        color: transparent;
+      }
+
+      &:hover svg {
+        color: ${theme.colors.textWeak};
+      }
+    `,
+    input: css`
+      font-size: ${theme.typography.size.md};
+      background-color: transparent;
+      width: 100%;
+      min-width: 0;
+      &:focus {
+        outline: none;
+      }
+      &:disabled {
+        background-color: transparent;
+      }
+    `,
+    button: css`
+      display: inline-block;
+      position: absolute;
+      right: 10px;
+      border: 0;
+      color: transparent;
+
+      &:hover {
+        cursor: pointer;
+      }
+    `,
+  };
+
+  return (
+    <div className={styles.root}>
+      <input
+        disabled={disabled}
+        className={styles.input}
+        onChange={e => {
+          if (onChange) {
+            setLastValue(e.target.value);
+            onChange(e.target.value);
+          }
+        }}
+        value={value ?? ''}
+      />
+      <div
+        className={styles.button}
+        onClick={() => {
+          setDisabled(!disabled);
+          if (onChange) {
+            if (!disabled) {
+              console.log('null');
+              onChange(null);
+            } else {
+              console.log('lastValue');
+              onChange(lastValue);
+            }
+          }
+        }}
+      >
+        <Icon name={disabled ? 'eye-slash' : 'eye'} />
+      </div>
+    </div>
+  );
+};
 
 export interface FormSectionProps {
   label: string;

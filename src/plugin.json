@@ -10,7 +10,7 @@
       "name": "Marcus Olsson",
       "url": "https://marcus.se.net"
     },
-    "keywords": [],
+    "keywords": ["static", "test", "development", "mock"],
     "logos": {
       "small": "img/logo.svg",
       "large": "img/logo.svg"
@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "grafanaDependency": ">=7.0.0",
+    "grafanaVersion": "7.x.x",
     "plugins": []
   }
 }

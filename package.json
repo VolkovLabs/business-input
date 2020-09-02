@@ -1,6 +1,6 @@
 {
   "name": "marcusolsson-static-datasource",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A data source plugin for Grafana for static data.",
   "scripts": {
     "build": "grafana-toolkit plugin:build",
