@@ -1,4 +1,4 @@
-import { DataQuery, DataSourceJsonData, DataFrame, FieldType } from '@grafana/data';
+import { DataQuery, DataSourceJsonData, DataFrameDTO, FieldType } from '@grafana/data';
 
 export type NullableString = string | null;
 
@@ -14,7 +14,7 @@ export interface DataFrameViewModel {
 }
 
 export interface StaticQuery extends DataQuery {
-  frame: DataFrame;
+  frame: DataFrameDTO;
 }
 
 export interface StaticDataSourceOptions extends DataSourceJsonData {}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { QueryEditorProps, FieldType, DataFrame, MutableDataFrame } from '@grafana/data';
+import { QueryEditorProps, FieldType, DataFrameDTO, toDataFrameDTO, MutableDataFrame } from '@grafana/data';
 import { Select, Input, useTheme } from '@grafana/ui';
 import { DataSource } from './DataSource';
 import { withHoverActions } from './withHoverActions';
@@ -19,19 +19,33 @@ const allFieldTypes = [
 
 type Props = QueryEditorProps<DataSource, StaticQuery, StaticDataSourceOptions>;
 
-const toDataFrame = (model: DataFrameViewModel): DataFrame => {
+const toDataFrame = (model: DataFrameViewModel): DataFrameDTO => {
   const frame = new MutableDataFrame({
     name: model.name,
     fields: model.fields.map(_ => ({ name: _.name, type: _.type })),
   });
-  model.rows.forEach(_ => frame.appendRow(_));
-  return frame;
+  model.rows.forEach(_ =>
+    frame.appendRow(
+      _.map((_, i) => {
+        const res = toFieldValue(_, frame.fields[i].type);
+        return res.ok ? res.value : null;
+      })
+    )
+  );
+  return toDataFrameDTO(frame);
 };
 
-const fromDataFrame = (frame: DataFrame): DataFrameViewModel => {
-  const fields = frame.fields.map(_ => ({ name: _.name, type: _.type }));
-  const rows: NullableString[][] = Array.from({ length: frame.length }).map((_, i) =>
-    frame.fields.map(f => f.values.get(i)).map(_ => _?.toString())
+const fromDataFrame = (frame: DataFrameDTO): DataFrameViewModel => {
+  if (frame.fields.length === 0) {
+    return {
+      name: frame.name,
+      fields: [],
+      rows: [],
+    };
+  }
+  const fields = frame.fields.map(_ => ({ name: _.name, type: _.type ?? FieldType.string }));
+  const rows = Array.from({ length: frame.fields[0].values?.length ?? 0 }).map((_, i) =>
+    frame.fields.map(field => (field.values as any[])[i]?.toString() ?? null)
   );
 
   return {
@@ -43,20 +57,24 @@ const fromDataFrame = (frame: DataFrame): DataFrameViewModel => {
 
 export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) => {
   // Load existing data frame, or create a new one.
-  const frame: DataFrame = query.frame || new MutableDataFrame();
+  const frame: DataFrameDTO = query.frame ?? { fields: [] };
 
   // Create a view model for the data frame.
   const [frameModel, setFrameModel] = useState<DataFrameViewModel>(fromDataFrame(frame));
 
+  const [schema, setSchema] = useState<FieldType[]>([]);
+
   // Call this whenever you modify the view model object.
   const onFrameChange = (frameModel: DataFrameViewModel) => {
     setFrameModel(frameModel);
+    setSchema(frameModel.fields.map(f => f.type));
     onSaveFrame(frameModel);
   };
 
   // Call this whenever you want to save the changes to the view model.
   const onSaveFrame = (frameModel: DataFrameViewModel) => {
-    onChange({ ...query, frame: toDataFrame(frameModel) });
+    const frame = toDataFrame(frameModel);
+    onChange({ ...query, frame });
     onRunQuery();
   };
 
@@ -142,15 +160,14 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
     onFrameChange(frameModel);
   };
 
-  const schema = frameModel.fields.map(f => f.type);
-
   return (
     <>
       <Form>
         {/* Data frame configuration */}
         <InlineForm>
           <FormLabel width={4} text="Name" keyword />
-          <Input onChange={e => renameFrame(e.currentTarget.value)} value={frameModel.name} />
+
+          <Input className="width-12" onChange={e => renameFrame(e.currentTarget.value)} value={frameModel.name} />
         </InlineForm>
 
         {/* Schema configuration */}
@@ -234,6 +251,9 @@ const RowValuesInput = withHoverActions(({ values, onValueChange, schema }: RowV
         return (
           <FormNullableInput
             key={j}
+            onValidate={value => {
+              return toFieldValue(value, schema[j]).ok;
+            }}
             onChange={value => {
               onValueChange(value, j);
             }}
@@ -245,33 +265,33 @@ const RowValuesInput = withHoverActions(({ values, onValueChange, schema }: RowV
   );
 });
 
-// const toFieldValue = (
-//   value: NullableString,
-//   type: FieldType
-// ): { ok: boolean; value?: NullableString; error?: string } => {
-//   if (value === null) {
-//     return { ok: true, value };
-//   }
+const toFieldValue = (
+  value: NullableString,
+  type: FieldType
+): { ok: boolean; value?: string | number | boolean | null; error?: string } => {
+  if (value === null) {
+    return { ok: true, value };
+  }
 
-//   switch (type) {
-//     case FieldType.number:
-//       const num = Number(value);
-//       return isNaN(num) ? { ok: false, error: 'Invalid number' } : { ok: true, value: num };
-//     case FieldType.time:
-//       const time = Number(value);
-//       return isNaN(time) ? { ok: false, error: 'Invalid timestamp' } : { ok: true, value: time };
-//     case FieldType.boolean:
-//       const truthy = !!['1', 'true'].find(_ => _ === value);
-//       const falsy = !!['0', 'false'].find(_ => _ === value);
+  switch (type) {
+    case FieldType.number:
+      const num = Number(value);
+      return value === '' || isNaN(num) ? { ok: false, error: 'Invalid number' } : { ok: true, value: num };
+    case FieldType.time:
+      const time = Number(value);
+      return value === '' || isNaN(time) ? { ok: false, error: 'Invalid timestamp' } : { ok: true, value: time };
+    case FieldType.boolean:
+      const truthy = !!['1', 'true', 'yes'].find(_ => _ === value);
+      const falsy = !!['0', 'false', 'no'].find(_ => _ === value);
 
-//       if (!truthy && !falsy) {
-//         return { ok: false, error: 'Invalid boolean' };
-//       }
-//       return { ok: true, value: truthy };
-//   }
-
-//   return { ok: false, error: 'No such type' };
-// };
+      if (!truthy && !falsy) {
+        return { ok: false, error: 'Invalid boolean' };
+      }
+      return { ok: true, value: truthy };
+    default:
+      return { ok: true, value: value.toString() };
+  }
+};
 
 interface FieldSchemaInputProps {
   onNameChange: (name: string) => void;

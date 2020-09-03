@@ -117,6 +117,13 @@ export const FormNullableInput: React.FC<Partial<FormNullableInputProps>> = ({ o
   const [lastValue, setLastValue] = useState(value);
   const [valid, setValid] = useState(onValidate ? onValidate(value ?? null) : true);
 
+  if (onValidate) {
+    const ok = onValidate(value ?? null);
+    if (ok !== valid) {
+      setValid(ok);
+    }
+  }
+
   const styles = {
     root: css`
       width: 128px;
@@ -155,6 +162,7 @@ export const FormNullableInput: React.FC<Partial<FormNullableInputProps>> = ({ o
         outline: none;
       }
       &:disabled {
+        color: ${theme.colors.textFaint};
         background-color: transparent;
       }
     `,
@@ -185,7 +193,7 @@ export const FormNullableInput: React.FC<Partial<FormNullableInputProps>> = ({ o
             onChange(e.target.value);
           }
         }}
-        value={value ?? ''}
+        value={disabled ? 'null' : value ?? ''}
       />
       <div
         className={styles.button}
@@ -194,8 +202,10 @@ export const FormNullableInput: React.FC<Partial<FormNullableInputProps>> = ({ o
           if (onChange) {
             if (!disabled) {
               onChange(null);
+              setValid(true);
             } else {
               onChange(lastValue ?? null);
+              if (onValidate) setValid(onValidate(lastValue ?? null));
             }
           }
         }}
