@@ -205,7 +205,9 @@ export const FormNullableInput: React.FC<Partial<FormNullableInputProps>> = ({ o
               setValid(true);
             } else {
               onChange(lastValue ?? null);
-              if (onValidate) setValid(onValidate(lastValue ?? null));
+              if (onValidate) {
+                setValid(onValidate(lastValue ?? null));
+              }
             }
           }
         }}
