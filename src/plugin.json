@@ -25,7 +25,7 @@
         "url": "https://github.com/marcusolsson/grafana-static-datasource/blob/master/LICENSE"
       }
     ],
-    "screenshots": [],
+    "screenshots": [{ "name": "Logs", "path": "img/screenshot.png" }],
     "version": "%VERSION%",
     "updated": "%TODAY%"
   },
