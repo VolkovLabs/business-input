@@ -113,6 +113,11 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
       row.splice(pos, 1);
     });
 
+    // Remove all rows if there are no fields.
+    if (frameModel.fields.length === 0) {
+      frameModel.rows = [];
+    }
+
     onFrameChange(frameModel);
   };
 
