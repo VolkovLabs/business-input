@@ -5,6 +5,7 @@ import { DataSource } from './DataSource';
 import { withHoverActions } from './withHoverActions';
 import { NullableString, DataFrameViewModel } from './types';
 import { css, cx } from 'emotion';
+import {} from '@emotion/core';
 import { Form, InlineForm, FormLabel, FormSection, FormButton, FormIndent, FormNullableInput } from './Forms';
 import { StaticDataSourceOptions, StaticQuery } from './types';
 
@@ -19,48 +20,12 @@ const allFieldTypes = [
 
 type Props = QueryEditorProps<DataSource, StaticQuery, StaticDataSourceOptions>;
 
-const toDataFrame = (model: DataFrameViewModel): DataFrameDTO => {
-  const frame = new MutableDataFrame({
-    name: model.name,
-    fields: model.fields.map(_ => ({ name: _.name, type: _.type })),
-  });
-  model.rows.forEach(_ =>
-    frame.appendRow(
-      _.map((_, i) => {
-        const res = toFieldValue(_, frame.fields[i].type);
-        return res.ok ? res.value : null;
-      })
-    )
-  );
-  return toDataFrameDTO(frame);
-};
-
-const fromDataFrame = (frame: DataFrameDTO): DataFrameViewModel => {
-  if (frame.fields.length === 0) {
-    return {
-      name: frame.name,
-      fields: [],
-      rows: [],
-    };
-  }
-  const fields = frame.fields.map(_ => ({ name: _.name, type: _.type ?? FieldType.string }));
-  const rows = Array.from({ length: frame.fields[0].values?.length ?? 0 }).map((_, i) =>
-    frame.fields.map(field => (field.values as any[])[i]?.toString() ?? null)
-  );
-
-  return {
-    name: frame.name,
-    fields,
-    rows,
-  };
-};
-
 export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) => {
   // Load existing data frame, or create a new one.
   const frame: DataFrameDTO = query.frame ?? { fields: [] };
 
   // Create a view model for the data frame.
-  const [frameModel, setFrameModel] = useState<DataFrameViewModel>(fromDataFrame(frame));
+  const [frameModel, setFrameModel] = useState<DataFrameViewModel>(toViewModel(frame));
 
   const [schema, setSchema] = useState<FieldType[]>([]);
 
@@ -171,7 +136,6 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
         {/* Data frame configuration */}
         <InlineForm>
           <FormLabel width={4} text="Name" keyword />
-
           <Input className="width-12" onChange={e => renameFrame(e.currentTarget.value)} value={frameModel.name} />
         </InlineForm>
 
@@ -328,9 +292,9 @@ const FieldSchemaInput = withHoverActions(({ onNameChange, name, onTypeChange, t
         }))}
       ></Select>
       <Input
-        className={cx(css`
+        className={css`
           margin-right: ${theme.spacing.xs};
-        `)}
+        `}
         onChange={e => {
           onNameChange(e.currentTarget.value);
         }}
@@ -339,3 +303,39 @@ const FieldSchemaInput = withHoverActions(({ onNameChange, name, onTypeChange, t
     </InlineForm>
   );
 });
+
+const toDataFrame = (model: DataFrameViewModel): DataFrameDTO => {
+  const frame = new MutableDataFrame({
+    name: model.name,
+    fields: model.fields.map(_ => ({ name: _.name, type: _.type })),
+  });
+  model.rows.forEach(_ =>
+    frame.appendRow(
+      _.map((_, i) => {
+        const res = toFieldValue(_, frame.fields[i].type);
+        return res.ok ? res.value : null;
+      })
+    )
+  );
+  return toDataFrameDTO(frame);
+};
+
+const toViewModel = (frame: DataFrameDTO): DataFrameViewModel => {
+  if (frame.fields.length === 0) {
+    return {
+      name: frame.name,
+      fields: [],
+      rows: [],
+    };
+  }
+  const fields = frame.fields.map(_ => ({ name: _.name, type: _.type ?? FieldType.string }));
+  const rows = Array.from({ length: frame.fields[0].values?.length ?? 0 }).map((_, i) =>
+    frame.fields.map(field => (field.values as any[])[i]?.toString() ?? null)
+  );
+
+  return {
+    name: frame.name,
+    fields,
+    rows,
+  };
+};
