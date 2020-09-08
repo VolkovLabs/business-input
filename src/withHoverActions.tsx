@@ -7,6 +7,8 @@ interface HoverActionsProps {
   onRemove: () => void;
 }
 
+// withHoverActions is a higher-order component that adds Add and Remove buttons
+// to a component when hovering over it.
 export function withHoverActions<P>(Component: React.ComponentType<P>): React.FC<P & HoverActionsProps> {
   return props => {
     const [hover, setHover] = useState(false);

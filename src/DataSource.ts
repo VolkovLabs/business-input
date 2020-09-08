@@ -12,6 +12,7 @@ import {
 import { getTemplateSrv } from '@grafana/runtime';
 import { StaticQuery, StaticDataSourceOptions } from './types';
 
+// DataSource returns the data frame returned in the query model.
 export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptions> {
   constructor(instanceSettings: DataSourceInstanceSettings<StaticDataSourceOptions>) {
     super(instanceSettings);
@@ -43,7 +44,7 @@ export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptio
   }
 
   async testDatasource() {
-    // Implement a health check for your data source.
+    // This data source makes no external requests so no need to test.
     return {
       status: 'success',
       message: 'Success',

@@ -5,6 +5,7 @@
 
 A data source plugin for [Grafana](https://grafana.com) for static data.
 
-![Screenshot](https://raw.githubusercontent.com/marcusolsson/grafana-static-datasource/master/src/img/screenshot.png)
+- Create static visualizations that don't depend on a specific data source
+- Build custom query responses for testing or developing panel plugins
 
-This data source returns a static, or fixed, response. Use it to experiment with different visualizations, or while developing panel plugins.
+![Screenshot](https://raw.githubusercontent.com/marcusolsson/grafana-static-datasource/master/src/img/screenshot.png)
