@@ -1,4 +1,5 @@
 {
+  "$schema": "https://github.com/grafana/grafana/raw/master/docs/sources/developers/plugins/plugin.schema.json",
   "type": "datasource",
   "name": "Static",
   "id": "marcusolsson-static-datasource",

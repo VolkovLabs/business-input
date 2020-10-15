@@ -8,4 +8,4 @@ A data source plugin for [Grafana](https://grafana.com) for static data.
 - Create static visualizations that don't depend on a specific data source
 - Build custom query responses for testing or developing panel plugins
 
-![Screenshot](https://raw.githubusercontent.com/marcusolsson/grafana-static-datasource/master/src/img/screenshot.png)
+![Screenshot](https://github.com/marcusolsson/grafana-static-datasource/raw/master/src/img/screenshot.png)
