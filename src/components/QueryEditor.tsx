@@ -135,7 +135,7 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
     <>
       {/* Data frame configuration */}
       <InlineFieldRow>
-        <InlineField label="Name">
+        <InlineField label="Name" tooltip="Name of the data frame">
           <Input className="width-12" onChange={e => renameFrame(e.currentTarget.value)} value={frameModel.name} />
         </InlineField>
       </InlineFieldRow>
