@@ -22,6 +22,7 @@ export const InlineFieldGroup: React.FC<Partial<InlineFieldGroup>> = ({ label, c
       justify-content: space-between;
       margin-bottom: ${theme.spacing.xs};
       user-select: none;
+      font-size: ${theme.typography.size.sm};
     `,
     collapseIcon: css`
       color: ${theme.colors.textWeak};
