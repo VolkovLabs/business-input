@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { QueryEditorProps, FieldType, DataFrameDTO, toDataFrameDTO, MutableDataFrame } from '@grafana/data';
-import { Select, Input, useTheme } from '@grafana/ui';
-import { DataSource } from './DataSource';
-import { withHoverActions } from './withHoverActions';
-import { NullableString, DataFrameViewModel } from './types';
+import { Icon, InlineFieldRow, InlineField, Select, Input } from '@grafana/ui';
+import { DataSource } from '../datasource';
+import { NullableString, DataFrameViewModel } from '../types';
 import { css, cx } from 'emotion';
+import { InlineFieldGroup } from './InlineFieldGroup';
+import { NullableInput } from './NullableInput';
+import { StaticDataSourceOptions, StaticQuery } from '../types';
+
 import {} from '@emotion/core';
-import { Form, InlineForm, FormLabel, FormSection, FormButton, FormIndent, FormNullableInput } from './Forms';
-import { StaticDataSourceOptions, StaticQuery } from './types';
 
 const allFieldTypes = [
   FieldType.boolean,
@@ -132,107 +133,157 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
 
   return (
     <>
-      <Form>
-        {/* Data frame configuration */}
-        <InlineForm>
-          <FormLabel width={4} text="Name" keyword />
+      {/* Data frame configuration */}
+      <InlineFieldRow>
+        <InlineField label="Name">
           <Input className="width-12" onChange={e => renameFrame(e.currentTarget.value)} value={frameModel.name} />
-        </InlineForm>
+        </InlineField>
+      </InlineFieldRow>
 
-        {/* Schema configuration */}
-        <FormSection label="Schema">
-          {frameModel.fields.map((field, i) => {
-            return (
-              <FieldSchemaInput
-                key={i}
-                name={field.name}
-                type={field.type}
-                onNameChange={name => renameField(name, i)}
-                onTypeChange={type => changeFieldType(type, i)}
-                onAdd={() => addField(i)}
-                onRemove={() => removeField(i)}
-              />
-            );
-          })}
-
-          {/* Display a helper button if no fields have been added. */}
-          {frameModel.fields.length === 0 ? (
-            <InlineForm>
-              <FormIndent level={2} />
-              <FormButton text="Add a field" icon="plus" onClick={() => addField(0)} />
-            </InlineForm>
-          ) : null}
-        </FormSection>
-
-        {/* Value configuration */}
-        <FormSection label="Values">
-          {frameModel.fields.length > 0 ? (
+      {/* Schema configuration */}
+      <InlineFieldGroup label="Schema">
+        {frameModel.fields.map((field, i) => {
+          return (
             <>
-              {/* Display the name of each field as a column header. */}
-              <InlineForm>
-                <FormIndent level={2} />
-                {frameModel.fields.map((field, i) => (
-                  <FormLabel key={i} text={field.name || '<no name>'} keyword />
-                ))}
-              </InlineForm>
-
-              {/* Add all the rows. */}
-              {frameModel.rows.map((row, i) => {
-                return (
-                  <RowValuesInput
-                    key={i}
-                    schema={schema}
-                    values={row}
-                    onValueChange={(value, fieldIndex) => {
-                      editCell(value, i, fieldIndex);
+              <InlineFieldRow key={i}>
+                <FormIndent />
+                <InlineField label="Name">
+                  <Input
+                    value={field.name}
+                    onChange={e => {
+                      renameField(e.currentTarget.value, i);
                     }}
-                    onAdd={() => addRow(i)}
-                    onRemove={() => removeRow(i)}
                   />
-                );
-              })}
-
-              {/* Display a helper button if no rows have been added. */}
-              {frameModel.rows.length === 0 ? (
-                <InlineForm>
-                  <FormIndent level={2} />
-                  <FormButton text="Add a row" icon="plus" onClick={() => addRow(0)} />
-                </InlineForm>
-              ) : null}
+                </InlineField>
+                <InlineField label="Type">
+                  <Select
+                    value={field.type}
+                    onChange={e => {
+                      changeFieldType(e.value as FieldType, i);
+                    }}
+                    options={allFieldTypes.map(t => ({
+                      label: t,
+                      value: t,
+                    }))}
+                  />
+                </InlineField>
+                <a className="gf-form-label" onClick={() => addField(i)}>
+                  <Icon name="plus" />
+                </a>
+                <a className="gf-form-label" onClick={() => removeField(i)}>
+                  <Icon name="minus" />
+                </a>
+              </InlineFieldRow>
             </>
-          ) : null}
-        </FormSection>
-      </Form>
+          );
+        })}
+
+        {/* Display a helper button if no fields have been added. */}
+        {frameModel.fields.length === 0 ? (
+          <InlineFieldRow>
+            <FormIndent />
+            <a
+              onClick={() => addField(0)}
+              className={cx(
+                'gf-form-label',
+                css`
+                  margin-bottom: 4px;
+                `
+              )}
+            >
+              <Icon
+                name="plus"
+                className={css`
+                  margin-right: 4px;
+                `}
+              />
+              Add a field
+            </a>
+          </InlineFieldRow>
+        ) : null}
+      </InlineFieldGroup>
+
+      {/* Value configuration */}
+      <InlineFieldGroup label="Values">
+        {frameModel.fields.length > 0 ? (
+          <>
+            {/* Display the name of each field as a column header. */}
+            <InlineFieldRow
+              className={css`
+                margin-bottom: 4px;
+              `}
+            >
+              <FormIndent />
+              {frameModel.fields.map((field, i) => (
+                <span key={i} className={cx('gf-form-label', 'width-8', 'query-keyword')}>
+                  {field.name || '<no name>'}
+                </span>
+              ))}
+            </InlineFieldRow>
+
+            {/* Add all the rows. */}
+            {frameModel.rows.map((row, i) => {
+              return (
+                <InlineFieldRow
+                  key={i}
+                  className={css`
+                    margin-bottom: 4px;
+                  `}
+                >
+                  <FormIndent />
+                  {row.map((value: NullableString, j: number) => {
+                    return (
+                      <NullableInput
+                        key={j}
+                        onValidate={value => {
+                          return toFieldValue(value, schema[j]).ok;
+                        }}
+                        onChange={value => {
+                          editCell(value, i, j);
+                        }}
+                        value={value}
+                      />
+                    );
+                  })}
+                  <a className="gf-form-label" onClick={() => addRow(i)}>
+                    <Icon name="plus" />
+                  </a>
+                  <a className="gf-form-label" onClick={() => removeRow(i)}>
+                    <Icon name="minus" />
+                  </a>
+                </InlineFieldRow>
+              );
+            })}
+
+            {/* Display a helper button if no rows have been added. */}
+            {frameModel.rows.length === 0 ? (
+              <InlineFieldRow>
+                <FormIndent />
+                <a
+                  onClick={() => addRow(0)}
+                  className={cx(
+                    'gf-form-label',
+                    css`
+                      margin-bottom: 4px;
+                    `
+                  )}
+                >
+                  <Icon
+                    name="plus"
+                    className={css`
+                      margin-right: 4px;
+                    `}
+                  />
+                  Add a row
+                </a>
+              </InlineFieldRow>
+            ) : null}
+          </>
+        ) : null}
+      </InlineFieldGroup>
     </>
   );
 };
-
-interface RowValuesInputProps {
-  schema: FieldType[];
-  values: NullableString[];
-  onValueChange: (value: NullableString, fieldIndex: number) => void;
-}
-
-const RowValuesInput = withHoverActions(({ values, onValueChange, schema }: RowValuesInputProps) => {
-  return (
-    <InlineForm>
-      {values.map((value: NullableString, j: number) => {
-        return (
-          <FormNullableInput
-            key={j}
-            onValidate={value => {
-              return toFieldValue(value, schema[j]).ok;
-            }}
-            onChange={value => {
-              onValueChange(value, j);
-            }}
-            value={value}
-          />
-        );
-      })}
-    </InlineForm>
-  );
-});
 
 const toFieldValue = (
   value: NullableString,
@@ -261,48 +312,6 @@ const toFieldValue = (
       return { ok: true, value: value.toString() };
   }
 };
-
-interface FieldSchemaInputProps {
-  onNameChange: (name: string) => void;
-  name: string;
-
-  onTypeChange: (t: FieldType) => void;
-  type: FieldType;
-}
-
-const FieldSchemaInput = withHoverActions(({ onNameChange, name, onTypeChange, type }: FieldSchemaInputProps) => {
-  const theme = useTheme();
-
-  return (
-    <InlineForm>
-      <Select
-        className={cx(
-          'width-8',
-          css`
-            margin-right: ${theme.spacing.xs};
-          `
-        )}
-        onChange={e => {
-          onTypeChange(e.value as FieldType);
-        }}
-        value={type}
-        options={allFieldTypes.map(t => ({
-          label: t,
-          value: t,
-        }))}
-      ></Select>
-      <Input
-        className={css`
-          margin-right: ${theme.spacing.xs};
-        `}
-        onChange={e => {
-          onNameChange(e.currentTarget.value);
-        }}
-        value={name}
-      />
-    </InlineForm>
-  );
-});
 
 const toDataFrame = (model: DataFrameViewModel): DataFrameDTO => {
   const frame = new MutableDataFrame({
@@ -339,3 +348,5 @@ const toViewModel = (frame: DataFrameDTO): DataFrameViewModel => {
     rows,
   };
 };
+
+export const FormIndent = () => <span className={`width-1`}></span>;
