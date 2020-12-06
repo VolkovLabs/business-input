@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { Icon, useTheme } from '@grafana/ui';
 import { css } from 'emotion';
 
-export interface InlineFieldGroup {
+export interface InlineFieldGroupProps {
   label: string;
   children: React.ReactNode;
 }
 
-export const InlineFieldGroup: React.FC<Partial<InlineFieldGroup>> = ({ label, children }) => {
+export const InlineFieldGroup: React.FC<Partial<InlineFieldGroupProps>> = ({ label, children }) => {
   const [show, setShow] = useState(true);
   const theme = useTheme();
 

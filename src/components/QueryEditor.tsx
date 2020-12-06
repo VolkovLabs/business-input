@@ -157,12 +157,13 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
                 </InlineField>
                 <InlineField label="Type">
                   <Select
+                    width={12}
                     value={field.type}
                     onChange={e => {
                       changeFieldType(e.value as FieldType, i);
                     }}
                     options={allFieldTypes.map(t => ({
-                      label: t,
+                      label: t[0].toUpperCase() + t.substr(1),
                       value: t,
                     }))}
                   />
