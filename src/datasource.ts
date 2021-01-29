@@ -38,7 +38,11 @@ export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptio
       data: options.targets
         .filter(target => !target.hide)
         .filter(target => target.frame)
-        .map(target => toDataFrame(target.frame))
+        .map(target => {
+          const frame = toDataFrame(target.frame);
+          frame.refId = target.refId;
+          return frame;
+        })
         .map(interpolateVariables),
     };
   }
