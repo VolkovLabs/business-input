@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.3.1 (2021-01-29)
+
+[Full changelog](https://github.com/marcusolsson/grafana-static-datasource/compare/v1.3.0...v1.3.1)
+
+### Bug fixes
+
+- Set reference id on data frames
+
 ## 1.3.0 (2021-01-29)
 
 [Full changelog](https://github.com/marcusolsson/grafana-static-datasource/compare/v1.2.1...v1.3.0)
