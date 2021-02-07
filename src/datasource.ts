@@ -26,7 +26,7 @@ export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptio
 
         // Skip non-text fields.
         if (field.type === FieldType.string) {
-          field.values = new ArrayVector(field.values.toArray().map(_ => getTemplateSrv().replace(_, {}, 'csv')));
+          field.values = new ArrayVector(field.values.toArray().map((_) => getTemplateSrv().replace(_, {}, 'csv')));
         }
 
         frame.fields[i] = field;
@@ -36,9 +36,9 @@ export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptio
 
     return {
       data: options.targets
-        .filter(target => !target.hide)
-        .filter(target => target.frame)
-        .map(target => {
+        .filter((target) => !target.hide)
+        .filter((target) => target.frame)
+        .map((target) => {
           const frame = toDataFrame(target.frame);
           frame.refId = target.refId;
           return frame;

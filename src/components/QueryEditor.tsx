@@ -33,7 +33,7 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
   // Call this whenever you modify the view model object.
   const onFrameChange = (frameModel: DataFrameViewModel) => {
     setFrameModel(frameModel);
-    setSchema(frameModel.fields.map(f => f.type));
+    setSchema(frameModel.fields.map((f) => f.type));
     onSaveFrame(frameModel);
   };
 
@@ -63,7 +63,7 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
     });
 
     // Rebuild rows with the added field.
-    frameModel.rows.forEach(row => {
+    frameModel.rows.forEach((row) => {
       row.splice(pos + 1, 0, '');
     });
 
@@ -75,7 +75,7 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
     frameModel.fields.splice(pos, 1);
 
     // Rebuild rows without the removed field.
-    frameModel.rows.forEach(row => {
+    frameModel.rows.forEach((row) => {
       row.splice(pos, 1);
     });
 
@@ -106,9 +106,7 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
         case 'number':
           return '0';
         case 'time':
-          return Date.now()
-            .valueOf()
-            .toString();
+          return Date.now().valueOf().toString();
         case 'boolean':
           return 'false';
       }
@@ -136,7 +134,7 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
       {/* Data frame configuration */}
       <InlineFieldRow>
         <InlineField label="Name" tooltip="Name of the data frame">
-          <Input className="width-12" onChange={e => renameFrame(e.currentTarget.value)} value={frameModel.name} />
+          <Input className="width-12" onChange={(e) => renameFrame(e.currentTarget.value)} value={frameModel.name} />
         </InlineField>
       </InlineFieldRow>
 
@@ -150,7 +148,7 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
                 <InlineField label="Name">
                   <Input
                     value={field.name}
-                    onChange={e => {
+                    onChange={(e) => {
                       renameField(e.currentTarget.value, i);
                     }}
                   />
@@ -159,10 +157,10 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
                   <Select
                     width={12}
                     value={field.type}
-                    onChange={e => {
+                    onChange={(e) => {
                       changeFieldType(e.value as FieldType, i);
                     }}
-                    options={allFieldTypes.map(t => ({
+                    options={allFieldTypes.map((t) => ({
                       label: t[0].toUpperCase() + t.substr(1),
                       value: t,
                     }))}
@@ -236,10 +234,10 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
                     return (
                       <NullableInput
                         key={j}
-                        onValidate={value => {
+                        onValidate={(value) => {
                           return toFieldValue(value, schema[j]).ok;
                         }}
-                        onChange={value => {
+                        onChange={(value) => {
                           editCell(value, i, j);
                         }}
                         value={value}
@@ -302,8 +300,8 @@ const toFieldValue = (
       const time = Number(value);
       return value === '' || isNaN(time) ? { ok: false, error: 'Invalid timestamp' } : { ok: true, value: time };
     case FieldType.boolean:
-      const truthy = !!['1', 'true', 'yes'].find(_ => _ === value);
-      const falsy = !!['0', 'false', 'no'].find(_ => _ === value);
+      const truthy = !!['1', 'true', 'yes'].find((_) => _ === value);
+      const falsy = !!['0', 'false', 'no'].find((_) => _ === value);
 
       if (!truthy && !falsy) {
         return { ok: false, error: 'Invalid boolean' };
@@ -317,9 +315,9 @@ const toFieldValue = (
 const toDataFrame = (model: DataFrameViewModel): DataFrameDTO => {
   const frame = new MutableDataFrame({
     name: model.name,
-    fields: model.fields.map(_ => ({ name: _.name, type: _.type })),
+    fields: model.fields.map((_) => ({ name: _.name, type: _.type })),
   });
-  model.rows.forEach(_ =>
+  model.rows.forEach((_) =>
     frame.appendRow(
       _.map((_, i) => {
         const res = toFieldValue(_, frame.fields[i].type);
@@ -338,9 +336,9 @@ const toViewModel = (frame: DataFrameDTO): DataFrameViewModel => {
       rows: [],
     };
   }
-  const fields = frame.fields.map(_ => ({ name: _.name, type: _.type ?? FieldType.string }));
+  const fields = frame.fields.map((_) => ({ name: _.name, type: _.type ?? FieldType.string }));
   const rows = Array.from({ length: frame.fields[0].values?.length ?? 0 }).map((_, i) =>
-    frame.fields.map(field => (field.values as any[])[i]?.toString() ?? null)
+    frame.fields.map((field) => (field.values as any[])[i]?.toString() ?? null)
   );
 
   return {

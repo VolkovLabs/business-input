@@ -82,7 +82,7 @@ export const NullableInput: React.FC<Partial<NullableInputProps>> = ({ onChange,
       <input
         disabled={disabled}
         className={styles.input}
-        onChange={e => {
+        onChange={(e) => {
           if (onValidate) {
             setValid(onValidate(e.target.value));
           }
