@@ -1,7 +1,11 @@
 {
   "name": "marcusolsson-static-datasource",
   "version": "1.3.1",
-  "description": "A data source plugin for Grafana for static data.",
+  "description": "A data source plugin for Grafana for static data",
+  "keywords": [
+    "grafana"
+  ],
+  "license": "Apache-2.0",
   "scripts": {
     "build": "grafana-toolkit plugin:build",
     "test": "grafana-toolkit plugin:test",
@@ -9,10 +13,13 @@
     "watch": "grafana-toolkit plugin:dev --watch",
     "sign": "grafana-toolkit plugin:sign"
   },
-  "author": "Marcus Olsson",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/marcusolsson/grafana-static-datasource/issues"
+  "homepage": "https://grafana.com/plugins/marcusolsson-static-datasource",
+  "bugs": "https://github.com/marcusolsson/grafana-static-datasource/issues",
+  "repository": "github:marcusolsson/grafana-static-datasource",
+  "author": {
+    "name": "Marcus Olsson",
+    "email": "marcus.olsson@hey.com",
+    "url": "https://marcus.se.net"
   },
   "devDependencies": {
     "@grafana/data": "^7.3.0",
