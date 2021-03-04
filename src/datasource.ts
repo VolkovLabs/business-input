@@ -47,6 +47,11 @@ export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptio
     };
   }
 
+  /**
+   * This line adds support for annotation queries in >=7.2.
+   */
+  annotations = {};
+
   async testDatasource() {
     // This data source makes no external requests so no need to test.
     return {

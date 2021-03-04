@@ -5,6 +5,7 @@
   "id": "marcusolsson-static-datasource",
   "metrics": true,
   "logs": true,
+  "annotations": true,
   "info": {
     "description": "A data source plugin for Grafana for static data.",
     "author": {
