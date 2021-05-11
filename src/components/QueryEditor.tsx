@@ -121,6 +121,11 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
     onFrameChange(frameModel);
   };
 
+  const duplicateRow = (pos: number) => {
+    frameModel.rows.splice(pos + 1, 0, JSON.parse(JSON.stringify(frameModel.rows[pos])));
+    onFrameChange(frameModel);
+  };
+
   /*
    * Cell manipulations
    */
@@ -249,6 +254,9 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
                   </a>
                   <a className="gf-form-label" onClick={() => removeRow(i)}>
                     <Icon name="minus" />
+                  </a>
+                  <a className="gf-form-label" onClick={() => duplicateRow(i)}>
+                    <Icon name="copy" />
                   </a>
                 </InlineFieldRow>
               );
