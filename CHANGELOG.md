@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.4.0 (2021-06-10)
+
+[Full changelog](https://github.com/marcusolsson/grafana-static-datasource/compare/v1.3.1...v1.4.0)
+
+### Enhancements
+
+- Add support for annotations
+- Add button for duplicating value rows
+- Add option to set preferred visualisation type for Explore
+
 ## 1.3.1 (2021-01-29)
 
 [Full changelog](https://github.com/marcusolsson/grafana-static-datasource/compare/v1.3.0...v1.3.1)

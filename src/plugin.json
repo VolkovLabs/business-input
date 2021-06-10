@@ -1,5 +1,5 @@
 {
-  "$schema": "https://github.com/grafana/grafana/raw/master/docs/sources/developers/plugins/plugin.schema.json",
+  "$schema": "https://github.com/grafana/grafana/raw/main/docs/sources/developers/plugins/plugin.schema.json",
   "type": "datasource",
   "name": "Static",
   "id": "marcusolsson-static-datasource",
@@ -24,7 +24,7 @@
       },
       {
         "name": "License",
-        "url": "https://github.com/marcusolsson/grafana-static-datasource/blob/master/LICENSE"
+        "url": "https://github.com/marcusolsson/grafana-static-datasource/blob/main/LICENSE"
       }
     ],
     "screenshots": [{ "name": "Logs", "path": "img/screenshot.png" }],
