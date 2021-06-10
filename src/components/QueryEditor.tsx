@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { QueryEditorProps, FieldType, DataFrameDTO, toDataFrameDTO, MutableDataFrame } from '@grafana/data';
+import {
+  QueryEditorProps,
+  FieldType,
+  DataFrameDTO,
+  toDataFrameDTO,
+  MutableDataFrame,
+  PreferredVisualisationType,
+} from '@grafana/data';
 import { Icon, InlineFieldRow, InlineField, Select, Input } from '@grafana/ui';
 import { DataSource } from '../datasource';
 import { NullableString, DataFrameViewModel } from '../types';
@@ -18,6 +25,8 @@ const allFieldTypes = [
   FieldType.time,
   FieldType.trace,
 ];
+
+const allPreferredVisualizationTypes: PreferredVisualisationType[] = ['graph', 'table', 'logs', 'trace', 'nodeGraph'];
 
 type Props = QueryEditorProps<DataSource, StaticQuery, StaticDataSourceOptions>;
 
@@ -49,6 +58,12 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
    */
   const renameFrame = (name: string) => {
     frameModel.name = name;
+    onFrameChange(frameModel);
+  };
+
+  const changePreferredVisualizationType = (visualizationType: PreferredVisualisationType) => {
+    const frameMeta = frameModel.meta ?? {};
+    frameModel.meta = { ...frameMeta, preferredVisualisationType: visualizationType };
     onFrameChange(frameModel);
   };
 
@@ -143,13 +158,34 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
         </InlineField>
       </InlineFieldRow>
 
-      {/* Schema configuration */}
-      <InlineFieldGroup label="Schema">
+      {/* Metadata  configuration */}
+      <InlineFieldGroup label="Metadata">
+        <InlineFieldRow>
+          <InlineField
+            label="Preferred visualization type"
+            tooltip="Determines how to visualize the query result in Explore."
+          >
+            <Select
+              width={12}
+              value={frameModel.meta?.preferredVisualisationType}
+              onChange={(e) => {
+                changePreferredVisualizationType(e.value as PreferredVisualisationType);
+              }}
+              options={allPreferredVisualizationTypes.map((t) => ({
+                label: t[0].toUpperCase() + t.substr(1),
+                value: t,
+              }))}
+            />
+          </InlineField>
+        </InlineFieldRow>
+      </InlineFieldGroup>
+
+      {/* Field configuration */}
+      <InlineFieldGroup label="Fields">
         {frameModel.fields.map((field, i) => {
           return (
             <>
               <InlineFieldRow key={i}>
-                <FormIndent />
                 <InlineField label="Name">
                   <Input
                     value={field.name}
@@ -185,7 +221,6 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
         {/* Display a helper button if no fields have been added. */}
         {frameModel.fields.length === 0 ? (
           <InlineFieldRow>
-            <FormIndent />
             <a
               onClick={() => addField(0)}
               className={cx(
@@ -217,9 +252,8 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
                 margin-bottom: 4px;
               `}
             >
-              <FormIndent />
               {frameModel.fields.map((field, i) => (
-                <span key={i} className={cx('gf-form-label', 'width-8', 'query-keyword')}>
+                <span key={i} className={cx('gf-form-label', 'width-9', 'query-keyword')}>
                   {field.name || '<no name>'}
                 </span>
               ))}
@@ -234,7 +268,6 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
                     margin-bottom: 4px;
                   `}
                 >
-                  <FormIndent />
                   {row.map((value: NullableString, j: number) => {
                     return (
                       <NullableInput
@@ -249,14 +282,14 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
                       />
                     );
                   })}
+                  <a className="gf-form-label" onClick={() => duplicateRow(i)}>
+                    <Icon name="copy" />
+                  </a>
                   <a className="gf-form-label" onClick={() => addRow(i)}>
                     <Icon name="plus" />
                   </a>
                   <a className="gf-form-label" onClick={() => removeRow(i)}>
                     <Icon name="minus" />
-                  </a>
-                  <a className="gf-form-label" onClick={() => duplicateRow(i)}>
-                    <Icon name="copy" />
                   </a>
                 </InlineFieldRow>
               );
@@ -323,6 +356,9 @@ const toFieldValue = (
 const toDataFrame = (model: DataFrameViewModel): DataFrameDTO => {
   const frame = new MutableDataFrame({
     name: model.name,
+    meta: {
+      preferredVisualisationType: model.meta?.preferredVisualisationType,
+    },
     fields: model.fields.map((_) => ({ name: _.name, type: _.type })),
   });
   model.rows.forEach((_) =>
@@ -340,6 +376,9 @@ const toViewModel = (frame: DataFrameDTO): DataFrameViewModel => {
   if (frame.fields.length === 0) {
     return {
       name: frame.name,
+      meta: {
+        preferredVisualisationType: frame.meta?.preferredVisualisationType,
+      },
       fields: [],
       rows: [],
     };
@@ -351,6 +390,9 @@ const toViewModel = (frame: DataFrameDTO): DataFrameViewModel => {
 
   return {
     name: frame.name,
+    meta: {
+      preferredVisualisationType: frame.meta?.preferredVisualisationType,
+    },
     fields,
     rows,
   };

@@ -24,7 +24,7 @@ export const NullableInput: React.FC<Partial<NullableInputProps>> = ({ onChange,
 
   const styles = {
     root: css`
-      width: 128px;
+      width: 144px;
       display: flex;
 
       background-color: ${disabled ? theme.colors.formInputBgDisabled : theme.colors.formInputBg};

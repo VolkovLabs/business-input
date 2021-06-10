@@ -1,4 +1,4 @@
-import { DataQuery, DataSourceJsonData, DataFrameDTO, FieldType } from '@grafana/data';
+import { DataQuery, DataSourceJsonData, DataFrameDTO, FieldType, PreferredVisualisationType } from '@grafana/data';
 
 export type NullableString = string | null;
 
@@ -9,6 +9,9 @@ export interface Field {
 
 export interface DataFrameViewModel {
   name?: string;
+  meta?: {
+    preferredVisualisationType?: PreferredVisualisationType;
+  };
   fields: Field[];
   rows: NullableString[][];
 }
