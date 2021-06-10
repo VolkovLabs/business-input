@@ -61,9 +61,9 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
     onFrameChange(frameModel);
   };
 
-  const changePreferredVisualizationType = (visualizationType: PreferredVisualisationType) => {
+  const changePreferredVisualizationType = (preferredVisualisationType?: PreferredVisualisationType) => {
     const frameMeta = frameModel.meta ?? {};
-    frameModel.meta = { ...frameMeta, preferredVisualisationType: visualizationType };
+    frameModel.meta = { ...frameMeta, preferredVisualisationType };
     onFrameChange(frameModel);
   };
 
@@ -166,10 +166,11 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
             tooltip="Determines how to visualize the query result in Explore."
           >
             <Select
-              width={12}
+              isClearable={true}
+              width={17}
               value={frameModel.meta?.preferredVisualisationType}
               onChange={(e) => {
-                changePreferredVisualizationType(e.value as PreferredVisualisationType);
+                changePreferredVisualizationType(e ? (e.value as PreferredVisualisationType) : undefined);
               }}
               options={allPreferredVisualizationTypes.map((t) => ({
                 label: t[0].toUpperCase() + t.substr(1),
