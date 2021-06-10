@@ -9,11 +9,10 @@ import {
 } from '@grafana/data';
 import { Icon, InlineFieldRow, InlineField, Select, Input } from '@grafana/ui';
 import { DataSource } from '../datasource';
-import { NullableString, DataFrameViewModel } from '../types';
+import { StaticDataSourceOptions, StaticQuery, NullableString, DataFrameViewModel } from '../types';
 import { css, cx } from 'emotion';
 import { InlineFieldGroup } from './InlineFieldGroup';
 import { NullableInput } from './NullableInput';
-import { StaticDataSourceOptions, StaticQuery } from '../types';
 
 import {} from '@emotion/core';
 
