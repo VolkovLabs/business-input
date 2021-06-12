@@ -7,6 +7,8 @@ export interface Field {
   type: FieldType;
 }
 
+// DataFrameViewModel is used as a intermediate frame state for easier
+// manipulation and validation.
 export interface DataFrameViewModel {
   name?: string;
   meta?: {

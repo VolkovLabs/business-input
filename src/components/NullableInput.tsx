@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Icon, useTheme } from '@grafana/ui';
+import { Field, Icon, Input, useTheme } from '@grafana/ui';
 import { NullableString } from '../types';
 import { css } from 'emotion';
 
@@ -11,9 +11,12 @@ export interface NullableInputProps {
 
 export const NullableInput: React.FC<Partial<NullableInputProps>> = ({ onChange, value, onValidate }) => {
   const theme = useTheme();
-  const [disabled, setDisabled] = useState(value === null);
+
+  // Save the last value so we can toggle between null.
   const [lastValue, setLastValue] = useState(value);
+
   const [valid, setValid] = useState(onValidate ? onValidate(value ?? null) : true);
+  const [disabled, setDisabled] = useState(value === null);
 
   if (onValidate) {
     const ok = onValidate(value ?? null);
@@ -25,93 +28,61 @@ export const NullableInput: React.FC<Partial<NullableInputProps>> = ({ onChange,
   const styles = {
     root: css`
       width: 144px;
-      display: flex;
-
-      background-color: ${disabled ? theme.colors.formInputBgDisabled : theme.colors.formInputBg};
-      border: 1px solid ${valid ? theme.colors.formInputBorder : theme.colors.formInputBorderInvalid};
-      padding: 0 ${theme.spacing.sm};
-
-      border-radius: 4px;
-      height: 100%;
-      min-height: 32px;
-      align-items: center;
       margin-right: 4px;
-
-      &:focus-within {
-        outline: 2px dotted transparent;
-        outline-offset: 2px;
-        box-shadow: 0 0 0 2px ${theme.colors.bodyBg}, 0 0 0px 4px ${theme.colors.formFocusOutline};
-        transition: all 0.2s cubic-bezier(0.19, 1, 0.22, 1);
-      }
-
-      & > svg {
-        color: transparent;
-      }
-
-      &:hover svg {
-        color: ${theme.colors.textWeak};
-      }
     `,
-    input: css`
-      font-size: ${theme.typography.size.md};
-      background-color: transparent;
-      min-width: 0;
-      &:focus {
-        outline: none;
-      }
-      &:disabled {
-        color: ${theme.colors.textFaint};
-        background-color: transparent;
-      }
-    `,
-    button: css`
-      display: inline-block;
-      position: relative;
-      right: 0px;
-      border: 0;
-      color: transparent;
-
+    suffix: css`
       &:hover {
         cursor: pointer;
+        color: ${theme.colors.text};
       }
     `,
   };
 
+  const suffixEl = (
+    <Icon
+      className={styles.suffix}
+      name={disabled ? 'eye-slash' : 'eye'}
+      onClick={() => {
+        setDisabled(!disabled);
+        if (onChange) {
+          if (!disabled) {
+            setLastValue(value);
+            onChange(null);
+            setValid(true);
+          } else {
+            onChange(lastValue ?? null);
+            if (onValidate) {
+              setValid(onValidate(lastValue ?? null));
+            }
+            setLastValue(null);
+          }
+        }
+      }}
+    />
+  );
+
   return (
-    <div className={styles.root}>
-      <input
-        disabled={disabled}
-        className={styles.input}
+    <Field
+      className={css`
+        margin: 0;
+      `}
+      invalid={!valid}
+      disabled={disabled}
+    >
+      <Input
+        className={styles.root}
         onChange={(e) => {
           if (onValidate) {
-            setValid(onValidate(e.target.value));
+            const res = onValidate(e.currentTarget.value);
+            setValid(res);
           }
           if (onChange) {
-            setLastValue(e.target.value);
-            onChange(e.target.value);
+            onChange(e.currentTarget.value);
           }
         }}
         value={disabled ? 'null' : value ?? ''}
+        suffix={suffixEl}
       />
-      <div
-        className={styles.button}
-        onClick={() => {
-          setDisabled(!disabled);
-          if (onChange) {
-            if (!disabled) {
-              onChange(null);
-              setValid(true);
-            } else {
-              onChange(lastValue ?? null);
-              if (onValidate) {
-                setValid(onValidate(lastValue ?? null));
-              }
-            }
-          }
-        }}
-      >
-        <Icon name={disabled ? 'eye-slash' : 'eye'} />
-      </div>
-    </div>
+    </Field>
   );
 };
