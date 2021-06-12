@@ -1,16 +1,15 @@
 import {
+  ArrayVector,
+  DataFrame,
   DataQueryRequest,
   DataQueryResponse,
   DataSourceApi,
   DataSourceInstanceSettings,
-  toDataFrame,
-  DataFrame,
   FieldType,
-  ArrayVector,
+  toDataFrame,
 } from '@grafana/data';
-
 import { getTemplateSrv } from '@grafana/runtime';
-import { StaticQuery, StaticDataSourceOptions } from './types';
+import { StaticDataSourceOptions, StaticQuery } from './types';
 
 // DataSource returns the data frame returned in the query model.
 export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptions> {

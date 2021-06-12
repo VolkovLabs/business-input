@@ -1,5 +1,5 @@
-import { FieldType, DataFrameDTO, toDataFrameDTO, MutableDataFrame } from '@grafana/data';
-import { NullableString, DataFrameViewModel } from '../types';
+import { DataFrameDTO, FieldType, MutableDataFrame, toDataFrameDTO } from '@grafana/data';
+import { DataFrameViewModel, NullableString } from '../types';
 
 // toFieldValue parses nullable strings into the given type.
 export const toFieldValue = (

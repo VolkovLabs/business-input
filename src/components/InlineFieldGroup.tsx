@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
 import { Icon, useTheme } from '@grafana/ui';
 import { css } from 'emotion';
+import React, { useState } from 'react';
 
 export interface InlineFieldGroupProps {
   label: string;

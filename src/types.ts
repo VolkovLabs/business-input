@@ -1,4 +1,4 @@
-import { DataQuery, DataSourceJsonData, DataFrameDTO, FieldType, PreferredVisualisationType } from '@grafana/data';
+import { DataFrameDTO, DataQuery, DataSourceJsonData, FieldType, PreferredVisualisationType } from '@grafana/data';
 
 export type NullableString = string | null;
 

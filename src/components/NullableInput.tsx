@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
 import { Field, Icon, Input, useTheme } from '@grafana/ui';
-import { NullableString } from '../types';
 import { css } from 'emotion';
+import React, { useState } from 'react';
+import { NullableString } from '../types';
 
 export interface NullableInputProps {
   value: NullableString;

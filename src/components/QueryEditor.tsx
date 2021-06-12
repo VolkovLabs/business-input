@@ -1,17 +1,14 @@
-import React, { useState, useReducer } from 'react';
-import { QueryEditorProps, FieldType, PreferredVisualisationType } from '@grafana/data';
-import { InlineFieldRow, InlineField, Select, Input } from '@grafana/ui';
-
-import { DataSource } from '../datasource';
-import { InlineFieldGroup } from './InlineFieldGroup';
-import { FieldsEditor } from './FieldsEditor';
-import { ValuesEditor } from './ValuesEditor';
-
-import { frameReducer } from './reducer';
-import { toDataFrame, toFieldValue, toViewModel } from './helpers';
-import { StaticDataSourceOptions, StaticQuery, DataFrameViewModel } from '../types';
-
 import {} from '@emotion/core';
+import { FieldType, PreferredVisualisationType, QueryEditorProps } from '@grafana/data';
+import { InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
+import React, { useReducer, useState } from 'react';
+import { DataSource } from '../datasource';
+import { DataFrameViewModel, StaticDataSourceOptions, StaticQuery } from '../types';
+import { FieldsEditor } from './FieldsEditor';
+import { toDataFrame, toFieldValue, toViewModel } from './helpers';
+import { InlineFieldGroup } from './InlineFieldGroup';
+import { frameReducer } from './reducer';
+import { ValuesEditor } from './ValuesEditor';
 
 const allPreferredVisualizationTypes: PreferredVisualisationType[] = ['graph', 'table', 'logs', 'trace', 'nodeGraph'];
 

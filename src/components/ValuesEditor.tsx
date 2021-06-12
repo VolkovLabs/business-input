@@ -1,6 +1,6 @@
-import React, { Dispatch } from 'react';
-import { css, cx } from 'emotion';
 import { Icon, InlineFieldRow } from '@grafana/ui';
+import { css, cx } from 'emotion';
+import React, { Dispatch } from 'react';
 import { DataFrameViewModel, NullableString } from '../types';
 import { NullableInput } from './NullableInput';
 import { Action } from './reducer';

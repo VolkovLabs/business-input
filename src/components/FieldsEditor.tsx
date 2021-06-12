@@ -1,8 +1,8 @@
-import React, { Dispatch } from 'react';
-import { css, cx } from 'emotion';
-import { Icon, InlineFieldRow, InlineField, Select, Input } from '@grafana/ui';
-import { DataFrameViewModel } from '../types';
 import { FieldType } from '@grafana/data';
+import { Icon, InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
+import { css, cx } from 'emotion';
+import React, { Dispatch } from 'react';
+import { DataFrameViewModel } from '../types';
 import { Action } from './reducer';
 
 const allFieldTypes = [

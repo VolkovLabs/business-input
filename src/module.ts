@@ -1,7 +1,7 @@
 import { DataSourcePlugin } from '@grafana/data';
-import { DataSource } from './datasource';
 import { QueryEditor } from './components/QueryEditor';
-import { StaticQuery, StaticDataSourceOptions } from './types';
+import { DataSource } from './datasource';
+import { StaticDataSourceOptions, StaticQuery } from './types';
 
 export const plugin = new DataSourcePlugin<DataSource, StaticQuery, StaticDataSourceOptions>(DataSource).setQueryEditor(
   QueryEditor
