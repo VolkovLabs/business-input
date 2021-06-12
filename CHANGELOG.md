@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.4.1 (2021-06-12)
+
+[Full changelog](https://github.com/marcusolsson/grafana-static-datasource/compare/v1.4.0...v1.4.1)
+
+### Enhancements
+
+- Minor docs and metadata updates
+- Changed from useState to useReducer for manipulating form model
+- Replace custom input component with Input from @grafana/ui
+
 ## 1.4.0 (2021-06-10)
 
 [Full changelog](https://github.com/marcusolsson/grafana-static-datasource/compare/v1.3.1...v1.4.0)
