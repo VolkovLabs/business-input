@@ -22,11 +22,13 @@
     "url": "https://marcus.se.net"
   },
   "devDependencies": {
-    "@grafana/data": "7.5.7",
-    "@grafana/runtime": "7.5.7",
-    "@grafana/toolkit": "7.5.7",
-    "@grafana/ui": "7.5.7",
-    "@types/lodash": "^4.14.168"
+    "@types/lodash": "^4.14.168",
+    "@grafana/data": "8.0.1",
+    "@grafana/runtime": "8.0.1",
+    "@grafana/toolkit": "8.0.1",
+    "@grafana/ui": "8.0.1",
+    "@emotion/core": "10.0.27",
+    "emotion": "10.0.27"
   },
   "engines": {
     "node": ">=14"
