@@ -1,6 +1,6 @@
 {
   "name": "marcusolsson-static-datasource",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "A data source plugin for Grafana for static data",
   "keywords": [
     "grafana"

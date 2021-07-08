@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.4.2 (2021-07-08)
+
+[Full changelog](https://github.com/marcusolsson/grafana-static-datasource/compare/v1.4.1...v1.4.2)
+
+### Enhancements
+
+- Update metadata, docs, and dependencies
+
+### Bug fixes
+
+- Frame changes aren't being synced correctly
+
 ## 1.4.1 (2021-06-12)
 
 [Full changelog](https://github.com/marcusolsson/grafana-static-datasource/compare/v1.4.0...v1.4.1)
