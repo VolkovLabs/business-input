@@ -7,7 +7,7 @@ import { DataFrameViewModel, StaticDataSourceOptions, StaticQuery } from '../typ
 import { FieldsEditor } from './FieldsEditor';
 import { toDataFrame, toFieldValue, toViewModel } from './helpers';
 import { InlineFieldGroup } from './InlineFieldGroup';
-import { frameReducer, onChangeReducer } from './reducer';
+import { frameReducer, useChangeReducer as useOnChangeReducer } from './reducer';
 import { ValuesEditor } from './ValuesEditor';
 
 const allPreferredVisualizationTypes: PreferredVisualisationType[] = ['graph', 'table', 'logs', 'trace', 'nodeGraph'];
@@ -21,10 +21,10 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
       onChange({ ...query, frame: toDataFrame(frame) });
       onRunQuery();
     },
-    [onChange, onRunQuery]
+    [query, onChange, onRunQuery]
   );
 
-  const reducer = onChangeReducer(frameReducer, onFrameChange);
+  const reducer = useOnChangeReducer(frameReducer, onFrameChange);
 
   // Load existing data frame, or create a new one.
   const [frame, dispatch] = useReducer(reducer, toViewModel(query.frame ?? { fields: [] }));

@@ -18,7 +18,7 @@ type DataFrameReducer = React.Reducer<DataFrameViewModel, Action>;
 
 // onChangeReducer decorates the reducer with a side effect to update the query
 // model.
-export const onChangeReducer = (
+export const useChangeReducer = (
   reducer: DataFrameReducer,
   onChange: (frame: DataFrameViewModel) => void
 ): DataFrameReducer => {
