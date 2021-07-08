@@ -1,4 +1,5 @@
 import { FieldType, PreferredVisualisationType } from '@grafana/data';
+import { useCallback } from 'react';
 import { DataFrameViewModel, NullableString } from '../types';
 
 export type Action =
@@ -13,7 +14,25 @@ export type Action =
   | { type: 'duplicate-row'; index: number }
   | { type: 'edit-cell'; rowIndex: number; fieldIndex: number; value: NullableString };
 
-export const frameReducer = (frame: DataFrameViewModel, action: Action): DataFrameViewModel => {
+type DataFrameReducer = React.Reducer<DataFrameViewModel, Action>;
+
+// onChangeReducer decorates the reducer with a side effect to update the query
+// model.
+export const onChangeReducer = (
+  reducer: DataFrameReducer,
+  onChange: (frame: DataFrameViewModel) => void
+): DataFrameReducer => {
+  return useCallback(
+    (frame: DataFrameViewModel, action: Action) => {
+      const res = reducer(frame, action);
+      onChange(res);
+      return res;
+    },
+    [reducer, onChange]
+  );
+};
+
+export const frameReducer: DataFrameReducer = (frame: DataFrameViewModel, action: Action): DataFrameViewModel => {
   switch (action.type) {
     case 'rename':
       return { ...frame, name: action.name };

@@ -16,26 +16,21 @@ const allFieldTypes = [
 
 interface Props {
   frame: DataFrameViewModel;
-  onChange: (frame: DataFrameViewModel) => void;
   dispatch: Dispatch<Action>;
 }
 
-export const FieldsEditor = ({ frame, onChange, dispatch }: Props) => {
+export const FieldsEditor = ({ frame, dispatch }: Props) => {
   const addField = (index: number) => {
     dispatch({ type: 'insert-field', index });
-    onChange(frame);
   };
   const removeField = (index: number) => {
     dispatch({ type: 'remove-field', index });
-    onChange(frame);
   };
   const renameField = (name: string, index: number) => {
     dispatch({ type: 'rename-field', name, index });
-    onChange(frame);
   };
   const changeFieldType = (fieldType: FieldType, index: number) => {
     dispatch({ type: 'set-field-type', fieldType, index });
-    onChange(frame);
   };
 
   return (

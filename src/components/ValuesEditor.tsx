@@ -7,7 +7,6 @@ import { Action } from './reducer';
 
 interface Props {
   frame: DataFrameViewModel;
-  onChange: (frame: DataFrameViewModel) => void;
   onValidate: (value: NullableString, j: number) => boolean;
   dispatch: Dispatch<Action>;
 }
@@ -16,22 +15,18 @@ interface Props {
  * ValuesEditor is a grid of text inputs, much like a spreadsheet. Each text
  * input can be toggled to be null.
  */
-export const ValuesEditor = ({ frame, onChange, dispatch, onValidate }: Props) => {
+export const ValuesEditor = ({ frame, dispatch, onValidate }: Props) => {
   const addRow = (index: number) => {
     dispatch({ type: 'insert-row', index });
-    onChange(frame);
   };
   const removeRow = (index: number) => {
     dispatch({ type: 'remove-row', index });
-    onChange(frame);
   };
   const duplicateRow = (index: number) => {
     dispatch({ type: 'duplicate-row', index });
-    onChange(frame);
   };
   const editCell = (value: NullableString, rowIndex: number, fieldIndex: number) => {
     dispatch({ type: 'edit-cell', rowIndex, fieldIndex, value });
-    onChange(frame);
   };
 
   return (

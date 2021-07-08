@@ -1,13 +1,13 @@
 import {} from '@emotion/core';
-import { FieldType, PreferredVisualisationType, QueryEditorProps } from '@grafana/data';
+import { PreferredVisualisationType, QueryEditorProps } from '@grafana/data';
 import { InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
-import React, { useReducer, useState } from 'react';
+import React, { useCallback, useReducer } from 'react';
 import { DataSource } from '../datasource';
 import { DataFrameViewModel, StaticDataSourceOptions, StaticQuery } from '../types';
 import { FieldsEditor } from './FieldsEditor';
 import { toDataFrame, toFieldValue, toViewModel } from './helpers';
 import { InlineFieldGroup } from './InlineFieldGroup';
-import { frameReducer } from './reducer';
+import { frameReducer, onChangeReducer } from './reducer';
 import { ValuesEditor } from './ValuesEditor';
 
 const allPreferredVisualizationTypes: PreferredVisualisationType[] = ['graph', 'table', 'logs', 'trace', 'nodeGraph'];
@@ -15,26 +15,28 @@ const allPreferredVisualizationTypes: PreferredVisualisationType[] = ['graph', '
 type Props = QueryEditorProps<DataSource, StaticQuery, StaticDataSourceOptions>;
 
 export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) => {
+  const onFrameChange = useCallback(
+    (frame: DataFrameViewModel) => {
+      // Extract frame schema for validation.
+      onChange({ ...query, frame: toDataFrame(frame) });
+      onRunQuery();
+    },
+    [onChange, onRunQuery]
+  );
+
+  const reducer = onChangeReducer(frameReducer, onFrameChange);
+
   // Load existing data frame, or create a new one.
-  const [frame, dispatch] = useReducer(frameReducer, toViewModel(query.frame ?? { fields: [] }));
-  const [schema, setSchema] = useState<FieldType[]>([]);
+  const [frame, dispatch] = useReducer(reducer, toViewModel(query.frame ?? { fields: [] }));
 
-  // Call this whenever you modify the view model object.
-  const onFrameChange = (frame: DataFrameViewModel) => {
-    // Extract frame schema for validation.
-    setSchema(frame.fields.map((f) => f.type));
-
-    onChange({ ...query, frame: toDataFrame(frame) });
-    onRunQuery();
-  };
   const renameFrame = (name: string) => {
     dispatch({ type: 'rename', name });
-    onFrameChange(frame);
   };
   const setPreferredVisualizationType = (preferredVisualisationType?: PreferredVisualisationType) => {
     dispatch({ type: 'set-preferred-visualisation-type', preferredVisualisationType });
-    onFrameChange(frame);
   };
+
+  const schema = frame.fields.map((f) => f.type);
 
   return (
     <>
@@ -70,14 +72,13 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
 
       {/* Field configuration */}
       <InlineFieldGroup label="Fields">
-        <FieldsEditor frame={frame} onChange={onFrameChange} dispatch={dispatch} />
+        <FieldsEditor frame={frame} dispatch={dispatch} />
       </InlineFieldGroup>
 
       {/* Value configuration */}
       <InlineFieldGroup label="Values">
         <ValuesEditor
           frame={frame}
-          onChange={onFrameChange}
           onValidate={(value, j) => {
             return toFieldValue(value, schema[j]).ok;
           }}
