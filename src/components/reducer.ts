@@ -32,56 +32,51 @@ export const useChangeReducer = (
   );
 };
 
-export const frameReducer: DataFrameReducer = (frame: DataFrameViewModel, action: Action): DataFrameViewModel => {
+export const frameReducer: DataFrameReducer = (state: DataFrameViewModel, action: Action): DataFrameViewModel => {
+  const frame = { ...state };
+
   switch (action.type) {
     case 'rename':
-      return { ...frame, name: action.name };
+      return { ...state, name: action.name };
     case 'set-preferred-visualisation-type':
-      return { ...frame, meta: { ...frame.meta, preferredVisualisationType: action.preferredVisualisationType } };
+      return { ...state, meta: { ...state.meta, preferredVisualisationType: action.preferredVisualisationType } };
     case 'insert-field':
-      const frameInserted = { ...frame };
-
       // Insert a field after the current position.
-      frameInserted.fields.splice(action.index + 1, 0, {
+      frame.fields.splice(action.index + 1, 0, {
         name: '',
         type: FieldType.string,
       });
 
       // Rebuild rows with the added field.
-      frameInserted.rows.forEach((row) => {
+      frame.rows.forEach((row) => {
         row.splice(action.index + 1, 0, '');
       });
 
-      return frameInserted;
+      return frame;
     case 'remove-field':
-      const frameRemoved = { ...frame };
-
       // Remove the field at given position.
-      frameRemoved.fields.splice(action.index, 1);
+      frame.fields.splice(action.index, 1);
 
       // Rebuild rows without the removed field.
-      frameRemoved.rows.forEach((row) => {
+      frame.rows.forEach((row) => {
         row.splice(action.index, 1);
       });
 
       // Remove all rows if there are no fields.
-      if (frameRemoved.fields.length === 0) {
-        frameRemoved.rows = [];
+      if (frame.fields.length === 0) {
+        frame.rows = [];
       }
 
-      return frameRemoved;
+      return frame;
     case 'rename-field':
-      const frameRenamed = { ...frame };
-      frameRenamed.fields[action.index].name = action.name;
-      return frameRenamed;
+      frame.fields[action.index].name = action.name;
+      return frame;
     case 'set-field-type':
-      const frame1 = { ...frame };
-      frame1.fields[action.index].type = action.fieldType;
-      return frame1;
+      frame.fields[action.index].type = action.fieldType;
+      return frame;
     case 'insert-row':
-      const frame2 = { ...frame };
-      const emptyRow: NullableString[] = Array.from({ length: frame2.fields.length }).map((_, i) => {
-        switch (frame2.fields[i].type) {
+      const emptyRow: NullableString[] = Array.from({ length: frame.fields.length }).map((_, i) => {
+        switch (frame.fields[i].type) {
           case 'number':
             return '0';
           case 'time':
@@ -91,19 +86,16 @@ export const frameReducer: DataFrameReducer = (frame: DataFrameViewModel, action
         }
         return '';
       });
-      frame2.rows.splice(action.index + 1, 0, emptyRow);
-      return frame2;
+      frame.rows.splice(action.index + 1, 0, emptyRow);
+      return frame;
     case 'remove-row':
-      const frame3 = { ...frame };
-      frame3.rows.splice(action.index, 1);
-      return frame3;
+      frame.rows.splice(action.index, 1);
+      return frame;
     case 'duplicate-row':
-      const frame4 = { ...frame };
-      frame4.rows.splice(action.index + 1, 0, JSON.parse(JSON.stringify(frame4.rows[action.index])));
-      return frame4;
+      frame.rows.splice(action.index + 1, 0, JSON.parse(JSON.stringify(frame.rows[action.index])));
+      return frame;
     case 'edit-cell':
-      const frame5 = { ...frame };
-      frame5.rows[action.rowIndex][action.fieldIndex] = action.value;
-      return frame5;
+      frame.rows[action.rowIndex][action.fieldIndex] = action.value;
+      return frame;
   }
 };
