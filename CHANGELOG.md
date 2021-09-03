@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.4.3 (2021-09-03)
+
+[Full changelog](https://github.com/marcusolsson/grafana-static-datasource/compare/v1.4.2...v1.4.3)
+
+### Enhancements
+
+- Update dependencies
+
+### Bug fixes
+
+- Fix an issue where an fields and rows are added twice in development
+
 ## 1.4.2 (2021-07-08)
 
 [Full changelog](https://github.com/marcusolsson/grafana-static-datasource/compare/v1.4.1...v1.4.2)

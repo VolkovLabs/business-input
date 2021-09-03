@@ -1,6 +1,6 @@
 {
   "name": "marcusolsson-static-datasource",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "A data source plugin for Grafana for static data",
   "keywords": [
     "grafana"
@@ -23,10 +23,10 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.168",
-    "@grafana/data": "8.0.1",
-    "@grafana/runtime": "8.0.1",
-    "@grafana/toolkit": "8.0.1",
-    "@grafana/ui": "8.0.1",
+    "@grafana/data": "8.0.6",
+    "@grafana/runtime": "8.0.6",
+    "@grafana/toolkit": "8.0.6",
+    "@grafana/ui": "8.0.6",
     "@emotion/core": "10.0.27",
     "emotion": "10.0.27"
   },

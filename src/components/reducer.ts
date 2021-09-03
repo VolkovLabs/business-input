@@ -32,8 +32,17 @@ export const useChangeReducer = (
   );
 };
 
+const cloneDataFrameViewModel = (frame: DataFrameViewModel): DataFrameViewModel => {
+  return {
+    name: frame.name,
+    meta: frame.meta,
+    fields: Object.assign([], frame.fields),
+    rows: frame.rows.map((v) => Object.assign([], v)),
+  };
+};
+
 export const frameReducer: DataFrameReducer = (state: DataFrameViewModel, action: Action): DataFrameViewModel => {
-  const frame = { ...state };
+  const frame = cloneDataFrameViewModel(state);
 
   switch (action.type) {
     case 'rename':
