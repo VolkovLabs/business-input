@@ -13,3 +13,9 @@ A data source plugin for [Grafana](https://grafana.com) for static data.
 - Build custom query responses for testing or developing panel plugins
 
 ![Screenshot](https://github.com/marcusolsson/grafana-static-datasource/raw/main/src/img/dark.png)
+
+## Maintenance
+
+I maintain [several plugins](https://marcus.se.net/projects/) for Grafana. While my employer allows me to spend some time on developing plugins, most of the work happens on evenings and weekends. At the moment, I'm prioritizing fixing bugs and reviewing PRs over introducing new features.
+
+If you'd still like to propose a new feature, [create a new Discussion](https://github.com/marcusolsson/grafana-static-datasource/discussions/new?category=ideas). While I likely won't be able to work on features myself, I'd be happy to accept pull requests. If you'd like to contribute a feature, please let me know before you start working on it.
