@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.4 (2022-08-28)
+
+[Full changelog](https://github.com/marcusolsson/grafana-static-datasource/compare/v1.4.3...v1.4.4)
+
+Update to Grafana 9.
+
 ## 1.4.3 (2021-09-03)
 
 [Full changelog](https://github.com/marcusolsson/grafana-static-datasource/compare/v1.4.2...v1.4.3)
