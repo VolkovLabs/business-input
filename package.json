@@ -1,26 +1,7 @@
 {
-  "name": "marcusolsson-static-datasource",
-  "version": "1.4.4",
-  "description": "A data source plugin for Grafana for static data",
-  "keywords": [
-    "grafana"
-  ],
-  "license": "Apache-2.0",
-  "scripts": {
-    "build": "grafana-toolkit plugin:build",
-    "test": "grafana-toolkit plugin:test",
-    "dev": "grafana-toolkit plugin:dev",
-    "watch": "grafana-toolkit plugin:dev --watch",
-    "sign": "grafana-toolkit plugin:sign"
-  },
-  "homepage": "https://grafana.com/plugins/marcusolsson-static-datasource",
+  "author": "Volkov Labs",
   "bugs": "https://github.com/marcusolsson/grafana-static-datasource/issues",
-  "repository": "github:marcusolsson/grafana-static-datasource",
-  "author": {
-    "name": "Marcus Olsson",
-    "email": "marcus.olsson@hey.com",
-    "url": "https://marcus.se.net"
-  },
+  "description": "A data source plugin for Grafana for static data",
   "devDependencies": {
     "@emotion/core": "10.0.27",
     "@grafana/data": "9.0.1",
@@ -31,6 +12,21 @@
     "emotion": "10.0.27"
   },
   "engines": {
-    "node": ">=14"
-  }
+    "node": ">=16"
+  },
+  "license": "Apache-2.0",
+  "name": "marcusolsson-static-datasource",
+  "repository": "github:volkovlabs/volkovlabs-static-datasource",
+  "scripts": {
+    "build": "grafana-toolkit plugin:build --coverage",
+    "dev": "grafana-toolkit plugin:dev",
+    "format": "prettier --write \"**\"",
+    "sign": "grafana-toolkit plugin:sign",
+    "start": "docker-compose pull && docker-compose up",
+    "stop": "docker-compose down",
+    "test": "grafana-toolkit plugin:test",
+    "upgrade": "yarn upgrade --latest",
+    "watch": "grafana-toolkit plugin:dev --watch"
+  },
+  "version": "2.0.0"
 }

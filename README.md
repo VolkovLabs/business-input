@@ -1,18 +1,39 @@
 # Static data source for Grafana
 
-[![Build](https://github.com/marcusolsson/grafana-static-datasource/workflows/CI/badge.svg)](https://github.com/marcusolsson/grafana-static-datasource/actions?query=workflow%3A%22CI%22)
-[![Release](https://github.com/marcusolsson/grafana-static-datasource/workflows/Release/badge.svg)](https://github.com/marcusolsson/grafana-static-datasource/actions?query=workflow%3ARelease)
-[![Marketplace](https://img.shields.io/badge/dynamic/json?logo=grafana&color=F47A20&label=marketplace&prefix=v&query=%24.items%5B%3F%28%40.slug%20%3D%3D%20%22marcusolsson-static-datasource%22%29%5D.version&url=https%3A%2F%2Fgrafana.com%2Fapi%2Fplugins)](https://grafana.com/grafana/plugins/marcusolsson-static-datasource)
-[![Downloads](https://img.shields.io/badge/dynamic/json?logo=grafana&color=F47A20&label=downloads&query=%24.items%5B%3F%28%40.slug%20%3D%3D%20%22marcusolsson-static-datasource%22%29%5D.downloads&url=https%3A%2F%2Fgrafana.com%2Fapi%2Fplugins)](https://grafana.com/grafana/plugins/marcusolsson-static-datasource)
-[![License](https://img.shields.io/github/license/marcusolsson/grafana-static-datasource)](LICENSE)
-[![Twitter](https://img.shields.io/twitter/follow/marcusolsson?color=%231DA1F2&label=twitter&style=plastic)](https://twitter.com/marcusolsson)
-![Maintenance](https://img.shields.io/maintenance/no/2022?style=plastic)
+![Screenshot](https://github.com/volkovlabs/volkovlabs-static-datasource/raw/main/src/img/dark.png)
 
-> **Maintenance**: As I'm no longer working at Grafana Labs, nor am I using Grafana where I'm at now, **I'm no longer able to actively maintain this plugin**. I'm exploring ways to keep the project going. Check back here to stay updated!
+[![Grafana 9](https://img.shields.io/badge/Grafana-9.0.1-orange)](https://www.grafana.com)
+![CI](https://github.com/volkovlabs/volkovlabs-static-datasource/workflows/CI/badge.svg)
+[![codecov](https://codecov.io/gh/VolkovLabs/volkovlabs-static-datasource/branch/main/graph/badge.svg?token=0m6f0ktUar)](https://codecov.io/gh/VolkovLabs/volkovlabs-static-datasource)
 
-A data source plugin for [Grafana](https://grafana.com) for static data.
+## Introduction
 
-- Create static visualizations that don't depend on a specific data source
-- Build custom query responses for testing or developing panel plugins
+A data source plugin for Grafana for static data.
 
-![Screenshot](https://github.com/marcusolsson/grafana-static-datasource/raw/main/src/img/dark.png)
+### Requirements
+
+- Grafana 7.3+ is required for version 1.X.
+
+## Getting Started
+
+The Static Data Source can be installed from the Grafana Catalog or use the `grafana-cli` tool to install from the command line:
+
+```bash
+grafana-cli plugins install marcusolsson-static-datasource
+```
+
+## Features
+
+- Create static visualizations that don't depend on a specific data source.
+- Build custom query responses for testing or developing panel plugins.
+
+## Feedback
+
+We love to hear from users, developers, and the whole community interested in this plugin. These are various ways to get in touch with us:
+
+- Ask a question, request a new feature, and file a bug with [GitHub issues](https://github.com/volkovlabs/volkovlabs-static-datasource/issues/new/choose).
+- Star the repository to show your support.
+
+## License
+
+- Apache License Version 2.0, see [LICENSE](https://github.com/volkovlabs/volkovlabs-static-datasource/blob/main/LICENSE).
