@@ -1,16 +1,21 @@
 # Changelog
 
+## 2.0.0 (IN PROGRESS)
+
+### Features / Enhancements
+
+- Maintained by Volkov Labs ()
+- Updated based on Volkov Labs Panel Template ()
+
 ## 1.4.4 (2022-08-28)
 
-[Full changelog](https://github.com/marcusolsson/grafana-static-datasource/compare/v1.4.3...v1.4.4)
+### Features / Enhancements
 
-Update to Grafana 9.
+- Update to Grafana 9.
 
 ## 1.4.3 (2021-09-03)
 
-[Full changelog](https://github.com/marcusolsson/grafana-static-datasource/compare/v1.4.2...v1.4.3)
-
-### Enhancements
+### Features / Enhancements
 
 - Update dependencies
 
@@ -20,9 +25,7 @@ Update to Grafana 9.
 
 ## 1.4.2 (2021-07-08)
 
-[Full changelog](https://github.com/marcusolsson/grafana-static-datasource/compare/v1.4.1...v1.4.2)
-
-### Enhancements
+### Features / Enhancements
 
 - Update metadata, docs, and dependencies
 
@@ -32,9 +35,7 @@ Update to Grafana 9.
 
 ## 1.4.1 (2021-06-12)
 
-[Full changelog](https://github.com/marcusolsson/grafana-static-datasource/compare/v1.4.0...v1.4.1)
-
-### Enhancements
+### Features / Enhancements
 
 - Minor docs and metadata updates
 - Changed from useState to useReducer for manipulating form model
@@ -42,9 +43,7 @@ Update to Grafana 9.
 
 ## 1.4.0 (2021-06-10)
 
-[Full changelog](https://github.com/marcusolsson/grafana-static-datasource/compare/v1.3.1...v1.4.0)
-
-### Enhancements
+### Features / Enhancements
 
 - Add support for annotations
 - Add button for duplicating value rows
@@ -52,25 +51,19 @@ Update to Grafana 9.
 
 ## 1.3.1 (2021-01-29)
 
-[Full changelog](https://github.com/marcusolsson/grafana-static-datasource/compare/v1.3.0...v1.3.1)
-
 ### Bug fixes
 
 - Set reference id on data frames
 
 ## 1.3.0 (2021-01-29)
 
-[Full changelog](https://github.com/marcusolsson/grafana-static-datasource/compare/v1.2.1...v1.3.0)
-
-### Enhancements
+### Features / Enhancements
 
 - Update to new form styles. Bumps the minimum required Grafana version to 7.3.
 
 ## 1.2.1 (2020-11-27)
 
-[Full changelog](https://github.com/marcusolsson/grafana-static-datasource/compare/v1.2.0...v1.2.1)
-
-### Enhancements
+### Features / Enhancements
 
 - Updated `@grafana` dependencies from `^7.0.0` to `^7.3.0`
 - Improved release process using the new [GitHub workflows](https://github.com/grafana/plugin-workflows) for Grafana plugins
