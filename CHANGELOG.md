@@ -6,6 +6,7 @@
 
 - Maintained by Volkov Labs (#19)
 - Updated based on Volkov Labs Panel Template (#19)
+- Update CI to Node 16 and Synchronize with Release workflow (#20)
 
 ## 1.4.4 (2022-08-28)
 
