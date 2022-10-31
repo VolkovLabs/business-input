@@ -1,42 +1,47 @@
 {
   "$schema": "https://github.com/grafana/grafana/raw/main/docs/sources/developers/plugins/plugin.schema.json",
-  "type": "datasource",
-  "name": "Static",
-  "id": "marcusolsson-static-datasource",
-  "metrics": true,
-  "logs": true,
   "annotations": true,
+  "dependencies": {
+    "grafanaDependency": ">=8.5.0",
+    "plugins": []
+  },
+  "id": "marcusolsson-static-datasource",
   "info": {
-    "description": "A data source plugin for Grafana for static data.",
     "author": {
-      "name": "Marcus Olsson",
-      "url": "https://marcus.se.net"
+      "name": "Volkov Labs",
+      "url": "https://volkovlabs.io"
     },
+    "description": "Static Data Source for Grafana",
     "keywords": ["static", "test", "development", "mock"],
-    "logos": {
-      "small": "img/logo.svg",
-      "large": "img/logo.svg"
-    },
     "links": [
       {
-        "name": "Website",
-        "url": "https://github.com/marcusolsson/grafana-static-datasource"
+        "name": "GitHub",
+        "url": "https://github.com/volkovlabs/volkovlabs-static-datasource"
       },
       {
-        "name": "License",
-        "url": "https://github.com/marcusolsson/grafana-static-datasource/blob/main/LICENSE"
+        "name": "Website",
+        "url": "https://volkovlabs.io"
       }
     ],
+    "logos": {
+      "large": "img/logo.svg",
+      "small": "img/logo.svg"
+    },
     "screenshots": [
-      { "name": "Explore (Dark)", "path": "img/dark.png" },
-      { "name": "Explore (Light)", "path": "img/light.png" }
+      {
+        "name": "Explore (Dark)",
+        "path": "img/dark.png"
+      },
+      {
+        "name": "Explore (Light)",
+        "path": "img/light.png"
+      }
     ],
-    "version": "%VERSION%",
-    "updated": "%TODAY%"
+    "updated": "%TODAY%",
+    "version": "%VERSION%"
   },
-  "dependencies": {
-    "grafanaDependency": ">=7.3.0",
-    "grafanaVersion": "7.3.0",
-    "plugins": []
-  }
+  "logs": true,
+  "metrics": true,
+  "name": "Static",
+  "type": "datasource"
 }

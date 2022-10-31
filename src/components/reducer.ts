@@ -1,5 +1,5 @@
-import { FieldType, PreferredVisualisationType } from '@grafana/data';
 import { useCallback } from 'react';
+import { FieldType, PreferredVisualisationType } from '@grafana/data';
 import { DataFrameViewModel, NullableString } from '../types';
 
 export type Action =

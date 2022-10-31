@@ -1,7 +1,6 @@
-import {} from '@emotion/core';
+import React, { useCallback, useReducer } from 'react';
 import { PreferredVisualisationType, QueryEditorProps } from '@grafana/data';
 import { InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
-import React, { useCallback, useReducer } from 'react';
 import { DataSource } from '../datasource';
 import { DataFrameViewModel, StaticDataSourceOptions, StaticQuery } from '../types';
 import { FieldsEditor } from './FieldsEditor';

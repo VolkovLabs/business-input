@@ -11,7 +11,9 @@ import {
 import { getTemplateSrv } from '@grafana/runtime';
 import { StaticDataSourceOptions, StaticQuery } from './types';
 
-// DataSource returns the data frame returned in the query model.
+/**
+ * DataSource returns the data frame returned in the query model.
+ */
 export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptions> {
   constructor(instanceSettings: DataSourceInstanceSettings<StaticDataSourceOptions>) {
     super(instanceSettings);
