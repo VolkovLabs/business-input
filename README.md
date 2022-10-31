@@ -28,6 +28,23 @@ grafana-cli plugins install marcusolsson-static-datasource
 - Create static visualizations that don't depend on a specific data source.
 - Build custom query responses for testing or developing panel plugins.
 
+## Provisioning
+
+Grafana supports managing data sources by adding one or more YAML config files in the `provisioning/datasources` folder.
+
+Example of provisioning the Static Data Source.
+
+```yaml
+datasources:
+  - name: Static
+    type: marcusolsson-static-datasource
+    access: proxy
+    isDefault: true
+    orgId: 1
+    version: 1
+    editable: true
+```
+
 ## Feedback
 
 We love to hear from users, developers, and the whole community interested in this plugin. These are various ways to get in touch with us:
