@@ -8,15 +8,16 @@
 
 ## Introduction
 
-A data source plugin for Grafana for static data.
+The Static Data Source is a plugin for Grafana that allows to emulate your data to test and develop panels.
 
 ### Requirements
 
-- Grafana 7.3+ is required for version 1.X.
+- **Grafana 8.5+**, **Grafana 9.0+** is required for version 2.X.
+- **Grafana 7.3+** is required for version 1.X.
 
 ## Getting Started
 
-The Static Data Source can be installed from the Grafana Catalog or use the `grafana-cli` tool to install from the command line:
+The Static Data Source can be installed from the [Grafana Catalog](https://grafana.com/grafana/plugins/marcusolsson-static-datasource/) or use the `grafana-cli` tool to install from the command line:
 
 ```bash
 grafana-cli plugins install marcusolsson-static-datasource
@@ -32,6 +33,7 @@ grafana-cli plugins install marcusolsson-static-datasource
 We love to hear from users, developers, and the whole community interested in this plugin. These are various ways to get in touch with us:
 
 - Ask a question, request a new feature, and file a bug with [GitHub issues](https://github.com/volkovlabs/volkovlabs-static-datasource/issues/new/choose).
+- Sponsor our open-source plugins for Grafana with [GitHub Sponsor](https://github.com/sponsors/VolkovLabs).
 - Star the repository to show your support.
 
 ## License
