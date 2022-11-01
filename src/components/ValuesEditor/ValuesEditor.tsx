@@ -1,6 +1,7 @@
 import React, { Dispatch } from 'react';
-import { css, cx } from '@emotion/css';
-import { Icon, InlineFieldRow } from '@grafana/ui';
+import { cx } from '@emotion/css';
+import { Icon, InlineFieldRow, useTheme2 } from '@grafana/ui';
+import { getStyles } from '../../styles';
 import { DataFrameViewModel, NullableString } from '../../types';
 import { Action } from '../FrameReducer';
 import { NullableInput } from '../NullableInput';
@@ -15,99 +16,97 @@ interface Props {
 }
 
 /**
- * ValuesEditor is a grid of text inputs, much like a spreadsheet. Each text
- * input can be toggled to be null.
+ * ValuesEditor is a grid of text inputs, much like a spreadsheet.
+ * Each text input can be toggled to be null.
  */
 export const ValuesEditor = ({ frame, dispatch, onValidate }: Props) => {
+  /**
+   * Styles and Theme
+   */
+  const theme = useTheme2();
+  const styles = getStyles(theme);
+
+  /**
+   * Add Row
+   */
   const addRow = (index: number) => {
     dispatch({ type: 'insert-row', index });
   };
 
+  /**
+   * Remove Row
+   */
   const removeRow = (index: number) => {
     dispatch({ type: 'remove-row', index });
   };
 
+  /**
+   * Duplicate Row
+   */
   const duplicateRow = (index: number) => {
     dispatch({ type: 'duplicate-row', index });
   };
 
+  /**
+   * Edit Cell
+   */
   const editCell = (value: NullableString, rowIndex: number, fieldIndex: number) => {
     dispatch({ type: 'edit-cell', rowIndex, fieldIndex, value });
   };
 
+  /**
+   * No rows found
+   */
+  if (!frame.rows.length) {
+    return (
+      <InlineFieldRow>
+        <a onClick={() => addRow(0)} className={cx('gf-form-label', styles.rowMarginBottom)}>
+          <Icon name="plus" title="Add Row" />
+          Add a row
+        </a>
+      </InlineFieldRow>
+    );
+  }
+
+  /**
+   * Display rows
+   */
   return (
     <>
-      {frame.fields.length > 0 ? (
-        <>
-          {/* Display the name of each field as a column header. */}
-          <InlineFieldRow
-            className={css`
-              margin-bottom: 4px;
-            `}
-          >
-            {frame.fields.map((field, i) => (
-              <span key={i} className={cx('gf-form-label', 'width-9', 'query-keyword')}>
-                {field.name || '<no name>'}
-              </span>
-            ))}
-          </InlineFieldRow>
+      <InlineFieldRow className={styles.rowMarginBottom}>
+        {frame.fields.map((field, i) => (
+          <span key={i} className={cx('gf-form-label', 'width-9', 'query-keyword')}>
+            {field.name || '<no name>'}
+          </span>
+        ))}
+      </InlineFieldRow>
 
-          {/* Add all the rows. */}
-          {frame.rows.map((row, i) => {
-            return (
-              <InlineFieldRow
-                key={i}
-                className={css`
-                  margin-bottom: 4px;
-                `}
-              >
-                {row.map((value: NullableString, index: number) => {
-                  return (
-                    <NullableInput
-                      key={index}
-                      value={value}
-                      onChange={(value) => editCell(value, i, index)}
-                      onValidate={(value: NullableString) => onValidate(value, index)}
-                    />
-                  );
-                })}
-                <a className="gf-form-label" onClick={() => duplicateRow(i)}>
-                  <Icon name="copy" />
-                </a>
-                <a className="gf-form-label" onClick={() => addRow(i)}>
-                  <Icon name="plus" />
-                </a>
-                <a className="gf-form-label" onClick={() => removeRow(i)}>
-                  <Icon name="minus" />
-                </a>
-              </InlineFieldRow>
-            );
-          })}
-
-          {/* Display a helper button if no rows have been added. */}
-          {frame.rows.length === 0 ? (
-            <InlineFieldRow>
-              <a
-                onClick={() => addRow(0)}
-                className={cx(
-                  'gf-form-label',
-                  css`
-                    margin-bottom: 4px;
-                  `
-                )}
-              >
-                <Icon
-                  name="plus"
-                  className={css`
-                    margin-right: 4px;
-                  `}
+      {frame.rows.map((row, i) => {
+        return (
+          <InlineFieldRow key={i} className={styles.rowMarginBottom}>
+            {row.map((value: NullableString, index: number) => {
+              return (
+                <NullableInput
+                  key={index}
+                  value={value}
+                  onChange={(value) => editCell(value, i, index)}
+                  onValidate={(value: NullableString) => onValidate(value, index)}
                 />
-                Add a row
-              </a>
-            </InlineFieldRow>
-          ) : null}
-        </>
-      ) : null}
+              );
+            })}
+
+            <a className="gf-form-label" title="Copy" onClick={() => duplicateRow(i)}>
+              <Icon name="copy" />
+            </a>
+            <a className="gf-form-label" title="Add" onClick={() => addRow(i)}>
+              <Icon name="plus" />
+            </a>
+            <a className="gf-form-label" title="Remove" onClick={() => removeRow(i)}>
+              <Icon name="minus" />
+            </a>
+          </InlineFieldRow>
+        );
+      })}
     </>
   );
 };
