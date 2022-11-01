@@ -23,13 +23,18 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
    */
   const onFrameChange = useCallback(
     (frame: DataFrameViewModel) => {
-      // Extract frame schema for validation.
+      /**
+       * Extract frame schema for validation.
+       */
       onChange({ ...query, frame: toDataFrame(frame) });
       onRunQuery();
     },
     [query, onChange, onRunQuery]
   );
 
+  /**
+   * Reducer
+   */
   const reducer = useOnChangeReducer(frameReducer, onFrameChange);
 
   /**
@@ -37,6 +42,9 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
    */
   const [frame, dispatch] = useReducer(reducer, toViewModel(query.frame ?? { fields: [] }));
 
+  /**
+   * Rename Frame
+   */
   const renameFrame = (name: string) => {
     dispatch({ type: 'rename', name });
   };
@@ -49,7 +57,6 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
 
   return (
     <>
-      {/* Data frame configuration */}
       <InlineFieldRow>
         <InlineField label="Name" tooltip="Name of the data frame">
           <Input className="width-12" onChange={(e) => renameFrame(e.currentTarget.value)} value={frame.name} />
@@ -89,5 +96,3 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
     </>
   );
 };
-
-export const FormIndent = () => <span className={`width-1`}></span>;
