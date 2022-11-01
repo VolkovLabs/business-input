@@ -1,4 +1,4 @@
-# Static data source for Grafana
+# Static Data Source for Grafana
 
 ![Screenshot](https://github.com/volkovlabs/volkovlabs-static-datasource/raw/main/src/img/dark.png)
 
