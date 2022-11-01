@@ -93,11 +93,11 @@ export const frameReducer: DataFrameReducer = (state: DataFrameViewModel, action
     case 'insert-row':
       const emptyRow: NullableString[] = Array.from({ length: frame.fields.length }).map((_, i) => {
         switch (frame.fields[i].type) {
-          case 'number':
+          case FieldType.number:
             return '0';
-          case 'time':
+          case FieldType.time:
             return Date.now().valueOf().toString();
-          case 'boolean':
+          case FieldType.boolean:
             return 'false';
         }
         return '';
