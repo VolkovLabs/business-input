@@ -213,6 +213,90 @@
       ],
       "title": "Getting Started",
       "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 11
+      },
+      "id": 8,
+      "targets": [
+        {
+          "datasource": {
+            "type": "marcusolsson-static-datasource",
+            "uid": "P1D2C73DC01F2359B"
+          },
+          "frame": {
+            "fields": [
+              {
+                "config": {},
+                "name": "id",
+                "type": "string",
+                "values": ["1", "2"]
+              },
+              {
+                "config": {},
+                "name": "title",
+                "type": "string",
+                "values": ["One", "Two"]
+              }
+            ],
+            "meta": {
+              "preferredVisualisationType": "nodeGraph"
+            },
+            "name": "nodes"
+          },
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "marcusolsson-static-datasource",
+            "uid": "P1D2C73DC01F2359B"
+          },
+          "frame": {
+            "fields": [
+              {
+                "config": {},
+                "name": "id",
+                "type": "string",
+                "values": ["boo"]
+              },
+              {
+                "config": {},
+                "name": "source",
+                "type": "string",
+                "values": ["1"]
+              },
+              {
+                "config": {},
+                "name": "target",
+                "type": "string",
+                "values": ["2"]
+              },
+              {
+                "config": {},
+                "name": "mainstat",
+                "type": "number",
+                "values": [10]
+              }
+            ],
+            "meta": {
+              "preferredVisualisationType": "nodeGraph"
+            },
+            "name": "edges"
+          },
+          "hide": false,
+          "refId": "B"
+        }
+      ],
+      "title": "Node Graph",
+      "type": "nodeGraph"
     }
   ],
   "refresh": "",
@@ -251,6 +335,6 @@
   "timezone": "",
   "title": "Panels",
   "uid": "O4tc_E6Gz",
-  "version": 5,
+  "version": 6,
   "weekStart": ""
 }
