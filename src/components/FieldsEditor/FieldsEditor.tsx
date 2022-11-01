@@ -2,33 +2,45 @@ import React, { Dispatch } from 'react';
 import { css, cx } from '@emotion/css';
 import { FieldType } from '@grafana/data';
 import { Icon, InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
-import { DataFrameViewModel } from '../types';
-import { Action } from './reducer';
+import { fieldTypes } from '../../constants';
+import { DataFrameViewModel } from '../../types';
+import { Action } from '../FrameReducer';
 
-const allFieldTypes = [
-  FieldType.boolean,
-  FieldType.number,
-  FieldType.other,
-  FieldType.string,
-  FieldType.time,
-  FieldType.trace,
-];
-
+/**
+ * Properties
+ */
 interface Props {
+  /**
+   * Frame
+   *
+   * @type {DataFrameViewModel}
+   */
   frame: DataFrameViewModel;
+
+  /**
+   * Dispatch
+   *
+   * @type {Dispatch<Action>}
+   */
   dispatch: Dispatch<Action>;
 }
 
+/**
+ * Fields Editor
+ */
 export const FieldsEditor = ({ frame, dispatch }: Props) => {
   const addField = (index: number) => {
     dispatch({ type: 'insert-field', index });
   };
+
   const removeField = (index: number) => {
     dispatch({ type: 'remove-field', index });
   };
+
   const renameField = (name: string, index: number) => {
     dispatch({ type: 'rename-field', name, index });
   };
+
   const changeFieldType = (fieldType: FieldType, index: number) => {
     dispatch({ type: 'set-field-type', fieldType, index });
   };
@@ -54,7 +66,7 @@ export const FieldsEditor = ({ frame, dispatch }: Props) => {
                   onChange={(e) => {
                     changeFieldType(e.value as FieldType, i);
                   }}
-                  options={allFieldTypes.map((t) => ({
+                  options={fieldTypes.map((t) => ({
                     label: t[0].toUpperCase() + t.substr(1),
                     value: t,
                   }))}

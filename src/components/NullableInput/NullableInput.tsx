@@ -1,20 +1,27 @@
 import React, { useState } from 'react';
 import { css } from '@emotion/css';
 import { Field, Icon, Input, useTheme } from '@grafana/ui';
-import { NullableString } from '../types';
+import { NullableString } from '../../types';
 
+/**
+ * Properties
+ */
 export interface NullableInputProps {
   value: NullableString;
   onChange: (value: NullableString) => void;
   onValidate: (value: NullableString) => boolean;
 }
 
+/**
+ * Nullable Input
+ */
 export const NullableInput: React.FC<Partial<NullableInputProps>> = ({ onChange, value, onValidate }) => {
   const theme = useTheme();
 
-  // Save the last value so we can toggle between null.
+  /**
+   * Save the last value so we can toggle between null.
+   */
   const [lastValue, setLastValue] = useState(value);
-
   const [valid, setValid] = useState(onValidate ? onValidate(value ?? null) : true);
   const [disabled, setDisabled] = useState(value === null);
 

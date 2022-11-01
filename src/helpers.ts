@@ -1,5 +1,5 @@
 import { DataFrameDTO, FieldType, MutableDataFrame, toDataFrameDTO } from '@grafana/data';
-import { DataFrameViewModel, NullableString } from '../types';
+import { DataFrameViewModel, NullableString } from './types';
 
 // toFieldValue parses nullable strings into the given type.
 export const toFieldValue = (
@@ -62,7 +62,7 @@ export const toViewModel = (frame: DataFrameDTO): DataFrameViewModel => {
   }
   const fields = frame.fields.map((_) => ({ name: _.name, type: _.type ?? FieldType.string }));
   const rows = Array.from({ length: frame.fields[0].values?.length ?? 0 }).map((_, i) =>
-    frame.fields.map((field) => (field.values as any[])[i]?.toString() ?? null)
+    frame.fields.map((field: any) => (field.values as any[])[i]?.toString() ?? null)
   );
 
   return {

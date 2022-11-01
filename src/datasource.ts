@@ -15,12 +15,20 @@ import { StaticDataSourceOptions, StaticQuery } from './types';
  * DataSource returns the data frame returned in the query model.
  */
 export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptions> {
+  /**
+   * Constructor
+   */
   constructor(instanceSettings: DataSourceInstanceSettings<StaticDataSourceOptions>) {
     super(instanceSettings);
   }
 
+  /**
+   * Query
+   */
   async query(options: DataQueryRequest<StaticQuery>): Promise<DataQueryResponse> {
-    // Interpolate variables in string fields.
+    /**
+     * Interpolate variables in string fields.
+     */
     const interpolateVariables = (frame: DataFrame) => {
       for (let i = 0; i < frame.fields.length; i++) {
         const field = frame.fields[i];
@@ -53,8 +61,11 @@ export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptio
    */
   annotations = {};
 
+  /**
+   * Health Check
+   * This data source makes no external requests so no need to test.
+   */
   async testDatasource() {
-    // This data source makes no external requests so no need to test.
     return {
       status: 'success',
       message: 'Success',

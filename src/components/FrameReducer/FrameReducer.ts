@@ -1,7 +1,10 @@
 import { useCallback } from 'react';
 import { FieldType, PreferredVisualisationType } from '@grafana/data';
-import { DataFrameViewModel, NullableString } from '../types';
+import { DataFrameViewModel, NullableString } from '../../types';
 
+/**
+ * Action
+ */
 export type Action =
   | { type: 'rename'; name: string }
   | { type: 'set-preferred-visualisation-type'; preferredVisualisationType?: PreferredVisualisationType }
@@ -16,8 +19,9 @@ export type Action =
 
 type DataFrameReducer = React.Reducer<DataFrameViewModel, Action>;
 
-// onChangeReducer decorates the reducer with a side effect to update the query
-// model.
+/**
+ * onChangeReducer decorates the reducer with a side effect to update the query model
+ */
 export const useChangeReducer = (
   reducer: DataFrameReducer,
   onChange: (frame: DataFrameViewModel) => void
@@ -37,10 +41,13 @@ const cloneDataFrameViewModel = (frame: DataFrameViewModel): DataFrameViewModel 
     name: frame.name,
     meta: frame.meta,
     fields: Object.assign([], frame.fields),
-    rows: frame.rows.map((v) => Object.assign([], v)),
+    rows: frame.rows.map((v: any) => Object.assign([], v)),
   };
 };
 
+/**
+ * Frame Reducer
+ */
 export const frameReducer: DataFrameReducer = (state: DataFrameViewModel, action: Action): DataFrameViewModel => {
   const frame = cloneDataFrameViewModel(state);
 
@@ -57,7 +64,7 @@ export const frameReducer: DataFrameReducer = (state: DataFrameViewModel, action
       });
 
       // Rebuild rows with the added field.
-      frame.rows.forEach((row) => {
+      frame.rows.forEach((row: any) => {
         row.splice(action.index + 1, 0, '');
       });
 
@@ -95,6 +102,7 @@ export const frameReducer: DataFrameReducer = (state: DataFrameViewModel, action
         }
         return '';
       });
+
       frame.rows.splice(action.index + 1, 0, emptyRow);
       return frame;
     case 'remove-row':

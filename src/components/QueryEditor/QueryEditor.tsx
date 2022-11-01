@@ -1,19 +1,27 @@
 import React, { useCallback, useReducer } from 'react';
 import { PreferredVisualisationType, QueryEditorProps } from '@grafana/data';
 import { InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
-import { DataSource } from '../datasource';
-import { DataFrameViewModel, StaticDataSourceOptions, StaticQuery } from '../types';
-import { FieldsEditor } from './FieldsEditor';
-import { toDataFrame, toFieldValue, toViewModel } from './helpers';
-import { InlineFieldGroup } from './InlineFieldGroup';
-import { frameReducer, useChangeReducer as useOnChangeReducer } from './reducer';
-import { ValuesEditor } from './ValuesEditor';
+import { preferredVisualizationTypes } from '../../constants';
+import { DataSource } from '../../datasource';
+import { toDataFrame, toFieldValue, toViewModel } from '../../helpers';
+import { DataFrameViewModel, StaticDataSourceOptions, StaticQuery } from '../../types';
+import { FieldsEditor } from '../FieldsEditor';
+import { frameReducer, useChangeReducer as useOnChangeReducer } from '../FrameReducer';
+import { InlineFieldGroup } from '../InlineFieldGroup';
+import { ValuesEditor } from '../ValuesEditor';
 
-const allPreferredVisualizationTypes: PreferredVisualisationType[] = ['graph', 'table', 'logs', 'trace', 'nodeGraph'];
-
+/**
+ * Properties
+ */
 type Props = QueryEditorProps<DataSource, StaticQuery, StaticDataSourceOptions>;
 
+/**
+ * Query Editor
+ */
 export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) => {
+  /**
+   * On Frame Change
+   */
   const onFrameChange = useCallback(
     (frame: DataFrameViewModel) => {
       // Extract frame schema for validation.
@@ -25,12 +33,15 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
 
   const reducer = useOnChangeReducer(frameReducer, onFrameChange);
 
-  // Load existing data frame, or create a new one.
+  /**
+   * Load existing data frame, or create a new one.
+   */
   const [frame, dispatch] = useReducer(reducer, toViewModel(query.frame ?? { fields: [] }));
 
   const renameFrame = (name: string) => {
     dispatch({ type: 'rename', name });
   };
+
   const setPreferredVisualizationType = (preferredVisualisationType?: PreferredVisualisationType) => {
     dispatch({ type: 'set-preferred-visualisation-type', preferredVisualisationType });
   };
@@ -50,8 +61,8 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
       <InlineFieldGroup label="Metadata">
         <InlineFieldRow>
           <InlineField
-            label="Preferred visualization type"
-            tooltip="Determines how to visualize the query result in Explore."
+            label="Preferred visualization type in Explore"
+            tooltip="Determines how to visualize the query result in Explore. Please ignore otherwise."
           >
             <Select
               isClearable={true}
@@ -60,7 +71,7 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
               onChange={(e) => {
                 setPreferredVisualizationType(e ? (e.value as PreferredVisualisationType) : undefined);
               }}
-              options={allPreferredVisualizationTypes.map((t) => ({
+              options={preferredVisualizationTypes.map((t) => ({
                 label: t[0].toUpperCase() + t.substr(1),
                 value: t,
               }))}

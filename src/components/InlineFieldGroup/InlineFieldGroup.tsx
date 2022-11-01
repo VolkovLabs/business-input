@@ -2,11 +2,17 @@ import React, { useState } from 'react';
 import { css } from '@emotion/css';
 import { Icon, useTheme } from '@grafana/ui';
 
+/**
+ * Properties
+ */
 export interface InlineFieldGroupProps {
   label: string;
   children: React.ReactNode;
 }
 
+/**
+ * Inline Field Group
+ */
 export const InlineFieldGroup: React.FC<Partial<InlineFieldGroupProps>> = ({ label, children }) => {
   const [show, setShow] = useState(true);
   const theme = useTheme();
@@ -49,6 +55,7 @@ export const InlineFieldGroup: React.FC<Partial<InlineFieldGroupProps>> = ({ lab
       margin-left: ${theme.spacing.lg};
     `,
   };
+
   return (
     <>
       <div className={styles.header}>

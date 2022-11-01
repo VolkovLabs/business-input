@@ -1,10 +1,13 @@
 import React, { Dispatch } from 'react';
 import { css, cx } from '@emotion/css';
 import { Icon, InlineFieldRow } from '@grafana/ui';
-import { DataFrameViewModel, NullableString } from '../types';
-import { NullableInput } from './NullableInput';
-import { Action } from './reducer';
+import { DataFrameViewModel, NullableString } from '../../types';
+import { Action } from '../FrameReducer';
+import { NullableInput } from '../NullableInput';
 
+/**
+ * Properties
+ */
 interface Props {
   frame: DataFrameViewModel;
   onValidate: (value: NullableString, j: number) => boolean;
@@ -19,12 +22,15 @@ export const ValuesEditor = ({ frame, dispatch, onValidate }: Props) => {
   const addRow = (index: number) => {
     dispatch({ type: 'insert-row', index });
   };
+
   const removeRow = (index: number) => {
     dispatch({ type: 'remove-row', index });
   };
+
   const duplicateRow = (index: number) => {
     dispatch({ type: 'duplicate-row', index });
   };
+
   const editCell = (value: NullableString, rowIndex: number, fieldIndex: number) => {
     dispatch({ type: 'edit-cell', rowIndex, fieldIndex, value });
   };
