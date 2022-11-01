@@ -75,7 +75,7 @@ export const ValuesEditor = ({ frame, dispatch, onValidate }: Props) => {
     <>
       <InlineFieldRow className={styles.rowMarginBottom}>
         {frame.fields.map((field, i) => (
-          <span key={i} className={cx('gf-form-label', 'width-9', 'query-keyword')}>
+          <span key={i} className={cx('gf-form-label', 'width-9')}>
             {field.name || '<no name>'}
           </span>
         ))}

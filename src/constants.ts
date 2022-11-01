@@ -5,10 +5,10 @@ import { FieldType, PreferredVisualisationType } from '@grafana/data';
  */
 export const preferredVisualizationTypes: PreferredVisualisationType[] = [
   'graph',
-  'table',
   'logs',
-  'trace',
   'nodeGraph',
+  'table',
+  'trace',
 ];
 
 /**

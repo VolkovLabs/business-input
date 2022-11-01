@@ -1,13 +1,12 @@
 import React, { useCallback, useReducer } from 'react';
 import { PreferredVisualisationType, QueryEditorProps } from '@grafana/data';
-import { InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
+import { CollapsableSection, InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
 import { preferredVisualizationTypes } from '../../constants';
 import { DataSource } from '../../datasource';
 import { toDataFrame, toFieldValue, toViewModel } from '../../helpers';
 import { DataFrameViewModel, StaticDataSourceOptions, StaticQuery } from '../../types';
 import { FieldsEditor } from '../FieldsEditor';
 import { frameReducer, useChangeReducer as useOnChangeReducer } from '../FrameReducer';
-import { InlineFieldGroup } from '../InlineFieldGroup';
 import { ValuesEditor } from '../ValuesEditor';
 
 /**
@@ -55,38 +54,30 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
         <InlineField label="Name" tooltip="Name of the data frame">
           <Input className="width-12" onChange={(e) => renameFrame(e.currentTarget.value)} value={frame.name} />
         </InlineField>
+        <InlineField
+          label="Preferred visualization type in Explore"
+          tooltip="Determines how to visualize the query result in Explore. Please ignore otherwise."
+        >
+          <Select
+            isClearable={true}
+            width={17}
+            value={frame.meta?.preferredVisualisationType}
+            onChange={(e) => {
+              setPreferredVisualizationType(e ? (e.value as PreferredVisualisationType) : undefined);
+            }}
+            options={preferredVisualizationTypes.map((t) => ({
+              label: t[0].toUpperCase() + t.substr(1),
+              value: t,
+            }))}
+          />
+        </InlineField>
       </InlineFieldRow>
 
-      {/* Metadata  configuration */}
-      <InlineFieldGroup label="Metadata">
-        <InlineFieldRow>
-          <InlineField
-            label="Preferred visualization type in Explore"
-            tooltip="Determines how to visualize the query result in Explore. Please ignore otherwise."
-          >
-            <Select
-              isClearable={true}
-              width={17}
-              value={frame.meta?.preferredVisualisationType}
-              onChange={(e) => {
-                setPreferredVisualizationType(e ? (e.value as PreferredVisualisationType) : undefined);
-              }}
-              options={preferredVisualizationTypes.map((t) => ({
-                label: t[0].toUpperCase() + t.substr(1),
-                value: t,
-              }))}
-            />
-          </InlineField>
-        </InlineFieldRow>
-      </InlineFieldGroup>
-
-      {/* Field configuration */}
-      <InlineFieldGroup label="Fields">
+      <CollapsableSection label="Fields" isOpen={true}>
         <FieldsEditor frame={frame} dispatch={dispatch} />
-      </InlineFieldGroup>
+      </CollapsableSection>
 
-      {/* Value configuration */}
-      <InlineFieldGroup label="Values">
+      <CollapsableSection label="Values" isOpen={true}>
         <ValuesEditor
           frame={frame}
           onValidate={(value, j) => {
@@ -94,7 +85,7 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
           }}
           dispatch={dispatch}
         />
-      </InlineFieldGroup>
+      </CollapsableSection>
     </>
   );
 };
