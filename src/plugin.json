@@ -29,11 +29,11 @@
     },
     "screenshots": [
       {
-        "name": "Explore (Dark)",
+        "name": "Explore",
         "path": "img/dark.png"
       },
       {
-        "name": "Explore (Light)",
+        "name": "Pie Chart",
         "path": "img/light.png"
       }
     ],

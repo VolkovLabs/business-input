@@ -1,20 +1,31 @@
 import React, { useState } from 'react';
-import { css } from '@emotion/css';
-import { Field, Icon, Input, useTheme } from '@grafana/ui';
-import { NullableString } from '../types';
+import { Field, Icon, Input, useTheme2 } from '@grafana/ui';
+import { getStyles } from '../../styles';
+import { NullableString } from '../../types';
 
+/**
+ * Properties
+ */
 export interface NullableInputProps {
   value: NullableString;
   onChange: (value: NullableString) => void;
   onValidate: (value: NullableString) => boolean;
 }
 
+/**
+ * Nullable Input
+ */
 export const NullableInput: React.FC<Partial<NullableInputProps>> = ({ onChange, value, onValidate }) => {
-  const theme = useTheme();
+  /**
+   * Styles and Theme
+   */
+  const theme = useTheme2();
+  const styles = getStyles(theme);
 
-  // Save the last value so we can toggle between null.
+  /**
+   * Save the last value so we can toggle between null.
+   */
   const [lastValue, setLastValue] = useState(value);
-
   const [valid, setValid] = useState(onValidate ? onValidate(value ?? null) : true);
   const [disabled, setDisabled] = useState(value === null);
 
@@ -25,22 +36,9 @@ export const NullableInput: React.FC<Partial<NullableInputProps>> = ({ onChange,
     }
   }
 
-  const styles = {
-    root: css`
-      width: 144px;
-      margin-right: 4px;
-    `,
-    suffix: css`
-      &:hover {
-        cursor: pointer;
-        color: ${theme.colors.text};
-      }
-    `,
-  };
-
   const suffixEl = (
     <Icon
-      className={styles.suffix}
+      className={styles.suffixElement}
       name={disabled ? 'eye-slash' : 'eye'}
       onClick={() => {
         setDisabled(!disabled);
@@ -61,16 +59,13 @@ export const NullableInput: React.FC<Partial<NullableInputProps>> = ({ onChange,
     />
   );
 
+  /**
+   * Return
+   */
   return (
-    <Field
-      className={css`
-        margin: 0;
-      `}
-      invalid={!valid}
-      disabled={disabled}
-    >
+    <Field className={styles.field} invalid={!valid} disabled={disabled}>
       <Input
-        className={styles.root}
+        className={styles.rootInput}
         onChange={(e) => {
           if (onValidate) {
             const res = onValidate(e.currentTarget.value);
