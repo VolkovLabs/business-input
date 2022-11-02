@@ -8,6 +8,7 @@
 - Updated based on Volkov Labs Panel Template (#19)
 - Update CI to Node 16 and Synchronize with Release workflow (#20)
 - Update to Grafana 9.2.2 (#21)
+- Refactor Components and update Theme (#22)
 
 ## 1.4.4 (2022-08-28)
 
