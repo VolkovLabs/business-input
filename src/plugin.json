@@ -19,6 +19,10 @@
         "url": "https://github.com/volkovlabs/volkovlabs-static-datasource"
       },
       {
+        "name": "YouTube Playlist",
+        "url": "https://youtube.com/playlist?list=PLPow72ygztmSOuCRtS85zolztwDMpCsIV"
+      },
+      {
         "name": "Website",
         "url": "https://volkovlabs.io"
       }

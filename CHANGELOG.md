@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.1.0 (IN PROGRESS)
+
+### Features / Enhancements
+
+- Update CI to upload signed artifacts (#23)
+- Add "Static data source for Grafana | Mimic any data source | Tutorial and examples" video in README (#23)
+
 ## 2.0.0 (2022-11-01)
 
 ### Features / Enhancements
