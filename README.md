@@ -3,12 +3,15 @@
 ![Screenshot](https://github.com/volkovlabs/volkovlabs-static-datasource/raw/main/src/img/dark.png)
 
 [![Grafana 9](https://img.shields.io/badge/Grafana-9.2.2-orange)](https://www.grafana.com)
+[![YouTube](https://img.shields.io/badge/YouTube-Playlist-red)](https://youtube.com/playlist?list=PLPow72ygztmSOuCRtS85zolztwDMpCsIV)
 ![CI](https://github.com/volkovlabs/volkovlabs-static-datasource/workflows/CI/badge.svg)
 [![codecov](https://codecov.io/gh/VolkovLabs/volkovlabs-static-datasource/branch/main/graph/badge.svg?token=0m6f0ktUar)](https://codecov.io/gh/VolkovLabs/volkovlabs-static-datasource)
 
 ## Introduction
 
 The Static Data Source is a plugin for Grafana that allows to emulate your data to test and develop panels.
+
+[![Static data source for Grafana | Mimic any data source | Tutorial and examples](https://raw.githubusercontent.com/volkovlabs/volkovlabs-static-datasource/main/img/video.png)](https://youtu.be/QOV8ECOUjWs)
 
 ### Requirements
 
@@ -27,6 +30,7 @@ grafana-cli plugins install marcusolsson-static-datasource
 
 - Create static visualizations that don't depend on a specific data source.
 - Build custom query responses for testing or developing panel plugins.
+- Store data and images directly in the dashboard.
 
 ## Provisioning
 
