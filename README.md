@@ -4,8 +4,10 @@
 
 [![Grafana 9](https://img.shields.io/badge/Grafana-9.2.2-orange)](https://www.grafana.com)
 [![YouTube](https://img.shields.io/badge/YouTube-Playlist-red)](https://youtube.com/playlist?list=PLPow72ygztmSOuCRtS85zolztwDMpCsIV)
+[![Documentation](https://img.shields.io/badge/Documentation-blue)](https://volkovlabs.io/plugins/volkovlabs-static-datasource/)
 ![CI](https://github.com/volkovlabs/volkovlabs-static-datasource/workflows/CI/badge.svg)
 [![codecov](https://codecov.io/gh/VolkovLabs/volkovlabs-static-datasource/branch/main/graph/badge.svg?token=0m6f0ktUar)](https://codecov.io/gh/VolkovLabs/volkovlabs-static-datasource)
+[![CodeQL](https://github.com/VolkovLabs/volkovlabs-static-datasource/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/VolkovLabs/volkovlabs-static-datasource/actions/workflows/codeql-analysis.yml)
 
 ## Introduction
 
