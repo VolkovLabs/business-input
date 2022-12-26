@@ -2,7 +2,9 @@ import { ArrayVector, DataFrame, DataFrameDTO, FieldType, MutableDataFrame, toDa
 import { getTemplateSrv } from '@grafana/runtime';
 import { DataFrameViewModel, NullableString } from './types';
 
-// toFieldValue parses nullable strings into the given type.
+/**
+ * Parses nullable strings into the given type.
+ */
 export const toFieldValue = (
   value: NullableString,
   type: FieldType
@@ -31,6 +33,9 @@ export const toFieldValue = (
   }
 };
 
+/**
+ * Data Frame
+ */
 export const toDataFrame = (model: DataFrameViewModel): DataFrameDTO => {
   const frame = new MutableDataFrame({
     name: model.name,
@@ -39,6 +44,7 @@ export const toDataFrame = (model: DataFrameViewModel): DataFrameDTO => {
     },
     fields: model.fields.map((_) => ({ name: _.name, type: _.type })),
   });
+
   model.rows.forEach((_) =>
     frame.appendRow(
       _.map((_, i) => {
@@ -47,9 +53,13 @@ export const toDataFrame = (model: DataFrameViewModel): DataFrameDTO => {
       })
     )
   );
+
   return toDataFrameDTO(frame);
 };
 
+/**
+ * View Model
+ */
 export const toViewModel = (frame: DataFrameDTO): DataFrameViewModel => {
   if (frame.fields.length === 0) {
     return {
@@ -61,6 +71,7 @@ export const toViewModel = (frame: DataFrameDTO): DataFrameViewModel => {
       rows: [],
     };
   }
+
   const fields = frame.fields.map((_) => ({ name: _.name, type: _.type ?? FieldType.string }));
   const rows = Array.from({ length: frame.fields[0].values?.length ?? 0 }).map((_, i) =>
     frame.fields.map((field: any) => (field.values as any[])[i]?.toString() ?? null)
@@ -90,5 +101,6 @@ export const interpolateVariables = (frame: DataFrame) => {
 
     frame.fields[i] = field;
   }
+
   return frame;
 };
