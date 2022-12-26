@@ -1,4 +1,5 @@
-import { DataFrameDTO, FieldType, MutableDataFrame, toDataFrameDTO } from '@grafana/data';
+import { ArrayVector, DataFrame, DataFrameDTO, FieldType, MutableDataFrame, toDataFrameDTO } from '@grafana/data';
+import { getTemplateSrv } from '@grafana/runtime';
 import { DataFrameViewModel, NullableString } from './types';
 
 // toFieldValue parses nullable strings into the given type.
@@ -73,4 +74,21 @@ export const toViewModel = (frame: DataFrameDTO): DataFrameViewModel => {
     fields,
     rows,
   };
+};
+
+/**
+ * Interpolate variables in string fields.
+ */
+export const interpolateVariables = (frame: DataFrame) => {
+  for (let i = 0; i < frame.fields.length; i++) {
+    const field = frame.fields[i];
+
+    // Skip non-text fields.
+    if (field.type === FieldType.string) {
+      field.values = new ArrayVector(field.values.toArray().map((_) => getTemplateSrv().replace(_, {}, 'csv')));
+    }
+
+    frame.fields[i] = field;
+  }
+  return frame;
 };

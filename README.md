@@ -2,7 +2,7 @@
 
 ![Screenshot](https://github.com/volkovlabs/volkovlabs-static-datasource/raw/main/src/img/dark.png)
 
-[![Grafana 9](https://img.shields.io/badge/Grafana-9.2.2-orange)](https://www.grafana.com)
+[![Grafana 9](https://img.shields.io/badge/Grafana-9.3.2-orange)](https://www.grafana.com)
 [![YouTube](https://img.shields.io/badge/YouTube-Playlist-red)](https://youtube.com/playlist?list=PLPow72ygztmSOuCRtS85zolztwDMpCsIV)
 [![Documentation](https://img.shields.io/badge/Documentation-blue)](https://volkovlabs.io/plugins/volkovlabs-static-datasource/)
 ![CI](https://github.com/volkovlabs/volkovlabs-static-datasource/workflows/CI/badge.svg)
@@ -33,23 +33,12 @@ grafana-cli plugins install marcusolsson-static-datasource
 - Create static visualizations that don't depend on a specific data source.
 - Build custom query responses for testing or developing panel plugins.
 - Store data and images directly in the dashboard.
+- Supports variables in the text fields.
 
-## Provisioning
+## Documentation
 
-Grafana supports managing data sources by adding one or more YAML config files in the `provisioning/datasources` folder.
-
-Example of provisioning the Static Data Source.
-
-```yaml
-datasources:
-  - name: Static
-    type: marcusolsson-static-datasource
-    access: proxy
-    isDefault: true
-    orgId: 1
-    version: 1
-    editable: true
-```
+- [Provisioning](https://volkovlabs.io/plugins/volkovlabs-static-datasource/provisioning)
+- [Variables](https://volkovlabs.io/plugins/volkovlabs-static-datasource/variables)
 
 ## Feedback
 
