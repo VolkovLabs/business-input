@@ -1,4 +1,4 @@
-import { DataFrameDTO, DataQuery, DataSourceJsonData, FieldType, PreferredVisualisationType } from '@grafana/data';
+import { FieldType, PreferredVisualisationType } from '@grafana/data';
 
 /**
  * NullableString
@@ -59,20 +59,3 @@ export interface DataFrameViewModel {
    */
   rows: NullableString[][];
 }
-
-/**
- * Query
- */
-export interface StaticQuery extends DataQuery {
-  /**
-   * Frame
-   *
-   * @type {DataFrameDTO}
-   */
-  frame: DataFrameDTO;
-}
-
-/**
- * Datasource Options
- */
-export interface StaticDataSourceOptions extends DataSourceJsonData {}

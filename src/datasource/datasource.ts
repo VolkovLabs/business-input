@@ -1,15 +1,13 @@
 import {
-  ArrayVector,
-  DataFrame,
   DataQueryRequest,
   DataQueryResponse,
   DataSourceApi,
   DataSourceInstanceSettings,
-  FieldType,
   toDataFrame,
 } from '@grafana/data';
-import { getTemplateSrv } from '@grafana/runtime';
-import { StaticDataSourceOptions, StaticQuery } from './types';
+import { DataSourceTestStatus } from '../constants';
+import { StaticDataSourceOptions, StaticQuery } from '../types';
+import { interpolateVariables } from '../utils';
 
 /**
  * DataSource returns the data frame returned in the query model.
@@ -26,23 +24,6 @@ export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptio
    * Query
    */
   async query(options: DataQueryRequest<StaticQuery>): Promise<DataQueryResponse> {
-    /**
-     * Interpolate variables in string fields.
-     */
-    const interpolateVariables = (frame: DataFrame) => {
-      for (let i = 0; i < frame.fields.length; i++) {
-        const field = frame.fields[i];
-
-        // Skip non-text fields.
-        if (field.type === FieldType.string) {
-          field.values = new ArrayVector(field.values.toArray().map((_) => getTemplateSrv().replace(_, {}, 'csv')));
-        }
-
-        frame.fields[i] = field;
-      }
-      return frame;
-    };
-
     return {
       data: options.targets
         .filter((target) => !target.hide)
@@ -67,7 +48,7 @@ export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptio
    */
   async testDatasource() {
     return {
-      status: 'success',
+      status: DataSourceTestStatus.SUCCESS,
       message: 'Success',
     };
   }
