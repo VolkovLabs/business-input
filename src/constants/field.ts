@@ -3,7 +3,7 @@ import { FieldType } from '@grafana/data';
 /**
  * Field Types
  */
-export const fieldTypes = [
+export const FieldTypes = [
   FieldType.boolean,
   FieldType.geo,
   FieldType.number,

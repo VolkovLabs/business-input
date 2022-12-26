@@ -2,7 +2,7 @@ import React, { Dispatch } from 'react';
 import { cx } from '@emotion/css';
 import { FieldType } from '@grafana/data';
 import { Icon, InlineField, InlineFieldRow, Input, Select, useTheme2 } from '@grafana/ui';
-import { fieldTypes } from '../../constants';
+import { FieldTypes } from '../../constants';
 import { getStyles } from '../../styles';
 import { DataFrameViewModel } from '../../types';
 import { Action } from '../FrameReducer';
@@ -100,7 +100,7 @@ export const FieldsEditor = ({ frame, dispatch }: Props) => {
                   onChange={(e) => {
                     changeFieldType(e.value as FieldType, i);
                   }}
-                  options={fieldTypes.map((t) => ({
+                  options={FieldTypes.map((t) => ({
                     label: t[0].toUpperCase() + t.substr(1),
                     value: t,
                   }))}

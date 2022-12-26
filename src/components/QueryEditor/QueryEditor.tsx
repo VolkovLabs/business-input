@@ -1,7 +1,7 @@
 import React, { useCallback, useReducer } from 'react';
 import { PreferredVisualisationType, QueryEditorProps } from '@grafana/data';
 import { CollapsableSection, InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
-import { preferredVisualizationTypes } from '../../constants';
+import { PreferredVisualizationTypes } from '../../constants';
 import { DataSource } from '../../datasource';
 import { DataFrameViewModel, StaticDataSourceOptions, StaticQuery } from '../../types';
 import { toDataFrame, toFieldValue, toViewModel } from '../../utils';
@@ -72,7 +72,7 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
             onChange={(e) => {
               setPreferredVisualizationType(e ? (e.value as PreferredVisualisationType) : undefined);
             }}
-            options={preferredVisualizationTypes.map((t) => ({
+            options={PreferredVisualizationTypes.map((t) => ({
               label: t[0].toUpperCase() + t.substr(1),
               value: t,
             }))}
