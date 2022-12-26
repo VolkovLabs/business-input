@@ -1,5 +1,3 @@
-import { FieldType } from '@grafana/data';
-
 /**
  * Preferred Visualization Type
  */
