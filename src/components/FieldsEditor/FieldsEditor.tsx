@@ -1,9 +1,9 @@
-import React, { Dispatch } from 'react';
+import React from 'react';
 import { FieldType } from '@grafana/data';
 import { Button, InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
 import { FieldTypes } from '../../constants';
-import { DataFrameViewModel } from '../../types';
-import { Action } from '../FrameReducer';
+import { DataFrameViewModel, StaticQuery } from '../../types';
+import { cloneDataFrameViewModel, toDataFrame } from '../../utils';
 
 /**
  * Properties
@@ -17,43 +17,121 @@ interface Props {
   frame: DataFrameViewModel;
 
   /**
-   * Dispatch
+   * Query
    *
-   * @type {Dispatch<Action>}
+   * @type {StaticQuery}
    */
-  dispatch: Dispatch<Action>;
+  query: StaticQuery;
+
+  /**
+   * On Change
+   */
+  onChange: (value: StaticQuery) => void;
+
+  /**
+   * On Run Query
+   */
+  onRunQuery: () => void;
 }
 
 /**
  * Fields Editor
  */
-export const FieldsEditor = ({ frame, dispatch }: Props) => {
+export const FieldsEditor = ({ query, frame, onChange, onRunQuery }: Props) => {
   /**
    * Add Field
    */
   const addField = (index: number) => {
-    dispatch({ type: 'insert-field', index });
+    const model = cloneDataFrameViewModel(frame);
+
+    /**
+     * Insert a field after the current position.
+     */
+    model.fields.splice(index + 1, 0, {
+      name: '',
+      type: FieldType.string,
+    });
+
+    /**
+     * Rebuild rows with the added field.
+     */
+    model.rows.forEach((row: any) => {
+      row.splice(index + 1, 0, '');
+    });
+
+    /**
+     * Change
+     */
+    onChange({ ...query, frame: toDataFrame(model) });
+    onRunQuery();
   };
 
   /**
    * Remove Field
    */
   const removeField = (index: number) => {
-    dispatch({ type: 'remove-field', index });
+    const model = cloneDataFrameViewModel(frame);
+
+    /**
+     * Remove the field at given position.
+     */
+    model.fields.splice(index, 1);
+
+    /**
+     * Rebuild rows without the removed field.
+     */
+    model.rows.forEach((row) => {
+      row.splice(index, 1);
+    });
+
+    /**
+     * Remove all rows if there are no fields.
+     */
+    if (frame.fields.length === 0) {
+      frame.rows = [];
+    }
+
+    /**
+     * Change
+     */
+    onChange({ ...query, frame: toDataFrame(model) });
+    onRunQuery();
   };
 
   /**
    * Rename Field
    */
   const renameField = (name: string, index: number) => {
-    dispatch({ type: 'rename-field', name, index });
+    const model = cloneDataFrameViewModel(frame);
+
+    /**
+     * Rename
+     */
+    model.fields[index].name = name;
+
+    /**
+     * Change
+     */
+    onChange({ ...query, frame: toDataFrame(model) });
+    onRunQuery();
   };
 
   /**
    * Change Field Type
    */
   const changeFieldType = (fieldType: FieldType, index: number) => {
-    dispatch({ type: 'set-field-type', fieldType, index });
+    const model = cloneDataFrameViewModel(frame);
+
+    /**
+     * Set Field Type
+     */
+    frame.fields[index].type = fieldType;
+
+    /**
+     * Change
+     */
+    onChange({ ...query, frame: toDataFrame(model) });
+    onRunQuery();
   };
 
   /**
@@ -100,11 +178,11 @@ export const FieldsEditor = ({ frame, dispatch }: Props) => {
             </InlineField>
 
             <InlineField>
-              <Button variant="secondary" onClick={() => addField(i)} icon="plus"></Button>
+              <Button variant="secondary" title="Add" onClick={() => addField(i)} icon="plus"></Button>
             </InlineField>
 
             <InlineField>
-              <Button variant="destructive" onClick={() => removeField(i)} icon="trash-alt"></Button>
+              <Button variant="destructive" title="Remove" onClick={() => removeField(i)} icon="trash-alt"></Button>
             </InlineField>
           </InlineFieldRow>
         );

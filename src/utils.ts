@@ -101,6 +101,18 @@ export const toViewModel = (frame: DataFrameDTO): DataFrameViewModel => {
 };
 
 /**
+ * Clone Data Frame
+ */
+export const cloneDataFrameViewModel = (frame: DataFrameViewModel): DataFrameViewModel => {
+  return {
+    name: frame.name,
+    meta: frame.meta,
+    fields: Object.assign([], frame.fields),
+    rows: frame.rows.map((v: any) => Object.assign([], v)),
+  };
+};
+
+/**
  * Interpolate variables in string fields.
  */
 export const interpolateVariables = (frame: DataFrame) => {
