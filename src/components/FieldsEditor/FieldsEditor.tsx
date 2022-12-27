@@ -1,9 +1,7 @@
 import React, { Dispatch } from 'react';
-import { cx } from '@emotion/css';
 import { FieldType } from '@grafana/data';
-import { Icon, InlineField, InlineFieldRow, Input, Select, useTheme2 } from '@grafana/ui';
+import { Button, InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
 import { FieldTypes } from '../../constants';
-import { getStyles } from '../../styles';
 import { DataFrameViewModel } from '../../types';
 import { Action } from '../FrameReducer';
 
@@ -30,12 +28,6 @@ interface Props {
  * Fields Editor
  */
 export const FieldsEditor = ({ frame, dispatch }: Props) => {
-  /**
-   * Styles and Theme
-   */
-  const theme = useTheme2();
-  const styles = getStyles(theme);
-
   /**
    * Add Field
    */
@@ -70,10 +62,11 @@ export const FieldsEditor = ({ frame, dispatch }: Props) => {
   if (!frame.fields.length) {
     return (
       <InlineFieldRow>
-        <a onClick={() => addField(0)} title="Add Field" className={cx('gf-form-label', styles.rowMarginBottom)}>
-          <Icon name="plus" />
-          Add a field
-        </a>
+        <InlineField>
+          <Button variant="primary" title="Add a Field" onClick={() => addField(0)} icon="plus">
+            Add a Field
+          </Button>
+        </InlineField>
       </InlineFieldRow>
     );
   }
@@ -82,39 +75,38 @@ export const FieldsEditor = ({ frame, dispatch }: Props) => {
     <>
       {frame.fields.map((field, i) => {
         return (
-          <>
-            <InlineFieldRow key={i}>
-              <InlineField label="Name">
-                <Input
-                  value={field.name}
-                  onChange={(e) => {
-                    renameField(e.currentTarget.value, i);
-                  }}
-                />
-              </InlineField>
+          <InlineFieldRow key={i}>
+            <InlineField label="Name" grow>
+              <Input
+                value={field.name}
+                onChange={(e) => {
+                  renameField(e.currentTarget.value, i);
+                }}
+              />
+            </InlineField>
 
-              <InlineField label="Type">
-                <Select
-                  width={12}
-                  value={field.type}
-                  onChange={(e) => {
-                    changeFieldType(e.value as FieldType, i);
-                  }}
-                  options={FieldTypes.map((t) => ({
-                    label: t[0].toUpperCase() + t.substr(1),
-                    value: t,
-                  }))}
-                />
-              </InlineField>
+            <InlineField label="Type">
+              <Select
+                width={12}
+                value={field.type}
+                onChange={(e) => {
+                  changeFieldType(e.value as FieldType, i);
+                }}
+                options={FieldTypes.map((t) => ({
+                  label: t[0].toUpperCase() + t.substring(1),
+                  value: t,
+                }))}
+              />
+            </InlineField>
 
-              <a className="gf-form-label" onClick={() => addField(i)}>
-                <Icon name="plus" />
-              </a>
-              <a className="gf-form-label" onClick={() => removeField(i)}>
-                <Icon name="minus" />
-              </a>
-            </InlineFieldRow>
-          </>
+            <InlineField>
+              <Button variant="secondary" onClick={() => addField(i)} icon="plus"></Button>
+            </InlineField>
+
+            <InlineField>
+              <Button variant="destructive" onClick={() => removeField(i)} icon="trash-alt"></Button>
+            </InlineField>
+          </InlineFieldRow>
         );
       })}
     </>
