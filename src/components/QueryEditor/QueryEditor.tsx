@@ -1,7 +1,7 @@
 import React, { useCallback, useReducer } from 'react';
 import { PreferredVisualisationType, QueryEditorProps } from '@grafana/data';
 import { CollapsableSection, InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
-import { preferredVisualizationTypes } from '../../constants';
+import { PreferredVisualizationTypes } from '../../constants';
 import { DataSource } from '../../datasource';
 import { DataFrameViewModel, StaticDataSourceOptions, StaticQuery } from '../../types';
 import { toDataFrame, toFieldValue, toViewModel } from '../../utils';
@@ -49,21 +49,27 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
     dispatch({ type: 'rename', name });
   };
 
+  /**
+   * Set Preferred Visualization Type
+   */
   const setPreferredVisualizationType = (preferredVisualisationType?: PreferredVisualisationType) => {
     dispatch({ type: 'set-preferred-visualisation-type', preferredVisualisationType });
   };
 
+  /**
+   * Schema
+   */
   const schema = frame.fields.map((f) => f.type);
 
   return (
     <>
       <InlineFieldRow>
-        <InlineField label="Name" tooltip="Name of the data frame">
-          <Input className="width-12" onChange={(e) => renameFrame(e.currentTarget.value)} value={frame.name} />
+        <InlineField label="Name" tooltip="Name of the data frame" grow>
+          <Input onChange={(e) => renameFrame(e.currentTarget.value)} value={frame.name} />
         </InlineField>
         <InlineField
           label="Preferred visualization type in Explore"
-          tooltip="Determines how to visualize the query result in Explore. Please ignore otherwise."
+          tooltip="Determines how to visualize the query result in Explore. Ignore otherwise."
         >
           <Select
             isClearable={true}
@@ -72,8 +78,8 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
             onChange={(e) => {
               setPreferredVisualizationType(e ? (e.value as PreferredVisualisationType) : undefined);
             }}
-            options={preferredVisualizationTypes.map((t) => ({
-              label: t[0].toUpperCase() + t.substr(1),
+            options={PreferredVisualizationTypes.map((t) => ({
+              label: t[0].toUpperCase() + t.substring(1),
               value: t,
             }))}
           />
@@ -85,13 +91,7 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query }) =>
       </CollapsableSection>
 
       <CollapsableSection label="Values" isOpen={true}>
-        <ValuesEditor
-          frame={frame}
-          onValidate={(value, j) => {
-            return toFieldValue(value, schema[j]).ok;
-          }}
-          dispatch={dispatch}
-        />
+        <ValuesEditor frame={frame} onValidate={(value, j) => toFieldValue(value, schema[j]).ok} dispatch={dispatch} />
       </CollapsableSection>
     </>
   );

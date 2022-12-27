@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Field, Icon, Input, useTheme2 } from '@grafana/ui';
+import { Icon, InlineField, Input, useTheme2 } from '@grafana/ui';
 import { getStyles } from '../../styles';
 import { NullableString } from '../../types';
 
@@ -7,15 +7,35 @@ import { NullableString } from '../../types';
  * Properties
  */
 export interface NullableInputProps {
+  /**
+   * Value
+   *
+   * @type {NullableString}
+   */
   value: NullableString;
+
+  /**
+   * label
+   *
+   * @type {string}
+   */
+  label: string;
+
+  /**
+   * On Change
+   */
   onChange: (value: NullableString) => void;
+
+  /**
+   * On Validate
+   */
   onValidate: (value: NullableString) => boolean;
 }
 
 /**
  * Nullable Input
  */
-export const NullableInput: React.FC<Partial<NullableInputProps>> = ({ onChange, value, onValidate }) => {
+export const NullableInput: React.FC<Partial<NullableInputProps>> = ({ onChange, value, label, onValidate }) => {
   /**
    * Styles and Theme
    */
@@ -31,6 +51,7 @@ export const NullableInput: React.FC<Partial<NullableInputProps>> = ({ onChange,
 
   if (onValidate) {
     const ok = onValidate(value ?? null);
+
     if (ok !== valid) {
       setValid(ok);
     }
@@ -42,6 +63,7 @@ export const NullableInput: React.FC<Partial<NullableInputProps>> = ({ onChange,
       name={disabled ? 'eye-slash' : 'eye'}
       onClick={() => {
         setDisabled(!disabled);
+
         if (onChange) {
           if (!disabled) {
             setLastValue(value);
@@ -63,14 +85,14 @@ export const NullableInput: React.FC<Partial<NullableInputProps>> = ({ onChange,
    * Return
    */
   return (
-    <Field className={styles.field} invalid={!valid} disabled={disabled}>
+    <InlineField invalid={!valid} disabled={disabled} label={label} grow>
       <Input
-        className={styles.rootInput}
         onChange={(e) => {
           if (onValidate) {
             const res = onValidate(e.currentTarget.value);
             setValid(res);
           }
+
           if (onChange) {
             onChange(e.currentTarget.value);
           }
@@ -78,6 +100,6 @@ export const NullableInput: React.FC<Partial<NullableInputProps>> = ({ onChange,
         value={disabled ? 'null' : value ?? ''}
         suffix={suffixEl}
       />
-    </Field>
+    </InlineField>
   );
 };

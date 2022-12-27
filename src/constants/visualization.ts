@@ -12,7 +12,7 @@ export enum VisualizationType {
 /**
  * Preferred Visualization Types
  */
-export const preferredVisualizationTypes: VisualizationType[] = [
+export const PreferredVisualizationTypes: VisualizationType[] = [
   VisualizationType.GRAPH,
   VisualizationType.LOGS,
   VisualizationType.NODEGRAPH,

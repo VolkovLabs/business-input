@@ -1,7 +1,5 @@
 import React, { Dispatch } from 'react';
-import { cx } from '@emotion/css';
-import { Icon, InlineFieldRow, useTheme2 } from '@grafana/ui';
-import { getStyles } from '../../styles';
+import { Button, InlineField, InlineFieldRow } from '@grafana/ui';
 import { DataFrameViewModel, NullableString } from '../../types';
 import { Action } from '../FrameReducer';
 import { NullableInput } from '../NullableInput';
@@ -10,8 +8,25 @@ import { NullableInput } from '../NullableInput';
  * Properties
  */
 interface Props {
+  /**
+   * Frame
+   *
+   * @type {DataFrameViewModel}
+   */
   frame: DataFrameViewModel;
+
+  /**
+   * On Validate
+   *
+   * @type {boolean}
+   */
   onValidate: (value: NullableString, j: number) => boolean;
+
+  /**
+   * Dispatch
+   *
+   * @type {Dispatch<Action>}
+   */
   dispatch: Dispatch<Action>;
 }
 
@@ -20,12 +35,6 @@ interface Props {
  * Each text input can be toggled to be null.
  */
 export const ValuesEditor = ({ frame, dispatch, onValidate }: Props) => {
-  /**
-   * Styles and Theme
-   */
-  const theme = useTheme2();
-  const styles = getStyles(theme);
-
   /**
    * Add Row
    */
@@ -60,10 +69,11 @@ export const ValuesEditor = ({ frame, dispatch, onValidate }: Props) => {
   if (!frame.rows.length) {
     return (
       <InlineFieldRow>
-        <a onClick={() => addRow(0)} className={cx('gf-form-label', styles.rowMarginBottom)}>
-          <Icon name="plus" title="Add Row" />
-          Add a row
-        </a>
+        <InlineField>
+          <Button variant="primary" onClick={() => addRow(0)} icon="plus">
+            Add a Row
+          </Button>
+        </InlineField>
       </InlineFieldRow>
     );
   }
@@ -73,40 +83,31 @@ export const ValuesEditor = ({ frame, dispatch, onValidate }: Props) => {
    */
   return (
     <>
-      <InlineFieldRow className={styles.rowMarginBottom}>
-        {frame.fields.map((field, i) => (
-          <span key={i} className={cx('gf-form-label', 'width-9')}>
-            {field.name || '<no name>'}
-          </span>
-        ))}
-      </InlineFieldRow>
+      {frame.rows.map((row, i) => (
+        <InlineFieldRow key={i}>
+          {row.map((value: NullableString, index: number) => (
+            <NullableInput
+              key={index}
+              value={value}
+              label={frame.fields[index].name}
+              onChange={(value) => editCell(value, i, index)}
+              onValidate={(value) => onValidate(value, index)}
+            />
+          ))}
 
-      {frame.rows.map((row, i) => {
-        return (
-          <InlineFieldRow key={i} className={styles.rowMarginBottom}>
-            {row.map((value: NullableString, index: number) => {
-              return (
-                <NullableInput
-                  key={index}
-                  value={value}
-                  onChange={(value) => editCell(value, i, index)}
-                  onValidate={(value: NullableString) => onValidate(value, index)}
-                />
-              );
-            })}
+          <InlineField>
+            <Button variant="secondary" title="Copy" onClick={() => duplicateRow(i)} icon="copy"></Button>
+          </InlineField>
 
-            <a className="gf-form-label" title="Copy" onClick={() => duplicateRow(i)}>
-              <Icon name="copy" />
-            </a>
-            <a className="gf-form-label" title="Add" onClick={() => addRow(i)}>
-              <Icon name="plus" />
-            </a>
-            <a className="gf-form-label" title="Remove" onClick={() => removeRow(i)}>
-              <Icon name="minus" />
-            </a>
-          </InlineFieldRow>
-        );
-      })}
+          <InlineField>
+            <Button variant="secondary" title="Add" onClick={() => addRow(i)} icon="plus"></Button>
+          </InlineField>
+
+          <InlineField>
+            <Button variant="destructive" title="Remove" onClick={() => removeRow(i)} icon="trash-alt"></Button>
+          </InlineField>
+        </InlineFieldRow>
+      ))}
     </>
   );
 };
