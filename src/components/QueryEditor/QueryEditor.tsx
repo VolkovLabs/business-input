@@ -56,7 +56,7 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query, app 
           <Input onChange={(e) => renameFrame(e.currentTarget.value)} value={model.name} />
         </InlineField>
 
-        {app == CoreApp.Explore && (
+        {app === CoreApp.Explore && (
           <InlineField label="Preferred visualization type">
             <Select
               isClearable={true}
