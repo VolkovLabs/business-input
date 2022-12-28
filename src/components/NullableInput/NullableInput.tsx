@@ -3,12 +3,12 @@ import { FieldType } from '@grafana/data';
 import { Icon, InlineField, Input, useTheme2 } from '@grafana/ui';
 import { getStyles } from '../../styles';
 import { NullableString } from '../../types';
-import { toFieldValue } from '../../utils';
+import { verifyFieldValue } from '../../utils';
 
 /**
  * Properties
  */
-export interface Props {
+interface Props {
   /**
    * Value
    *
@@ -50,10 +50,10 @@ export const NullableInput: React.FC<Props> = ({ onChange, value, type, label })
    * Save the last value so we can toggle between null.
    */
   const [lastValue, setLastValue] = useState(value);
-  const [valid, setValid] = useState(toFieldValue(value, type).ok);
+  const [valid, setValid] = useState(verifyFieldValue(value, type).ok);
   const [disabled, setDisabled] = useState(value === null);
 
-  const suffixEl = (
+  const suffixElement = (
     <Icon
       className={styles.suffixElement}
       name={disabled ? 'eye-slash' : 'eye'}
@@ -66,7 +66,7 @@ export const NullableInput: React.FC<Props> = ({ onChange, value, type, label })
           setValid(true);
         } else {
           onChange(lastValue ?? null);
-          setValid(toFieldValue(value, type).ok);
+          setValid(verifyFieldValue(value, type).ok);
           setLastValue(null);
         }
       }}
@@ -80,11 +80,11 @@ export const NullableInput: React.FC<Props> = ({ onChange, value, type, label })
     <InlineField invalid={!valid} disabled={disabled} label={label} grow>
       <Input
         onChange={(e) => {
-          setValid(toFieldValue(e.currentTarget.value, type).ok);
+          setValid(verifyFieldValue(e.currentTarget.value, type).ok);
           onChange(e.currentTarget.value);
         }}
         value={disabled ? 'null' : value ?? ''}
-        suffix={suffixEl}
+        suffix={suffixElement}
       />
     </InlineField>
   );

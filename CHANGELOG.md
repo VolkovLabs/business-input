@@ -2,6 +2,10 @@
 
 ## 2.1.0 (IN PROGRESS)
 
+### Breaking changes
+
+Refactoring may introduce breaking changes. Please test before upgrading in Production.
+
 ### Features / Enhancements
 
 - Update CI to upload signed artifacts (#23)
@@ -10,6 +14,7 @@
 - Refactoring and improving Test Coverage for data source (#25)
 - Update Field and Values Editors to field structure (#27)
 - Remove Frame Reducer to simplify code (#28)
+- Refactoring frame, field utilities (#29)
 
 ## 2.0.0 (2022-11-01)
 
