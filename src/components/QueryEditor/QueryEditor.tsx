@@ -3,7 +3,7 @@ import { CoreApp, PreferredVisualisationType, preferredVisualizationTypes, Query
 import { CollapsableSection, InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
 import { DataSource } from '../../datasource';
 import { StaticDataSourceOptions, StaticQuery } from '../../types';
-import { toDataFrame, toViewModel } from '../../utils';
+import { convertToDataFrame, prepareModel } from '../../utils';
 import { FieldsEditor } from '../FieldsEditor';
 import { ValuesEditor } from '../ValuesEditor';
 
@@ -16,7 +16,7 @@ type Props = QueryEditorProps<DataSource, StaticQuery, StaticDataSourceOptions>;
  * Query Editor
  */
 export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query, app }) => {
-  const model = toViewModel(query.frame ?? { fields: [] });
+  const model = prepareModel(query.frame ?? { fields: [] });
 
   /**
    * Rename Frame
@@ -27,7 +27,7 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query, app 
     /**
      * Change
      */
-    onChange({ ...query, frame: toDataFrame(model) });
+    onChange({ ...query, frame: convertToDataFrame(model) });
     onRunQuery();
   };
 
@@ -40,7 +40,7 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query, app 
     /**
      * Change
      */
-    onChange({ ...query, frame: toDataFrame(model) });
+    onChange({ ...query, frame: convertToDataFrame(model) });
     onRunQuery();
   };
 

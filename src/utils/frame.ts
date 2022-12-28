@@ -3,9 +3,9 @@ import { DataFrameModel } from '../types';
 import { verifyFieldValue } from './field';
 
 /**
- * Data Frame
+ * Convert to Data Frame
  */
-export const toDataFrame = (model: DataFrameModel): DataFrameDTO => {
+export const convertToDataFrame = (model: DataFrameModel): DataFrameDTO => {
   /**
    * Create Frame
    */
@@ -32,9 +32,9 @@ export const toDataFrame = (model: DataFrameModel): DataFrameDTO => {
 };
 
 /**
- * View Model
+ * Prepare Model
  */
-export const toViewModel = (frame: DataFrameDTO): DataFrameModel => {
+export const prepareModel = (frame: DataFrameDTO): DataFrameModel => {
   let fields: any[] = [];
   let rows: any[] = [];
 

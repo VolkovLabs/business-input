@@ -2,7 +2,7 @@ import React from 'react';
 import { FieldType } from '@grafana/data';
 import { Button, InlineField, InlineFieldRow } from '@grafana/ui';
 import { DataFrameModel, NullableString, StaticQuery } from '../../types';
-import { toDataFrame } from '../../utils';
+import { convertToDataFrame } from '../../utils';
 import { NullableInput } from '../NullableInput';
 
 /**
@@ -66,7 +66,7 @@ export const ValuesEditor = ({ model, query, onChange, onRunQuery }: Props) => {
     /**
      * Change
      */
-    onChange({ ...query, frame: toDataFrame(model) });
+    onChange({ ...query, frame: convertToDataFrame(model) });
     onRunQuery();
   };
 
@@ -82,7 +82,7 @@ export const ValuesEditor = ({ model, query, onChange, onRunQuery }: Props) => {
     /**
      * Change
      */
-    onChange({ ...query, frame: toDataFrame(model) });
+    onChange({ ...query, frame: convertToDataFrame(model) });
     onRunQuery();
   };
 
@@ -98,7 +98,7 @@ export const ValuesEditor = ({ model, query, onChange, onRunQuery }: Props) => {
     /**
      * Change
      */
-    onChange({ ...query, frame: toDataFrame(model) });
+    onChange({ ...query, frame: convertToDataFrame(model) });
     onRunQuery();
   };
 
@@ -114,7 +114,7 @@ export const ValuesEditor = ({ model, query, onChange, onRunQuery }: Props) => {
     /**
      * Change
      */
-    onChange({ ...query, frame: toDataFrame(model) });
+    onChange({ ...query, frame: convertToDataFrame(model) });
     onRunQuery();
   };
 
