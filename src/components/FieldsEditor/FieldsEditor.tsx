@@ -1,65 +1,135 @@
-import React, { Dispatch } from 'react';
+import React from 'react';
 import { FieldType } from '@grafana/data';
 import { Button, InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
 import { FieldTypes } from '../../constants';
-import { DataFrameViewModel } from '../../types';
-import { Action } from '../FrameReducer';
+import { DataFrameModel, StaticQuery } from '../../types';
+import { toDataFrame } from '../../utils';
 
 /**
  * Properties
  */
 interface Props {
   /**
-   * Frame
+   * Model
    *
-   * @type {DataFrameViewModel}
+   * @type {DataFrameModel}
    */
-  frame: DataFrameViewModel;
+  model: DataFrameModel;
 
   /**
-   * Dispatch
+   * Query
    *
-   * @type {Dispatch<Action>}
+   * @type {StaticQuery}
    */
-  dispatch: Dispatch<Action>;
+  query: StaticQuery;
+
+  /**
+   * On Change
+   */
+  onChange: (value: StaticQuery) => void;
+
+  /**
+   * On Run Query
+   */
+  onRunQuery: () => void;
 }
 
 /**
  * Fields Editor
  */
-export const FieldsEditor = ({ frame, dispatch }: Props) => {
+export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
   /**
    * Add Field
    */
   const addField = (index: number) => {
-    dispatch({ type: 'insert-field', index });
+    /**
+     * Insert a field after the current position.
+     */
+    model.fields.splice(index + 1, 0, {
+      name: '',
+      type: FieldType.string,
+    });
+
+    /**
+     * Rebuild rows with the added field.
+     */
+    model.rows.forEach((row: any) => {
+      row.splice(index + 1, 0, '');
+    });
+
+    /**
+     * Change
+     */
+    onChange({ ...query, frame: toDataFrame(model) });
+    onRunQuery();
   };
 
   /**
    * Remove Field
    */
   const removeField = (index: number) => {
-    dispatch({ type: 'remove-field', index });
+    /**
+     * Remove the field at given position.
+     */
+    model.fields.splice(index, 1);
+
+    /**
+     * Rebuild rows without the removed field.
+     */
+    model.rows.forEach((row) => {
+      row.splice(index, 1);
+    });
+
+    /**
+     * Remove all rows if there are no fields.
+     */
+    if (!model.fields.length) {
+      model.rows = [];
+    }
+
+    /**
+     * Change
+     */
+    onChange({ ...query, frame: toDataFrame(model) });
+    onRunQuery();
   };
 
   /**
    * Rename Field
    */
   const renameField = (name: string, index: number) => {
-    dispatch({ type: 'rename-field', name, index });
+    /**
+     * Rename
+     */
+    model.fields[index].name = name;
+
+    /**
+     * Change
+     */
+    onChange({ ...query, frame: toDataFrame(model) });
+    onRunQuery();
   };
 
   /**
    * Change Field Type
    */
   const changeFieldType = (fieldType: FieldType, index: number) => {
-    dispatch({ type: 'set-field-type', fieldType, index });
+    /**
+     * Set Field Type
+     */
+    model.fields[index].type = fieldType;
+
+    /**
+     * Change
+     */
+    onChange({ ...query, frame: toDataFrame(model) });
+    onRunQuery();
   };
 
   /**
    * No rows found
    */
-  if (!frame.fields.length) {
+  if (!model.fields.length) {
     return (
       <InlineFieldRow>
         <InlineField>
@@ -73,7 +143,7 @@ export const FieldsEditor = ({ frame, dispatch }: Props) => {
 
   return (
     <>
-      {frame.fields.map((field, i) => {
+      {model.fields.map((field, i) => {
         return (
           <InlineFieldRow key={i}>
             <InlineField label="Name" grow>
@@ -100,11 +170,11 @@ export const FieldsEditor = ({ frame, dispatch }: Props) => {
             </InlineField>
 
             <InlineField>
-              <Button variant="secondary" onClick={() => addField(i)} icon="plus"></Button>
+              <Button variant="secondary" title="Add" onClick={() => addField(i)} icon="plus"></Button>
             </InlineField>
 
             <InlineField>
-              <Button variant="destructive" onClick={() => removeField(i)} icon="trash-alt"></Button>
+              <Button variant="destructive" title="Remove" onClick={() => removeField(i)} icon="trash-alt"></Button>
             </InlineField>
           </InlineFieldRow>
         );

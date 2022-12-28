@@ -25,10 +25,10 @@ export interface Field {
 }
 
 /**
- * DataFrameViewModel is used as a intermediate frame state for easier
+ * Data Frame Model is used as a intermediate frame state for easier
  * manipulation and validation.
  */
-export interface DataFrameViewModel {
+export interface DataFrameModel {
   /**
    * Name
    *

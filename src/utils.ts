@@ -1,6 +1,6 @@
 import { ArrayVector, DataFrame, DataFrameDTO, FieldType, MutableDataFrame, toDataFrameDTO } from '@grafana/data';
 import { getTemplateSrv } from '@grafana/runtime';
-import { DataFrameViewModel, NullableString } from './types';
+import { DataFrameModel, NullableString } from './types';
 
 /**
  * Parses nullable strings into the given type.
@@ -36,19 +36,25 @@ export const toFieldValue = (
 /**
  * Data Frame
  */
-export const toDataFrame = (model: DataFrameViewModel): DataFrameDTO => {
+export const toDataFrame = (model: DataFrameModel): DataFrameDTO => {
+  /**
+   * Create Frame
+   */
   const frame = new MutableDataFrame({
     name: model.name,
     meta: {
       preferredVisualisationType: model.meta?.preferredVisualisationType,
     },
-    fields: model.fields.map((_) => ({ name: _.name, type: _.type })),
+    fields: model.fields.map((field) => ({ name: field.name, type: field.type })),
   });
 
-  model.rows.forEach((_) =>
+  /**
+   * Verify fields
+   */
+  model.rows.forEach((row) =>
     frame.appendRow(
-      _.map((_, i) => {
-        const res = toFieldValue(_, frame.fields[i].type);
+      row.map((field, i) => {
+        const res = toFieldValue(field, frame.fields[i].type);
         return res.ok ? res.value : null;
       })
     )
@@ -60,7 +66,7 @@ export const toDataFrame = (model: DataFrameViewModel): DataFrameDTO => {
 /**
  * View Model
  */
-export const toViewModel = (frame: DataFrameDTO): DataFrameViewModel => {
+export const toViewModel = (frame: DataFrameDTO): DataFrameModel => {
   if (frame.fields.length === 0) {
     return {
       name: frame.name,
@@ -72,8 +78,15 @@ export const toViewModel = (frame: DataFrameDTO): DataFrameViewModel => {
     };
   }
 
-  const fields = frame.fields.map((_) => ({ name: _.name, type: _.type ?? FieldType.string }));
-  const rows = Array.from({ length: frame.fields[0].values?.length ?? 0 }).map((_, i) =>
+  /**
+   * Set Field Types
+   */
+  const fields = frame.fields.map((field) => ({ name: field.name, type: field.type ?? FieldType.string }));
+
+  /**
+   * Rows
+   */
+  const rows = Array.from({ length: frame.fields[0].values?.length ?? 0 }).map((row, i) =>
     frame.fields.map((field: any) => (field.values as any[])[i]?.toString() ?? null)
   );
 

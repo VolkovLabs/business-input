@@ -8,6 +8,8 @@
 - Add "Static data source for Grafana | Mimic any data source | Tutorial and examples" video in README (#23)
 - Update to Grafana 9.3.2 (#24)
 - Refactoring and improving Test Coverage for data source (#25)
+- Update Field and Values Editors to field structure (#27)
+- Remove Frame Reducer to simplify code (#28)
 
 ## 2.0.0 (2022-11-01)
 

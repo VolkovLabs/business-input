@@ -1,7 +1,8 @@
-import React, { Dispatch } from 'react';
+import React from 'react';
+import { FieldType } from '@grafana/data';
 import { Button, InlineField, InlineFieldRow } from '@grafana/ui';
-import { DataFrameViewModel, NullableString } from '../../types';
-import { Action } from '../FrameReducer';
+import { DataFrameModel, NullableString, StaticQuery } from '../../types';
+import { toDataFrame } from '../../utils';
 import { NullableInput } from '../NullableInput';
 
 /**
@@ -9,64 +10,118 @@ import { NullableInput } from '../NullableInput';
  */
 interface Props {
   /**
-   * Frame
+   * Model
    *
-   * @type {DataFrameViewModel}
+   * @type {DataFrameModel}
    */
-  frame: DataFrameViewModel;
+  model: DataFrameModel;
 
   /**
-   * On Validate
+   * Query
    *
-   * @type {boolean}
+   * @type {StaticQuery}
    */
-  onValidate: (value: NullableString, j: number) => boolean;
+  query: StaticQuery;
 
   /**
-   * Dispatch
-   *
-   * @type {Dispatch<Action>}
+   * On Change
    */
-  dispatch: Dispatch<Action>;
+  onChange: (value: StaticQuery) => void;
+
+  /**
+   * On Run Query
+   */
+  onRunQuery: () => void;
 }
 
 /**
- * ValuesEditor is a grid of text inputs, much like a spreadsheet.
- * Each text input can be toggled to be null.
+ * Values Editor
  */
-export const ValuesEditor = ({ frame, dispatch, onValidate }: Props) => {
+export const ValuesEditor = ({ model, query, onChange, onRunQuery }: Props) => {
   /**
    * Add Row
    */
   const addRow = (index: number) => {
-    dispatch({ type: 'insert-row', index });
+    /**
+     * New Row
+     */
+    const newRow = Array.from({ length: model.fields.length }).map((field, i) => {
+      switch (model.fields[i].type) {
+        case FieldType.number:
+          return '0';
+        case FieldType.time:
+          return Date.now().valueOf().toString();
+        case FieldType.boolean:
+          return 'false';
+        default:
+          return '';
+      }
+    });
+
+    /**
+     * Add Row
+     */
+    model.rows.splice(index + 1, 0, newRow);
+
+    /**
+     * Change
+     */
+    onChange({ ...query, frame: toDataFrame(model) });
+    onRunQuery();
   };
 
   /**
    * Remove Row
    */
   const removeRow = (index: number) => {
-    dispatch({ type: 'remove-row', index });
+    /**
+     * Remove
+     */
+    model.rows.splice(index, 1);
+
+    /**
+     * Change
+     */
+    onChange({ ...query, frame: toDataFrame(model) });
+    onRunQuery();
   };
 
   /**
    * Duplicate Row
    */
   const duplicateRow = (index: number) => {
-    dispatch({ type: 'duplicate-row', index });
+    /**
+     * Clone
+     */
+    model.rows.splice(index + 1, 0, JSON.parse(JSON.stringify(model.rows[index])));
+
+    /**
+     * Change
+     */
+    onChange({ ...query, frame: toDataFrame(model) });
+    onRunQuery();
   };
 
   /**
-   * Edit Cell
+   * Edit Value
    */
-  const editCell = (value: NullableString, rowIndex: number, fieldIndex: number) => {
-    dispatch({ type: 'edit-cell', rowIndex, fieldIndex, value });
+  const editValue = (value: NullableString, rowIndex: number, fieldIndex: number) => {
+    /**
+     * Update
+     */
+    model.rows[rowIndex][fieldIndex] = value;
+
+    /**
+     * Change
+     */
+    onChange({ ...query, frame: toDataFrame(model) });
+    onRunQuery();
   };
 
   /**
    * No rows found
    */
-  if (!frame.rows.length) {
+  if (!model.rows.length) {
     return (
       <InlineFieldRow>
         <InlineField>
@@ -83,15 +138,15 @@ export const ValuesEditor = ({ frame, dispatch, onValidate }: Props) => {
    */
   return (
     <>
-      {frame.rows.map((row, i) => (
+      {model.rows.map((row, i) => (
         <InlineFieldRow key={i}>
           {row.map((value: NullableString, index: number) => (
             <NullableInput
               key={index}
               value={value}
-              label={frame.fields[index].name}
-              onChange={(value) => editCell(value, i, index)}
-              onValidate={(value) => onValidate(value, index)}
+              type={model.fields[index].type}
+              label={model.fields[index].name}
+              onChange={(value) => editValue(value, i, index)}
             />
           ))}
 
