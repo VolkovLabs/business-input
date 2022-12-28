@@ -3,7 +3,7 @@ import { CoreApp, PreferredVisualisationType, preferredVisualizationTypes, Query
 import { CollapsableSection, InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
 import { DataSource } from '../../datasource';
 import { StaticDataSourceOptions, StaticQuery } from '../../types';
-import { toDataFrame, toFieldValue, toViewModel } from '../../utils';
+import { toDataFrame, toViewModel } from '../../utils';
 import { FieldsEditor } from '../FieldsEditor';
 import { ValuesEditor } from '../ValuesEditor';
 
@@ -44,11 +44,6 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query, app 
     onRunQuery();
   };
 
-  /**
-   * Schema
-   */
-  const schema = model.fields.map((f) => f.type);
-
   return (
     <>
       <InlineFieldRow>
@@ -81,13 +76,7 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query, app 
       </CollapsableSection>
 
       <CollapsableSection label="Values" isOpen={true}>
-        <ValuesEditor
-          query={query}
-          model={model}
-          onValidate={(value, j) => toFieldValue(value, schema[j]).ok}
-          onChange={onChange}
-          onRunQuery={onRunQuery}
-        />
+        <ValuesEditor query={query} model={model} onChange={onChange} onRunQuery={onRunQuery} />
       </CollapsableSection>
     </>
   );

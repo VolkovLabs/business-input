@@ -24,13 +24,6 @@ interface Props {
   query: StaticQuery;
 
   /**
-   * On Validate
-   *
-   * @type {boolean}
-   */
-  onValidate: (value: NullableString, j: number) => boolean;
-
-  /**
    * On Change
    */
   onChange: (value: StaticQuery) => void;
@@ -44,7 +37,7 @@ interface Props {
 /**
  * Values Editor
  */
-export const ValuesEditor = ({ model, query, onValidate, onChange, onRunQuery }: Props) => {
+export const ValuesEditor = ({ model, query, onChange, onRunQuery }: Props) => {
   /**
    * Add Row
    */
@@ -151,9 +144,9 @@ export const ValuesEditor = ({ model, query, onValidate, onChange, onRunQuery }:
             <NullableInput
               key={index}
               value={value}
+              type={model.fields[index].type}
               label={model.fields[index].name}
               onChange={(value) => editValue(value, i, index)}
-              onValidate={(value) => onValidate(value, index)}
             />
           ))}
 

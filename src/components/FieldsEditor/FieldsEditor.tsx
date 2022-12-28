@@ -83,7 +83,7 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
     /**
      * Remove all rows if there are no fields.
      */
-    if (model.fields.length === 0) {
+    if (!model.fields.length) {
       model.rows = [];
     }
 
