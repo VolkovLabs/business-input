@@ -1,6 +1,6 @@
 import { ArrayVector, DataFrame, DataFrameDTO, FieldType, MutableDataFrame, toDataFrameDTO } from '@grafana/data';
 import { getTemplateSrv } from '@grafana/runtime';
-import { DataFrameViewModel, NullableString } from './types';
+import { DataFrameModel, NullableString } from './types';
 
 /**
  * Parses nullable strings into the given type.
@@ -36,7 +36,7 @@ export const toFieldValue = (
 /**
  * Data Frame
  */
-export const toDataFrame = (model: DataFrameViewModel): DataFrameDTO => {
+export const toDataFrame = (model: DataFrameModel): DataFrameDTO => {
   /**
    * Create Frame
    */
@@ -66,7 +66,7 @@ export const toDataFrame = (model: DataFrameViewModel): DataFrameDTO => {
 /**
  * View Model
  */
-export const toViewModel = (frame: DataFrameDTO): DataFrameViewModel => {
+export const toViewModel = (frame: DataFrameDTO): DataFrameModel => {
   if (frame.fields.length === 0) {
     return {
       name: frame.name,
@@ -79,7 +79,7 @@ export const toViewModel = (frame: DataFrameDTO): DataFrameViewModel => {
   }
 
   /**
-   * Fields
+   * Set Field Types
    */
   const fields = frame.fields.map((field) => ({ name: field.name, type: field.type ?? FieldType.string }));
 
@@ -97,18 +97,6 @@ export const toViewModel = (frame: DataFrameDTO): DataFrameViewModel => {
     },
     fields,
     rows,
-  };
-};
-
-/**
- * Clone Data Frame
- */
-export const cloneDataFrameViewModel = (frame: DataFrameViewModel): DataFrameViewModel => {
-  return {
-    name: frame.name,
-    meta: frame.meta,
-    fields: Object.assign([], frame.fields),
-    rows: frame.rows.map((v: any) => Object.assign([], v)),
   };
 };
 

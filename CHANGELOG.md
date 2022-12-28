@@ -9,8 +9,7 @@
 - Update to Grafana 9.3.2 (#24)
 - Refactoring and improving Test Coverage for data source (#25)
 - Update Field and Values Editors to field structure (#27)
-- Refactor Field and Values Editors (#28)
-- Remove Frame Reducer to simplify code (#29)
+- Remove Frame Reducer to simplify code (#28)
 
 ## 2.0.0 (2022-11-01)
 

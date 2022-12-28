@@ -1,8 +1,8 @@
 import React from 'react';
 import { FieldType } from '@grafana/data';
 import { Button, InlineField, InlineFieldRow } from '@grafana/ui';
-import { DataFrameViewModel, NullableString, StaticQuery } from '../../types';
-import { cloneDataFrameViewModel, toDataFrame } from '../../utils';
+import { DataFrameModel, NullableString, StaticQuery } from '../../types';
+import { toDataFrame } from '../../utils';
 import { NullableInput } from '../NullableInput';
 
 /**
@@ -10,11 +10,11 @@ import { NullableInput } from '../NullableInput';
  */
 interface Props {
   /**
-   * Frame
+   * Model
    *
-   * @type {DataFrameViewModel}
+   * @type {DataFrameModel}
    */
-  frame: DataFrameViewModel;
+  model: DataFrameModel;
 
   /**
    * Query
@@ -42,21 +42,18 @@ interface Props {
 }
 
 /**
- * ValuesEditor is a grid of text inputs, much like a spreadsheet.
- * Each text input can be toggled to be null.
+ * Values Editor
  */
-export const ValuesEditor = ({ frame, query, onValidate, onChange, onRunQuery }: Props) => {
+export const ValuesEditor = ({ model, query, onValidate, onChange, onRunQuery }: Props) => {
   /**
    * Add Row
    */
   const addRow = (index: number) => {
-    const model = cloneDataFrameViewModel(frame);
-
     /**
      * New Row
      */
-    const newRow = Array.from({ length: frame.fields.length }).map((field, i) => {
-      switch (frame.fields[i].type) {
+    const newRow = Array.from({ length: model.fields.length }).map((field, i) => {
+      switch (model.fields[i].type) {
         case FieldType.number:
           return '0';
         case FieldType.time:
@@ -84,8 +81,6 @@ export const ValuesEditor = ({ frame, query, onValidate, onChange, onRunQuery }:
    * Remove Row
    */
   const removeRow = (index: number) => {
-    const model = cloneDataFrameViewModel(frame);
-
     /**
      * Remove
      */
@@ -102,12 +97,10 @@ export const ValuesEditor = ({ frame, query, onValidate, onChange, onRunQuery }:
    * Duplicate Row
    */
   const duplicateRow = (index: number) => {
-    const model = cloneDataFrameViewModel(frame);
-
     /**
      * Clone
      */
-    model.rows.splice(index + 1, 0, JSON.parse(JSON.stringify(frame.rows[index])));
+    model.rows.splice(index + 1, 0, JSON.parse(JSON.stringify(model.rows[index])));
 
     /**
      * Change
@@ -120,8 +113,6 @@ export const ValuesEditor = ({ frame, query, onValidate, onChange, onRunQuery }:
    * Edit Value
    */
   const editValue = (value: NullableString, rowIndex: number, fieldIndex: number) => {
-    const model = cloneDataFrameViewModel(frame);
-
     /**
      * Update
      */
@@ -137,7 +128,7 @@ export const ValuesEditor = ({ frame, query, onValidate, onChange, onRunQuery }:
   /**
    * No rows found
    */
-  if (!frame.rows.length) {
+  if (!model.rows.length) {
     return (
       <InlineFieldRow>
         <InlineField>
@@ -154,13 +145,13 @@ export const ValuesEditor = ({ frame, query, onValidate, onChange, onRunQuery }:
    */
   return (
     <>
-      {frame.rows.map((row, i) => (
+      {model.rows.map((row, i) => (
         <InlineFieldRow key={i}>
           {row.map((value: NullableString, index: number) => (
             <NullableInput
               key={index}
               value={value}
-              label={frame.fields[index].name}
+              label={model.fields[index].name}
               onChange={(value) => editValue(value, i, index)}
               onValidate={(value) => onValidate(value, index)}
             />

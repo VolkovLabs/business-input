@@ -2,19 +2,19 @@ import React from 'react';
 import { FieldType } from '@grafana/data';
 import { Button, InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
 import { FieldTypes } from '../../constants';
-import { DataFrameViewModel, StaticQuery } from '../../types';
-import { cloneDataFrameViewModel, toDataFrame } from '../../utils';
+import { DataFrameModel, StaticQuery } from '../../types';
+import { toDataFrame } from '../../utils';
 
 /**
  * Properties
  */
 interface Props {
   /**
-   * Frame
+   * Model
    *
-   * @type {DataFrameViewModel}
+   * @type {DataFrameModel}
    */
-  frame: DataFrameViewModel;
+  model: DataFrameModel;
 
   /**
    * Query
@@ -37,13 +37,11 @@ interface Props {
 /**
  * Fields Editor
  */
-export const FieldsEditor = ({ query, frame, onChange, onRunQuery }: Props) => {
+export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
   /**
    * Add Field
    */
   const addField = (index: number) => {
-    const model = cloneDataFrameViewModel(frame);
-
     /**
      * Insert a field after the current position.
      */
@@ -70,8 +68,6 @@ export const FieldsEditor = ({ query, frame, onChange, onRunQuery }: Props) => {
    * Remove Field
    */
   const removeField = (index: number) => {
-    const model = cloneDataFrameViewModel(frame);
-
     /**
      * Remove the field at given position.
      */
@@ -87,8 +83,8 @@ export const FieldsEditor = ({ query, frame, onChange, onRunQuery }: Props) => {
     /**
      * Remove all rows if there are no fields.
      */
-    if (frame.fields.length === 0) {
-      frame.rows = [];
+    if (model.fields.length === 0) {
+      model.rows = [];
     }
 
     /**
@@ -102,8 +98,6 @@ export const FieldsEditor = ({ query, frame, onChange, onRunQuery }: Props) => {
    * Rename Field
    */
   const renameField = (name: string, index: number) => {
-    const model = cloneDataFrameViewModel(frame);
-
     /**
      * Rename
      */
@@ -120,12 +114,10 @@ export const FieldsEditor = ({ query, frame, onChange, onRunQuery }: Props) => {
    * Change Field Type
    */
   const changeFieldType = (fieldType: FieldType, index: number) => {
-    const model = cloneDataFrameViewModel(frame);
-
     /**
      * Set Field Type
      */
-    frame.fields[index].type = fieldType;
+    model.fields[index].type = fieldType;
 
     /**
      * Change
@@ -137,7 +129,7 @@ export const FieldsEditor = ({ query, frame, onChange, onRunQuery }: Props) => {
   /**
    * No rows found
    */
-  if (!frame.fields.length) {
+  if (!model.fields.length) {
     return (
       <InlineFieldRow>
         <InlineField>
@@ -151,7 +143,7 @@ export const FieldsEditor = ({ query, frame, onChange, onRunQuery }: Props) => {
 
   return (
     <>
-      {frame.fields.map((field, i) => {
+      {model.fields.map((field, i) => {
         return (
           <InlineFieldRow key={i}>
             <InlineField label="Name" grow>
