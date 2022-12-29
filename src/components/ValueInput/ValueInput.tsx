@@ -38,9 +38,9 @@ interface Props {
 }
 
 /**
- * Nullable Input
+ * Value Input
  */
-export const NullableInput: React.FC<Props> = ({ onChange, value, type, label }) => {
+export const ValueInput: React.FC<Props> = ({ onChange, value, type, label }) => {
   /**
    * Styles and Theme
    */

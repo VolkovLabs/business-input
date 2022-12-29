@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 import { FieldType } from '@grafana/data';
-import { NullableInput } from './NullableInput';
+import { ValueInput } from './ValueInput';
 
 /**
  * Input
@@ -9,7 +9,7 @@ import { NullableInput } from './NullableInput';
 describe('Input', () => {
   it('Should find component with Input', async () => {
     const getComponent = ({ ...restProps }: any) => {
-      return <NullableInput {...restProps} />;
+      return <ValueInput {...restProps} />;
     };
 
     const wrapper = shallow(getComponent({ value: '123', type: FieldType.string }));
