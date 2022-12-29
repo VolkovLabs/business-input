@@ -34,6 +34,9 @@ grafana-cli plugins install marcusolsson-static-datasource
 - Build custom query responses for testing or developing panel plugins.
 - Store data and images directly in the dashboard.
 - Supports variables in the text fields.
+- Uses Number input for Number, Date Time Picker for Time fields.
+- Uses Text Area for String inputs with more than 100 symbols.
+- Allows to temporary hide values for specific fields.
 
 ## Documentation
 
