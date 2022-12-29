@@ -1,5 +1,5 @@
 import React from 'react';
-import { FieldType } from '@grafana/data';
+import { Field, FieldType } from '@grafana/data';
 import { Button, InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
 import { FieldTypes } from '../../constants';
 import { DataFrameModel, StaticQuery } from '../../types';
@@ -48,7 +48,7 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
     model.fields.splice(index + 1, 0, {
       name: '',
       type: FieldType.string,
-    });
+    } as Field);
 
     /**
      * Rebuild rows with the added field.

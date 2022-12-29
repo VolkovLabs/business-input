@@ -1,36 +1,10 @@
 import { FieldType } from '@grafana/data';
-import { NullableString } from '../types';
-
-/**
- * Properties
- */
-interface Props {
-  /**
-   * Status
-   *
-   * @type {boolean}
-   */
-  ok: boolean;
-
-  /**
-   * Value
-   *
-   * @type {string | number | boolean | null}
-   */
-  value: string | number | boolean | null;
-
-  /**
-   * Error
-   *
-   * @type {string}
-   */
-  error?: string;
-}
+import { FieldResult, NullableString } from '../types';
 
 /**
  * Parses nullable strings into the given type.
  */
-export const verifyFieldValue = (value: NullableString, type: FieldType): Props => {
+export const verifyFieldValue = (value: NullableString, type: FieldType): FieldResult => {
   /**
    * Null is ok
    */
