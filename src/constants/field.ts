@@ -12,3 +12,8 @@ export const FieldTypes = [
   FieldType.time,
   FieldType.trace,
 ];
+
+/**
+ * Length to show Text Area instead of Input
+ */
+export const TextAreaLength = 100;

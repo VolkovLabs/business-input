@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.1.0 (IN PROGRESS)
+## 2.1.0 (2022-12-29)
 
 ### Breaking changes
 
@@ -12,9 +12,10 @@ Refactoring may introduce breaking changes. Please test before upgrading in Prod
 - Add "Static data source for Grafana | Mimic any data source | Tutorial and examples" video in README (#23)
 - Update to Grafana 9.3.2 (#24)
 - Refactoring and improving Test Coverage for data source (#25)
-- Update Field and Values Editors to field structure (#27)
+- Update Field and Values Editors to labels and fields structure (#27)
 - Remove Frame Reducer to simplify code (#28)
 - Refactoring frame, field utilities (#29)
+- Add Date Time Picker, Number and Text Area Inputs (#30)
 
 ## 2.0.0 (2022-11-01)
 

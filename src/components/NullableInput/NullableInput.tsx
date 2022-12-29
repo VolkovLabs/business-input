@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { FieldType } from '@grafana/data';
-import { Icon, InlineField, Input, useTheme2 } from '@grafana/ui';
+import { DateTime, dateTime, FieldType } from '@grafana/data';
+import { DateTimePicker, Icon, InlineField, Input, TextArea, useTheme2 } from '@grafana/ui';
+import { TextAreaLength } from '../../constants';
 import { getStyles } from '../../styles';
 import { NullableString } from '../../types';
 import { verifyFieldValue } from '../../utils';
@@ -53,35 +54,97 @@ export const NullableInput: React.FC<Props> = ({ onChange, value, type, label })
   const [valid, setValid] = useState(verifyFieldValue(value, type).ok);
   const [disabled, setDisabled] = useState(value === null);
 
-  const suffixElement = (
-    <Icon
-      className={styles.suffixElement}
-      name={disabled ? 'eye-slash' : 'eye'}
-      onClick={() => {
-        setDisabled(!disabled);
+  /**
+   * Disable Input
+   */
+  const disableInput = () => {
+    setDisabled(!disabled);
 
-        if (!disabled) {
-          setLastValue(value);
-          onChange(null);
-          setValid(true);
-        } else {
-          onChange(lastValue ?? null);
-          setValid(verifyFieldValue(value, type).ok);
-          setLastValue(null);
-        }
-      }}
-    />
+    /**
+     * Disable
+     */
+    if (!disabled) {
+      setLastValue(value);
+      onChange(null);
+      setValid(true);
+      return;
+    }
+
+    onChange(lastValue ?? null);
+    setValid(verifyFieldValue(value, type).ok);
+    setLastValue(null);
+  };
+
+  /**
+   * Icon
+   */
+  const suffixElement = (
+    <Icon className={styles.suffixElement} name={disabled ? 'eye-slash' : 'eye'} onClick={disableInput} />
   );
 
   /**
-   * Return
+   * Number
+   */
+  if (type === FieldType.number) {
+    return (
+      <InlineField invalid={!valid} disabled={disabled} label={label} grow>
+        <Input
+          onChange={(event) => {
+            setValid(verifyFieldValue(event.currentTarget.value, type).ok);
+            onChange(event.currentTarget.value);
+          }}
+          type="number"
+          value={disabled ? undefined : value ?? ''}
+          suffix={suffixElement}
+        />
+      </InlineField>
+    );
+  }
+
+  /**
+   * Date Time Picker for not disabled
+   */
+  if (type === FieldType.time && !disabled) {
+    return (
+      <InlineField invalid={!valid} disabled={disabled} label={label} grow>
+        <DateTimePicker
+          date={disabled ? undefined : dateTime(Number(value))}
+          onChange={(dateTime: DateTime) => {
+            const timestamp = dateTime.valueOf().toString();
+            setValid(verifyFieldValue(timestamp, type).ok);
+            onChange(timestamp);
+          }}
+        />
+      </InlineField>
+    );
+  }
+
+  /**
+   * Text Area
+   */
+  if (type === FieldType.string && value?.length && value.length > TextAreaLength) {
+    return (
+      <InlineField invalid={!valid} disabled={disabled} label={label} grow>
+        <TextArea
+          value={value}
+          onChange={(event) => {
+            setValid(verifyFieldValue(event.currentTarget.value, type).ok);
+            onChange(event.currentTarget.value);
+          }}
+        />
+      </InlineField>
+    );
+  }
+
+  /**
+   * String Input
    */
   return (
     <InlineField invalid={!valid} disabled={disabled} label={label} grow>
       <Input
-        onChange={(e) => {
-          setValid(verifyFieldValue(e.currentTarget.value, type).ok);
-          onChange(e.currentTarget.value);
+        onChange={(event) => {
+          setValid(verifyFieldValue(event.currentTarget.value, type).ok);
+          onChange(event.currentTarget.value);
         }}
         value={disabled ? 'null' : value ?? ''}
         suffix={suffixElement}

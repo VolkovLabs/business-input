@@ -1,28 +1,5 @@
-import { FieldType, PreferredVisualisationType } from '@grafana/data';
-
-/**
- * NullableString
- */
-export type NullableString = string | null;
-
-/**
- * Field
- */
-export interface Field {
-  /**
-   * Name
-   *
-   * @type {string}
-   */
-  name: string;
-
-  /**
-   * Type
-   *
-   * @type {FieldType}
-   */
-  type: FieldType;
-}
+import { Field, PreferredVisualisationType } from '@grafana/data';
+import { NullableString } from './field';
 
 /**
  * Data Frame Model is used as a intermediate frame state for easier
