@@ -3,7 +3,7 @@ import { FieldType } from '@grafana/data';
 import { Button, InlineField, InlineFieldRow } from '@grafana/ui';
 import { DataFrameModel, NullableString, StaticQuery } from '../../types';
 import { convertToDataFrame } from '../../utils';
-import { NullableInput } from '../NullableInput';
+import { ValueInput } from '../ValueInput';
 
 /**
  * Properties
@@ -141,7 +141,7 @@ export const ValuesEditor = ({ model, query, onChange, onRunQuery }: Props) => {
       {model.rows.map((row, i) => (
         <InlineFieldRow key={i}>
           {row.map((value: NullableString, index: number) => (
-            <NullableInput
+            <ValueInput
               key={index}
               value={value}
               type={model.fields[index].type}
