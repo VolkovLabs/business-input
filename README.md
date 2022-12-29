@@ -11,7 +11,7 @@
 
 ## Introduction
 
-The Static Data Source is a plugin for Grafana that allows to emulate your data to test and develop panels.
+The Static Data Source is a plugin for Grafana that allows to store and emulate your data.
 
 [![Static data source for Grafana | Mimic any data source | Tutorial and examples](https://raw.githubusercontent.com/volkovlabs/volkovlabs-static-datasource/main/img/video.png)](https://youtu.be/QOV8ECOUjWs)
 
