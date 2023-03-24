@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.2.0 (2023-03-24)
+
+### Features / Enhancements
+
+- Update CI and Release workflows (#32)
+
 ## 2.1.0 (2022-12-29)
 
 ### Breaking changes
