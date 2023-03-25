@@ -40,8 +40,10 @@ grafana-cli plugins install marcusolsson-static-datasource
 
 ## Documentation
 
-- [Provisioning](https://volkovlabs.io/plugins/volkovlabs-static-datasource/provisioning)
-- [Variables](https://volkovlabs.io/plugins/volkovlabs-static-datasource/variables)
+| Section                      | Description                                                  |
+| ---------------------------- | ------------------------------------------------------------ |
+| [Provisioning](https://volkovlabs.io/plugins/volkovlabs-static-datasource/provisioning/) | Demonstrates how to automatically provision the Data Source. |
+| [Variables](https://volkovlabs.io/plugins/volkovlabs-static-datasource/variables/)       | Demonstrates how to use variables.                           |
 
 ## Feedback
 
