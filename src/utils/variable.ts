@@ -1,10 +1,10 @@
-import { ArrayVector, DataFrame, FieldType } from '@grafana/data';
+import { ArrayVector, DataFrame, FieldType, ScopedVars } from '@grafana/data';
 import { getTemplateSrv } from '@grafana/runtime';
 
 /**
- * Interpolate variables in string fields.
+ * Interpolate variables in String fields.
  */
-export const interpolateVariables = (frame: DataFrame) => {
+export const interpolateVariables = (frame: DataFrame, scopedVars: ScopedVars) => {
   for (let i = 0; i < frame.fields.length; i++) {
     const field = frame.fields[i];
 
@@ -12,7 +12,9 @@ export const interpolateVariables = (frame: DataFrame) => {
      * Update String fields
      */
     if (field.type === FieldType.string) {
-      field.values = new ArrayVector(field.values.toArray().map((value) => getTemplateSrv().replace(value, {}, 'csv')));
+      field.values = new ArrayVector(
+        field.values.toArray().map((value) => getTemplateSrv().replace(value, scopedVars, 'csv'))
+      );
     }
 
     frame.fields[i] = field;

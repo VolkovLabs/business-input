@@ -29,7 +29,7 @@ export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptio
         .filter((target) => !target.hide)
         .filter((target) => target.frame)
         .map((target) => ({ ...toDataFrame(target.frame), refId: target.refId }))
-        .map(interpolateVariables),
+        .map((target) => interpolateVariables(target, options.scopedVars)),
     };
   }
 

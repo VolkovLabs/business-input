@@ -40,8 +40,19 @@ grafana-cli plugins install marcusolsson-static-datasource
 
 ## Documentation
 
-- [Provisioning](https://volkovlabs.io/plugins/volkovlabs-static-datasource/provisioning)
-- [Variables](https://volkovlabs.io/plugins/volkovlabs-static-datasource/variables)
+| Section                      | Description                                                  |
+| ---------------------------- | ------------------------------------------------------------ |
+| [Provisioning](https://volkovlabs.io/plugins/volkovlabs-static-datasource/provisioning/) | Demonstrates how to automatically provision the Data Source. |
+| [Variables](https://volkovlabs.io/plugins/volkovlabs-static-datasource/variables/)       | Demonstrates how to use variables.                           |
+
+### Panels
+
+| Section                          | Description                                                   |
+| -------------------------------- | ------------------------------------------------------------- |
+| [Base64 Image/PDF](https://volkovlabs.io/plugins/volkovlabs-static-datasource/panels/image) | Demonstrates how to use the data source with image panels.    |
+| [Logs](https://volkovlabs.io/plugins/volkovlabs-static-datasource/panels/logs)              | Demonstrates how to use the data source with logs panels.     |
+| [Node Graph](https://volkovlabs.io/plugins/volkovlabs-static-datasource/panels/graph)       | Demonstrates how to use the data source with graph panels.    |
+| [Pie Chart](https://volkovlabs.io/plugins/volkovlabs-static-datasource/panels/pie)          | Demonstrates how to use the data source with category panels. |
 
 ## Feedback
 

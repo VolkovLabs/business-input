@@ -1,11 +1,13 @@
 # Changelog
 
-## 2.2.0 (2023-03-24)
+## 2.2.0 (2023-03-27)
 
 ### Features / Enhancements
 
 - Update CI and Release workflows (#33)
 - Update to Grafana 9.4.7 (#34)
+- Update README with Documentation (#35)
+- Add Scoped Variables for Variables replacement (#35)
 
 ## 2.1.0 (2022-12-29)
 

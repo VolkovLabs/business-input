@@ -29,12 +29,8 @@
     },
     "screenshots": [
       {
-        "name": "Explore",
-        "path": "img/dark.png"
-      },
-      {
         "name": "Pie Chart",
-        "path": "img/light.png"
+        "path": "img/dark.png"
       }
     ],
     "updated": "%TODAY%",
