@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.2.0 (2023-03-25)
+## 2.2.0 (2023-03-27)
 
 ### Features / Enhancements
 
