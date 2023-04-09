@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.0 (IN PROGRESS)
+
+### Features / Enhancements
+
+- Refactor Types and Fields Editor (#36)
+
 ## 2.2.0 (2023-03-27)
 
 ### Features / Enhancements
