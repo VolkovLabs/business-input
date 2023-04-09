@@ -1,4 +1,5 @@
-import { DataFrameDTO, DataQuery, DataSourceJsonData } from '@grafana/data';
+import { DataFrameDTO, DataSourceJsonData } from '@grafana/data';
+import { DataQuery } from '@grafana/schema';
 
 /**
  * Datasource Options

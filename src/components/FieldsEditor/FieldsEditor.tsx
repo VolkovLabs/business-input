@@ -143,42 +143,40 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
 
   return (
     <>
-      {model.fields.map((field, i) => {
-        return (
-          <InlineFieldRow key={i}>
-            <InlineField label="Name" grow>
-              <Input
-                value={field.name}
-                onChange={(e) => {
-                  renameField(e.currentTarget.value, i);
-                }}
-              />
-            </InlineField>
+      {model.fields.map((field, i) => (
+        <InlineFieldRow key={i}>
+          <InlineField label="Name" grow>
+            <Input
+              value={field.name}
+              onChange={(e) => {
+                renameField(e.currentTarget.value, i);
+              }}
+            />
+          </InlineField>
 
-            <InlineField label="Type">
-              <Select
-                width={12}
-                value={field.type}
-                onChange={(e) => {
-                  changeFieldType(e.value as FieldType, i);
-                }}
-                options={FieldTypes.map((t) => ({
-                  label: t[0].toUpperCase() + t.substring(1),
-                  value: t,
-                }))}
-              />
-            </InlineField>
+          <InlineField label="Type">
+            <Select
+              width={12}
+              value={field.type}
+              onChange={(e) => {
+                changeFieldType(e.value as FieldType, i);
+              }}
+              options={FieldTypes.map((t) => ({
+                label: t[0].toUpperCase() + t.substring(1),
+                value: t,
+              }))}
+            />
+          </InlineField>
 
-            <InlineField>
-              <Button variant="secondary" title="Add" onClick={() => addField(i)} icon="plus"></Button>
-            </InlineField>
+          <InlineField>
+            <Button variant="secondary" title="Add" onClick={() => addField(i)} icon="plus"></Button>
+          </InlineField>
 
-            <InlineField>
-              <Button variant="destructive" title="Remove" onClick={() => removeField(i)} icon="trash-alt"></Button>
-            </InlineField>
-          </InlineFieldRow>
-        );
-      })}
+          <InlineField>
+            <Button variant="destructive" title="Remove" onClick={() => removeField(i)} icon="trash-alt"></Button>
+          </InlineField>
+        </InlineFieldRow>
+      ))}
     </>
   );
 };
