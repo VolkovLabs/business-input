@@ -4,7 +4,7 @@
 
 ### Features / Enhancements
 
-- Refactor Types and Fields Editor (#36)
+- Refactor Types and Fields Editor (#37)
 
 ## 2.2.0 (2023-03-27)
 
