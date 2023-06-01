@@ -1,5 +1,6 @@
-import { shallow } from 'enzyme';
 import React from 'react';
+import { screen, render } from '@testing-library/react';
+import { TestIds } from '../../constants';
 import { QueryEditor } from './QueryEditor';
 
 /**
@@ -13,8 +14,8 @@ describe('Editor', () => {
       return <QueryEditor {...restProps} />;
     };
 
-    const wrapper = shallow(getComponent({ query }));
-    const input = wrapper.find('Input');
-    expect(input.exists()).toBeTruthy();
+    render(getComponent({ query }));
+
+    expect(screen.getByTestId(TestIds.queryEditor.fieldName)).toBeInTheDocument();
   });
 });
