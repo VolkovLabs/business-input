@@ -1,6 +1,7 @@
-import { shallow } from 'enzyme';
 import React from 'react';
 import { FieldType } from '@grafana/data';
+import { render, screen } from '@testing-library/react';
+import { TestIds } from '../../constants';
 import { ValueInput } from './ValueInput';
 
 /**
@@ -12,8 +13,8 @@ describe('Input', () => {
       return <ValueInput {...restProps} />;
     };
 
-    const wrapper = shallow(getComponent({ value: '123', type: FieldType.string }));
-    const input = wrapper.find('Input');
-    expect(input.exists()).toBeTruthy();
+    render(getComponent({ value: '123', type: FieldType.string }));
+
+    expect(screen.getByTestId(TestIds.valueInput.fieldString)).toBeInTheDocument();
   });
 });

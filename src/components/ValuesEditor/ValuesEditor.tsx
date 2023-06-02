@@ -1,6 +1,7 @@
 import React from 'react';
 import { FieldType } from '@grafana/data';
 import { Button, InlineField, InlineFieldRow } from '@grafana/ui';
+import { TestIds } from '../../constants';
 import { DataFrameModel, NullableString, StaticQuery } from '../../types';
 import { convertToDataFrame } from '../../utils';
 import { ValueInput } from '../ValueInput';
@@ -125,7 +126,12 @@ export const ValuesEditor = ({ model, query, onChange, onRunQuery }: Props) => {
     return (
       <InlineFieldRow>
         <InlineField>
-          <Button variant="primary" onClick={() => addRow(0)} icon="plus">
+          <Button
+            variant="primary"
+            onClick={() => addRow(0)}
+            icon="plus"
+            data-testid={TestIds.valuesEditor.buttonAddRow}
+          >
             Add a Row
           </Button>
         </InlineField>

@@ -1,5 +1,6 @@
-import { shallow } from 'enzyme';
 import React from 'react';
+import { render, screen } from '@testing-library/react';
+import { TestIds } from '../../constants';
 import { ValuesEditor } from './ValuesEditor';
 
 /**
@@ -13,8 +14,8 @@ describe('Editor', () => {
       return <ValuesEditor {...restProps} query={query} />;
     };
 
-    const wrapper = shallow(getComponent({ model }));
-    const button = wrapper.find('Button');
-    expect(button.exists()).toBeTruthy();
+    render(getComponent({ model }));
+
+    expect(screen.getByTestId(TestIds.valuesEditor.buttonAddRow)).toBeInTheDocument();
   });
 });

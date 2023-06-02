@@ -1,6 +1,7 @@
 import React from 'react';
 import { CoreApp, PreferredVisualisationType, preferredVisualizationTypes, QueryEditorProps } from '@grafana/data';
 import { CollapsableSection, InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
+import { TestIds } from '../../constants';
 import { DataSource } from '../../datasource';
 import { StaticDataSourceOptions, StaticQuery } from '../../types';
 import { convertToDataFrame, prepareModel } from '../../utils';
@@ -48,7 +49,11 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query, app 
     <>
       <InlineFieldRow>
         <InlineField label="Name" tooltip="Name of the data frame" grow>
-          <Input onChange={(e) => renameFrame(e.currentTarget.value)} value={model.name} />
+          <Input
+            onChange={(e) => renameFrame(e.currentTarget.value)}
+            value={model.name}
+            data-testid={TestIds.queryEditor.fieldName}
+          />
         </InlineField>
 
         {app === CoreApp.Explore && (
