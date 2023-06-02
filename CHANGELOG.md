@@ -1,10 +1,11 @@
 # Changelog
 
-## 2.3.0 (IN PROGRESS)
+## 3.0.0 (IN PROGRESS)
 
 ### Features / Enhancements
 
 - Refactor Types and Fields Editor (#37)
+- Update tests with testing-library/react (#40)
 
 ## 2.2.0 (2023-03-27)
 

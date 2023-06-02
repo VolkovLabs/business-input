@@ -1,6 +1,6 @@
 import React from 'react';
 import { FieldType } from '@grafana/data';
-import { screen, render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { TestIds } from '../../constants';
 import { ValueInput } from './ValueInput';
 

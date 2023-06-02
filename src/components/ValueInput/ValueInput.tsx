@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { DateTime, dateTime, FieldType } from '@grafana/data';
 import { DateTimePicker, Icon, InlineField, Input, TextArea, useStyles2 } from '@grafana/ui';
-import { TextAreaLength, TestIds } from '../../constants';
+import { TestIds, TextAreaLength } from '../../constants';
 import { Styles } from '../../styles';
 import { NullableString } from '../../types';
 import { verifyFieldValue } from '../../utils';
