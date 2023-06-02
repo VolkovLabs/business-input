@@ -6,6 +6,7 @@
 
 - Refactor Types and Fields Editor (#37)
 - Update tests with testing-library/react (#40)
+- Update to Grafana 9.5.2 (#41)
 
 ## 2.2.0 (2023-03-27)
 
