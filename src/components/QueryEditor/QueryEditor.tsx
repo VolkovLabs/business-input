@@ -1,12 +1,19 @@
-import React from 'react';
-import { CoreApp, PreferredVisualisationType, preferredVisualizationTypes, QueryEditorProps } from '@grafana/data';
+import React, { useCallback } from 'react';
+import {
+  CoreApp,
+  PreferredVisualisationType,
+  preferredVisualizationTypes,
+  QueryEditorProps,
+  SelectableValue,
+} from '@grafana/data';
 import { CollapsableSection, InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
-import { TestIds } from '../../constants';
+import { TestIds, ValuesEditorOptions } from '../../constants';
 import { DataSource } from '../../datasource';
-import { StaticDataSourceOptions, StaticQuery } from '../../types';
+import { StaticDataSourceOptions, StaticQuery, ValuesEditor as ValuesEditorType } from '../../types';
 import { convertToDataFrame, prepareModel } from '../../utils';
 import { FieldsEditor } from '../FieldsEditor';
 import { ValuesEditor } from '../ValuesEditor';
+import { CustomValuesEditor } from '../CustomValuesEditor';
 
 /**
  * Properties
@@ -23,27 +30,61 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query, app 
    * Rename Frame
    */
   const renameFrame = (name: string) => {
-    model.name = name;
-
     /**
      * Change
      */
-    onChange({ ...query, frame: convertToDataFrame(model) });
+    onChange({ ...query, frame: convertToDataFrame({ ...model, name }) });
     onRunQuery();
   };
 
   /**
    * Set Preferred Visualization Type
    */
-  const setPreferredVisualizationType = (preferredVisualisationType?: PreferredVisualisationType) => {
-    model.meta = { ...model.meta, preferredVisualisationType: preferredVisualisationType };
+  const onChangePreferredVisualizationType = useCallback(
+    (event: SelectableValue<PreferredVisualisationType>) => {
+      /**
+       * Change
+       */
+      onChange({
+        ...query,
+        frame: convertToDataFrame({
+          ...model,
+          meta: {
+            ...model.meta,
+            preferredVisualisationType: event.value,
+          },
+        }),
+      });
+      onRunQuery();
+    },
+    [model, onChange, onRunQuery, query]
+  );
 
-    /**
-     * Change
-     */
-    onChange({ ...query, frame: convertToDataFrame(model) });
-    onRunQuery();
-  };
+  /**
+   * Set Value Editor
+   */
+  const onChangeValuesEditor = useCallback(
+    (event: SelectableValue<ValuesEditorType>) => {
+      /**
+       * Change
+       */
+      onChange({
+        ...query,
+        frame: convertToDataFrame({
+          ...model,
+          meta: {
+            ...model.meta,
+            custom: {
+              ...(model.meta?.custom || {}),
+              valuesEditor: event.value,
+            },
+          },
+        }),
+      });
+      onRunQuery();
+    },
+    [model, onChange, onRunQuery, query]
+  );
 
   return (
     <>
@@ -62,27 +103,45 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query, app 
               isClearable={true}
               width={17}
               value={model.meta?.preferredVisualisationType}
-              onChange={(e) => {
-                setPreferredVisualizationType(e ? (e.value as PreferredVisualisationType) : undefined);
-              }}
+              onChange={onChangePreferredVisualizationType}
               options={preferredVisualizationTypes
                 .map((t) => ({
                   label: t[0].toUpperCase() + t.substring(1),
                   value: t,
                 }))
                 .sort((a, b) => a.value.localeCompare(b.value))}
+              aria-label={TestIds.queryEditor.fieldPreferredVisualizationType}
             />
           </InlineField>
         )}
-      </InlineFieldRow>
 
+        <InlineField label="Values Editor">
+          <Select
+            width={17}
+            value={model.meta?.custom?.valuesEditor}
+            onChange={onChangeValuesEditor}
+            options={ValuesEditorOptions}
+            aria-label={TestIds.queryEditor.fieldValuesEditor}
+          />
+        </InlineField>
+      </InlineFieldRow>
       <CollapsableSection label="Fields" isOpen={true}>
         <FieldsEditor query={query} model={model} onChange={onChange} onRunQuery={onRunQuery} />
       </CollapsableSection>
 
-      <CollapsableSection label="Values" isOpen={true}>
-        <ValuesEditor query={query} model={model} onChange={onChange} onRunQuery={onRunQuery} />
-      </CollapsableSection>
+      {model.meta?.custom?.valuesEditor === ValuesEditorType.CUSTOM ? (
+        <CollapsableSection
+          label="Custom Values Editor"
+          isOpen={true}
+          contentDataTestId={TestIds.queryEditor.customValuesEditor}
+        >
+          <CustomValuesEditor query={query} model={model} onChange={onChange} onRunQuery={onRunQuery} />
+        </CollapsableSection>
+      ) : (
+        <CollapsableSection label="Values" isOpen={true} contentDataTestId={TestIds.queryEditor.valuesEditor}>
+          <ValuesEditor query={query} model={model} onChange={onChange} onRunQuery={onRunQuery} />
+        </CollapsableSection>
+      )}
     </>
   );
 };

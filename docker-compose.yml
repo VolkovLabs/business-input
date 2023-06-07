@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   grafana:
-    container_name: grafana
+    container_name: grafana-static-datasource
     image: ghcr.io/volkovlabs/app:latest
     ports:
       - 3000:3000/tcp
