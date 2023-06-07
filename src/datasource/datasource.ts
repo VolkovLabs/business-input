@@ -24,13 +24,13 @@ export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptio
   async runCode(code: string, frame: DataFrameDTO): Promise<DataFrameDTO> {
     const func = new Function('frame', code);
 
-    try {
-      const result = await func(frame);
-      return result ? result : frame;
-    } catch (e) {
-      console.error('Error code execution', e);
-      return frame;
+    const result = await func(frame);
+
+    if (!result) {
+      throw new Error('Custom code should return dataFrame');
     }
+
+    return result;
   }
 
   /**

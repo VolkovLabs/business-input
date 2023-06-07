@@ -129,7 +129,7 @@ describe('DataSource', () => {
       expect(valuesArray).toEqual(['111', '123']);
     });
 
-    it('Should return previous data frame if custom code returns nothing', async () => {
+    it('Should throw error if custom code returns nothing', async () => {
       const customCode = `
         return null
       `;
@@ -145,16 +145,14 @@ describe('DataSource', () => {
       });
       const targets = [{ refId: 'A' }, { refId: 'B', frame: customValuesDataFrame }];
 
-      const response = await dataSource.query({ targets, range } as any);
-      const frames = response.data;
-
-      const frame = frames.find((frame) => frame.refId === 'B');
-
-      const valuesArray = frame.fields[0].values.toArray();
-      expect(valuesArray).toEqual(['111']);
+      try {
+        await dataSource.query({ targets, range } as any);
+      } catch (e) {
+        expect(e).toBeInstanceOf(Error);
+      }
     });
 
-    it('Should return previous data frame if execution custom code throws error', async () => {
+    it('Should throw error above if execution custom code throws error', async () => {
       const customCode = `
         a.b()
       `;
@@ -170,13 +168,11 @@ describe('DataSource', () => {
       });
       const targets = [{ refId: 'A' }, { refId: 'B', frame: customValuesDataFrame }];
 
-      const response = await dataSource.query({ targets, range } as any);
-      const frames = response.data;
-
-      const frame = frames.find((frame) => frame.refId === 'B');
-
-      const valuesArray = frame.fields[0].values.toArray();
-      expect(valuesArray).toEqual(['111']);
+      try {
+        await dataSource.query({ targets, range } as any);
+      } catch (e) {
+        expect(e).toBeInstanceOf(Error);
+      }
     });
   });
 
