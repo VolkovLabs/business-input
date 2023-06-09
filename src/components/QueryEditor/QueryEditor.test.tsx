@@ -1,5 +1,5 @@
 import React from 'react';
-import { CoreApp } from '@grafana/data';
+import { CoreApp, DataSourcePluginContextProvider } from '@grafana/data';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { TestIds } from '../../constants';
 import { ValuesEditor } from '../../types';
@@ -55,9 +55,14 @@ describe('Query Editor', () => {
   /**
    * Get Tested Component
    * @param restProps
+   * @param contextValue
    */
-  const getComponent = ({ ...restProps }: any) => {
-    return <QueryEditor onChange={onChange} onRunQuery={onRunQuery} {...restProps} />;
+  const getComponent = ({ ...restProps }: any, contextValue = { jsonData: { codeEditorEnabled: true } }) => {
+    return (
+      <DataSourcePluginContextProvider instanceSettings={contextValue as any}>
+        <QueryEditor onChange={onChange} onRunQuery={onRunQuery} {...restProps} />
+      </DataSourcePluginContextProvider>
+    );
   };
 
   it('Should rename query', () => {
@@ -133,6 +138,17 @@ describe('Query Editor', () => {
      * Check if CustomValuesEditor is rendered
      */
     expect(screen.getByTestId(TestIds.queryEditor.customValuesEditor)).toBeInTheDocument();
+  });
+
+  it('Should not allow to select values editor if disabled', () => {
+    let currentQuery = query;
+    const onChange = jest.fn((query) => (currentQuery = query));
+    render(getComponent({ query: currentQuery, onChange }, { jsonData: { codeEditorEnabled: false } }));
+
+    /**
+     * Check if Select values editor is not rendered
+     */
+    expect(screen.queryByLabelText(TestIds.queryEditor.fieldValuesEditor)).not.toBeInTheDocument();
   });
 
   it('Should render fields if frame is not specified', () => {

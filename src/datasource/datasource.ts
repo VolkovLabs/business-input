@@ -14,11 +14,14 @@ import { interpolateVariables } from '../utils';
  * DataSource returns the data frame returned in the query model.
  */
 export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptions> {
+  private readonly codeEditorEnabled: boolean;
   /**
    * Constructor
    */
   constructor(instanceSettings: DataSourceInstanceSettings<StaticDataSourceOptions>) {
     super(instanceSettings);
+
+    this.codeEditorEnabled = instanceSettings.jsonData.codeEditorEnabled || false;
   }
 
   async runCode(code: string, frame: DataFrameDTO): Promise<DataFrameDTO> {
@@ -44,7 +47,7 @@ export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptio
         /**
          * Execute custom code for Custom Values Editor
          */
-        if (target.frame.meta?.custom?.valuesEditor === ValuesEditor.CUSTOM) {
+        if (this.codeEditorEnabled && target.frame.meta?.custom?.valuesEditor === ValuesEditor.CUSTOM) {
           const frame = await this.runCode(target.frame.meta?.custom?.customCode, target.frame);
           return { ...toDataFrame(frame), refId: target.refId };
         }

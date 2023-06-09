@@ -5,6 +5,9 @@ import {
   preferredVisualizationTypes,
   QueryEditorProps,
   SelectableValue,
+  usePluginContext,
+  isDataSourcePluginContext,
+  DataSourceInstanceSettings,
 } from '@grafana/data';
 import { CollapsableSection, InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
 import { TestIds, ValuesEditorOptions } from '../../constants';
@@ -23,9 +26,16 @@ type Props = QueryEditorProps<DataSource, StaticQuery, StaticDataSourceOptions>;
 /**
  * Query Editor
  */
-export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query, app }) => {
+export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query, app, datasource }) => {
   const model = prepareModel(query.frame ?? { fields: [] });
+  const pluginContext = usePluginContext();
 
+  let isCodeEditorEnabled = false;
+  if (isDataSourcePluginContext(pluginContext)) {
+    isCodeEditorEnabled =
+      (pluginContext.instanceSettings as DataSourceInstanceSettings<StaticDataSourceOptions>).jsonData
+        .codeEditorEnabled || false;
+  }
   /**
    * Rename Frame
    */
@@ -115,21 +125,23 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query, app 
           </InlineField>
         )}
 
-        <InlineField label="Values Editor">
-          <Select
-            width={17}
-            value={model.meta?.custom?.valuesEditor}
-            onChange={onChangeValuesEditor}
-            options={ValuesEditorOptions}
-            aria-label={TestIds.queryEditor.fieldValuesEditor}
-          />
-        </InlineField>
+        {isCodeEditorEnabled && (
+          <InlineField label="Values Editor">
+            <Select
+              width={17}
+              value={model.meta?.custom?.valuesEditor}
+              onChange={onChangeValuesEditor}
+              options={ValuesEditorOptions}
+              aria-label={TestIds.queryEditor.fieldValuesEditor}
+            />
+          </InlineField>
+        )}
       </InlineFieldRow>
       <CollapsableSection label="Fields" isOpen={true}>
         <FieldsEditor query={query} model={model} onChange={onChange} onRunQuery={onRunQuery} />
       </CollapsableSection>
 
-      {model.meta?.custom?.valuesEditor === ValuesEditorType.CUSTOM ? (
+      {model.meta?.custom?.valuesEditor === ValuesEditorType.CUSTOM && isCodeEditorEnabled ? (
         <CollapsableSection
           label="Custom Values Editor"
           isOpen={true}

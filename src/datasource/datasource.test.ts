@@ -15,7 +15,9 @@ jest.mock('@grafana/runtime', () => ({
  * Data Source
  */
 describe('DataSource', () => {
-  const instanceSettings: any = {};
+  const instanceSettings: any = {
+    jsonData: {},
+  };
   const dataSource = new DataSource(instanceSettings);
 
   /**
@@ -88,6 +90,7 @@ describe('DataSource', () => {
     });
 
     it('Should execute code if custom values editor is used', async () => {
+      const dataSource = new DataSource({ jsonData: { codeEditorEnabled: true } } as any);
       const customCode = `
         return {
           ...frame,
@@ -130,6 +133,7 @@ describe('DataSource', () => {
     });
 
     it('Should throw error if custom code returns nothing', async () => {
+      const dataSource = new DataSource({ jsonData: { codeEditorEnabled: true } } as any);
       const customCode = `
         return null
       `;
@@ -147,12 +151,17 @@ describe('DataSource', () => {
 
       try {
         await dataSource.query({ targets, range } as any);
-      } catch (e) {
-        expect(e).toBeInstanceOf(Error);
+        /**
+         * Fail test if error is not thrown
+         */
+        expect(false).toBeTruthy();
+      } catch (e: any) {
+        expect(e.message).toEqual('Custom code should return dataFrame');
       }
     });
 
     it('Should throw error above if execution custom code throws error', async () => {
+      const dataSource = new DataSource({ jsonData: { codeEditorEnabled: true } } as any);
       const customCode = `
         a.b()
       `;
@@ -170,9 +179,57 @@ describe('DataSource', () => {
 
       try {
         await dataSource.query({ targets, range } as any);
-      } catch (e) {
-        expect(e).toBeInstanceOf(Error);
+
+        /**
+         * Fail test if error is not thrown
+         */
+        expect(false).toBeTruthy();
+      } catch (e: any) {
+        expect(e.message).toEqual('a is not defined');
       }
+    });
+
+    it('Should not execute custom code if code editor disabled', async () => {
+      const dataSource = new DataSource({ jsonData: { codeEditorEnabled: false } } as any);
+      const customCode = `
+        return {
+          ...frame,
+          fields: frame.fields.map((field) => ({
+            ...field,
+            values: ['111', '123'],
+          }))
+        }
+      `;
+      const customValuesDataFrame = toDataFrame({
+        meta: { custom: { valuesEditor: ValuesEditor.CUSTOM, customCode } },
+        fields: [
+          {
+            type: FieldType.string,
+            name: 'name',
+            values: ['111'],
+          },
+        ],
+      });
+      const targets = [{ refId: 'A' }, { refId: 'B', frame: customValuesDataFrame }];
+
+      const response = await dataSource.query({ targets, range } as any);
+      const frames = response.data;
+
+      const frame = frames.find((frame) => frame.refId === 'B');
+
+      expect(frame).toEqual(
+        expect.objectContaining({
+          fields: expect.arrayContaining([
+            expect.objectContaining({
+              name: 'name',
+              type: FieldType.string,
+            }),
+          ]),
+        })
+      );
+
+      const valuesArray = frame.fields[0].values.toArray();
+      expect(valuesArray).toEqual(['111']);
     });
   });
 
