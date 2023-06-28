@@ -157,15 +157,15 @@ export const ValuesEditor = ({ model, query, onChange, onRunQuery }: Props) => {
           ))}
 
           <InlineField>
-            <Button variant="secondary" title="Copy" onClick={() => duplicateRow(i)} icon="copy"></Button>
+            <Button variant="secondary" title="Copy" onClick={() => duplicateRow(i)} icon="copy" />
           </InlineField>
 
           <InlineField>
-            <Button variant="secondary" title="Add" onClick={() => addRow(i)} icon="plus"></Button>
+            <Button variant="secondary" title="Add" onClick={() => addRow(i)} icon="plus" />
           </InlineField>
 
           <InlineField>
-            <Button variant="destructive" title="Remove" onClick={() => removeRow(i)} icon="trash-alt"></Button>
+            <Button variant="destructive" title="Remove" onClick={() => removeRow(i)} icon="trash-alt" />
           </InlineField>
         </InlineFieldRow>
       ))}

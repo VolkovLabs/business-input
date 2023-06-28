@@ -13,6 +13,7 @@ export const convertToDataFrame = (model: DataFrameModel): DataFrameDTO => {
     name: model.name,
     meta: {
       preferredVisualisationType: model.meta?.preferredVisualisationType,
+      custom: model.meta?.custom,
     },
     fields: model.fields.map((field) => ({ name: field.name, type: field.type })),
   });
@@ -53,6 +54,7 @@ export const prepareModel = (frame: DataFrameDTO): DataFrameModel => {
     name: frame.name,
     meta: {
       preferredVisualisationType: frame.meta?.preferredVisualisationType,
+      custom: frame.meta?.custom,
     },
     fields,
     rows,

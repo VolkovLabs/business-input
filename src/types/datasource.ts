@@ -4,7 +4,14 @@ import { DataQuery } from '@grafana/schema';
 /**
  * Datasource Options
  */
-export interface StaticDataSourceOptions extends DataSourceJsonData {}
+export interface StaticDataSourceOptions extends DataSourceJsonData {
+  /**
+   * Code Editor Enabled
+   *
+   * @type{boolean}
+   */
+  codeEditorEnabled?: boolean;
+}
 
 /**
  * Query

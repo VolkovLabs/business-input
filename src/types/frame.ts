@@ -2,6 +2,14 @@ import { Field, PreferredVisualisationType } from '@grafana/data';
 import { NullableString } from './field';
 
 /**
+ * Values Editor
+ */
+export enum ValuesEditor {
+  MANUAL = 'manual',
+  CUSTOM = 'custom',
+}
+
+/**
  * Data Frame Model is used as a intermediate frame state for easier
  * manipulation and validation.
  */
@@ -20,6 +28,10 @@ export interface DataFrameModel {
    */
   meta?: {
     preferredVisualisationType?: PreferredVisualisationType;
+    custom?: {
+      valuesEditor?: ValuesEditor;
+      customCode?: string;
+    };
   };
 
   /**
