@@ -1,22 +1,22 @@
 import React, { useCallback } from 'react';
 import {
   CoreApp,
+  DataSourceInstanceSettings,
+  isDataSourcePluginContext,
   PreferredVisualisationType,
   preferredVisualizationTypes,
   QueryEditorProps,
   SelectableValue,
   usePluginContext,
-  isDataSourcePluginContext,
-  DataSourceInstanceSettings,
 } from '@grafana/data';
 import { CollapsableSection, InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
 import { TestIds, ValuesEditorOptions } from '../../constants';
 import { DataSource } from '../../datasource';
 import { StaticDataSourceOptions, StaticQuery, ValuesEditor as ValuesEditorType } from '../../types';
 import { convertToDataFrame, prepareModel } from '../../utils';
+import { CustomValuesEditor } from '../CustomValuesEditor';
 import { FieldsEditor } from '../FieldsEditor';
 import { ValuesEditor } from '../ValuesEditor';
-import { CustomValuesEditor } from '../CustomValuesEditor';
 
 /**
  * Properties

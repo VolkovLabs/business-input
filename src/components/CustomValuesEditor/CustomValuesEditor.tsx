@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
-import { InlineField, CodeEditor, CodeEditorSuggestionItem, CodeEditorSuggestionItemKind } from '@grafana/ui';
 import { getTemplateSrv } from '@grafana/runtime';
+import { CodeEditor, CodeEditorSuggestionItem, CodeEditorSuggestionItemKind, InlineField } from '@grafana/ui';
 import { CodeLanguage, CustomValuesEditorSuggestions, TestIds } from '../../constants';
 import { DataFrameModel, StaticQuery } from '../../types';
 import { convertToDataFrame } from '../../utils';

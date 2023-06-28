@@ -1,4 +1,4 @@
-import { dateTime, toDataFrame, FieldType } from '@grafana/data';
+import { dateTime, FieldType, toDataFrame } from '@grafana/data';
 import { getTemplateSrv } from '@grafana/runtime';
 import { DataSourceTestStatus } from '../constants';
 import { ValuesEditor } from '../types';

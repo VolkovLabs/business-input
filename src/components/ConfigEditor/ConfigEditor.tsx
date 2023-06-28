@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { DataSourcePluginOptionsEditorProps } from '@grafana/data';
-import { FieldSet, InlineFieldRow, InlineField, RadioButtonGroup } from '@grafana/ui';
-import { TestIds, CodeEditorEnabledOptions } from '../../constants';
+import { FieldSet, InlineField, InlineFieldRow, RadioButtonGroup } from '@grafana/ui';
+import { CodeEditorEnabledOptions, TestIds } from '../../constants';
 import { StaticDataSourceOptions } from '../../types';
 
 /**

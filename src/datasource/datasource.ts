@@ -1,10 +1,10 @@
 import {
+  DataFrameDTO,
   DataQueryRequest,
   DataQueryResponse,
   DataSourceApi,
   DataSourceInstanceSettings,
   toDataFrame,
-  DataFrameDTO,
 } from '@grafana/data';
 import { DataSourceTestStatus } from '../constants';
 import { StaticDataSourceOptions, StaticQuery, ValuesEditor } from '../types';
@@ -15,6 +15,7 @@ import { interpolateVariables } from '../utils';
  */
 export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptions> {
   private readonly codeEditorEnabled: boolean;
+
   /**
    * Constructor
    */
@@ -24,13 +25,18 @@ export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptio
     this.codeEditorEnabled = instanceSettings.jsonData.codeEditorEnabled || false;
   }
 
+  /**
+   * Run Code
+   */
   async runCode(code: string, frame: DataFrameDTO): Promise<DataFrameDTO> {
     const func = new Function('frame', code);
-
     const result = await func(frame);
 
+    /**
+     * Error
+     */
     if (!result) {
-      throw new Error('Custom code should return dataFrame');
+      throw new Error('Custom code should return data frame');
     }
 
     return result;

@@ -10,6 +10,7 @@
 - Migrate to Plugin Tools 1.5.2 (#42)
 - Update to Node 18 and npm (#42)
 - Add E2E Cypress testing (#43)
+- Add Custom Values Editor (#44)
 
 ## 2.2.0 (2023-03-27)
 
