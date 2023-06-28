@@ -129,7 +129,7 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query, app,
           <InlineField label="Values Editor">
             <Select
               width={17}
-              value={model.meta?.custom?.valuesEditor}
+              value={model.meta?.custom?.valuesEditor || ValuesEditorType.MANUAL}
               onChange={onChangeValuesEditor}
               options={ValuesEditorOptions}
               aria-label={TestIds.queryEditor.fieldValuesEditor}

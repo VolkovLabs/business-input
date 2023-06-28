@@ -156,7 +156,7 @@ describe('DataSource', () => {
          */
         expect(false).toBeTruthy();
       } catch (e: any) {
-        expect(e.message).toEqual('Custom code should return dataFrame');
+        expect(e.message).toEqual('Custom code should return data frame');
       }
     });
 
