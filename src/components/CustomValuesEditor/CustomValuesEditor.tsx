@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { getTemplateSrv } from '@grafana/runtime';
 import { CodeEditor, CodeEditorSuggestionItem, CodeEditorSuggestionItemKind, InlineField } from '@grafana/ui';
-import { CodeLanguage, CustomValuesEditorSuggestions, TestIds } from '../../constants';
+import { CodeLanguage, CustomCode, CustomValuesEditorSuggestions, TestIds } from '../../constants';
 import { DataFrameModel, StaticQuery } from '../../types';
 import { convertToDataFrame } from '../../utils';
 
@@ -102,7 +102,7 @@ export const CustomValuesEditor = ({ model, query, onChange, onRunQuery }: Props
     <>
       <InlineField grow={true} data-testid={TestIds.customValuesEditor.root}>
         <CodeEditor
-          value={model?.meta?.custom?.customCode || ''}
+          value={model?.meta?.custom?.customCode || CustomCode}
           language={CodeLanguage.JAVASCRIPT}
           height={300}
           monacoOptions={{ formatOnPaste: true, formatOnType: true }}
