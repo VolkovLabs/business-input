@@ -143,7 +143,7 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query, app,
 
       {model.meta?.custom?.valuesEditor === ValuesEditorType.CUSTOM && isCodeEditorEnabled ? (
         <CollapsableSection
-          label="Custom Values Editor"
+          label="JavaScript Values Editor"
           isOpen={true}
           contentDataTestId={TestIds.queryEditor.customValuesEditor}
         >

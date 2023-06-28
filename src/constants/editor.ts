@@ -23,7 +23,7 @@ export const ValuesEditorOptions = [
     value: ValuesEditor.MANUAL,
   },
   {
-    label: 'Custom',
+    label: 'JavaScript',
     value: ValuesEditor.CUSTOM,
   },
 ];
@@ -36,7 +36,7 @@ export const enum CodeLanguage {
 }
 
 /**
- * Custom Values Editor Suggestions
+ * Suggestions
  */
 export const CustomValuesEditorSuggestions: CodeEditorSuggestionItem[] = [
   {
