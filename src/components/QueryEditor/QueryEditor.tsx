@@ -26,16 +26,20 @@ type Props = QueryEditorProps<DataSource, StaticQuery, StaticDataSourceOptions>;
 /**
  * Query Editor
  */
-export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query, app, datasource }) => {
+export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query, app }) => {
   const model = prepareModel(query.frame ?? { fields: [] });
   const pluginContext = usePluginContext();
 
+  /**
+   * Check Code Editor is Enabled
+   */
   let isCodeEditorEnabled = false;
   if (isDataSourcePluginContext(pluginContext)) {
     isCodeEditorEnabled =
       (pluginContext.instanceSettings as DataSourceInstanceSettings<StaticDataSourceOptions>).jsonData
         .codeEditorEnabled || false;
   }
+
   /**
    * Rename Frame
    */
