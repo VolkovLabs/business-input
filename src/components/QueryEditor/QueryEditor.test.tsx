@@ -60,7 +60,12 @@ describe('Query Editor', () => {
   const getComponent = ({ ...restProps }: any, contextValue = { jsonData: { codeEditorEnabled: true } }) => {
     return (
       <DataSourcePluginContextProvider instanceSettings={contextValue as any}>
-        <QueryEditor onChange={onChange} onRunQuery={onRunQuery} {...restProps} />
+        <QueryEditor
+          onChange={onChange}
+          onRunQuery={onRunQuery}
+          datasource={{ codeEditorEnabled: true }}
+          {...restProps}
+        />
       </DataSourcePluginContextProvider>
     );
   };
@@ -143,7 +148,7 @@ describe('Query Editor', () => {
   it('Should not allow to select values editor if disabled', () => {
     let currentQuery = query;
     const onChange = jest.fn((query) => (currentQuery = query));
-    render(getComponent({ query: currentQuery, onChange }, { jsonData: { codeEditorEnabled: false } }));
+    render(getComponent({ query: currentQuery, onChange, datasource: {} }));
 
     /**
      * Check if Select values editor is not rendered
