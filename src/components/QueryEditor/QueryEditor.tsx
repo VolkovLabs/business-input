@@ -1,13 +1,10 @@
 import React, { useCallback } from 'react';
 import {
   CoreApp,
-  DataSourceInstanceSettings,
-  isDataSourcePluginContext,
   PreferredVisualisationType,
   preferredVisualizationTypes,
   QueryEditorProps,
   SelectableValue,
-  usePluginContext,
 } from '@grafana/data';
 import { CollapsableSection, InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
 import { TestIds, ValuesEditorOptions } from '../../constants';
@@ -26,19 +23,8 @@ type Props = QueryEditorProps<DataSource, StaticQuery, StaticDataSourceOptions>;
 /**
  * Query Editor
  */
-export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query, app }) => {
+export const QueryEditor: React.FC<Props> = ({ datasource, onChange, onRunQuery, query, app }) => {
   const model = prepareModel(query.frame ?? { fields: [] });
-  const pluginContext = usePluginContext();
-
-  /**
-   * Check Code Editor is Enabled
-   */
-  let isCodeEditorEnabled = false;
-  if (isDataSourcePluginContext(pluginContext)) {
-    isCodeEditorEnabled =
-      (pluginContext.instanceSettings as DataSourceInstanceSettings<StaticDataSourceOptions>).jsonData
-        .codeEditorEnabled || false;
-  }
 
   /**
    * Rename Frame
@@ -129,7 +115,7 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query, app 
           </InlineField>
         )}
 
-        {isCodeEditorEnabled && (
+        {datasource.codeEditorEnabled && (
           <InlineField label="Values Editor">
             <Select
               width={17}
@@ -145,7 +131,7 @@ export const QueryEditor: React.FC<Props> = ({ onChange, onRunQuery, query, app 
         <FieldsEditor query={query} model={model} onChange={onChange} onRunQuery={onRunQuery} />
       </CollapsableSection>
 
-      {model.meta?.custom?.valuesEditor === ValuesEditorType.CUSTOM && isCodeEditorEnabled ? (
+      {model.meta?.custom?.valuesEditor === ValuesEditorType.CUSTOM && datasource.codeEditorEnabled ? (
         <CollapsableSection
           label="JavaScript Values Editor"
           isOpen={true}

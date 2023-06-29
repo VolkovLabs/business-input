@@ -2,7 +2,7 @@
 
 ![Screenshot](https://github.com/volkovlabs/volkovlabs-static-datasource/raw/main/src/img/dark.png)
 
-![Grafana 9](https://img.shields.io/badge/Grafana-9.5.2-orange)
+![Grafana 10](https://img.shields.io/badge/Grafana-10.0.0-orange)
 ![CI](https://github.com/volkovlabs/volkovlabs-static-datasource/workflows/CI/badge.svg)
 ![E2E](https://github.com/volkovlabs/volkovlabs-static-datasource/workflows/E2E/badge.svg)
 [![codecov](https://codecov.io/gh/VolkovLabs/volkovlabs-static-datasource/branch/main/graph/badge.svg?token=0m6f0ktUar)](https://codecov.io/gh/VolkovLabs/volkovlabs-static-datasource)
@@ -16,8 +16,9 @@ The Static Data Source is a plugin for Grafana that allows storing and emulating
 
 ## Requirements
 
-- **Grafana 8.5+**, **Grafana 9.0+** is required for major version 2.
-- **Grafana 7.3+** is required for major version 1.
+- **Grafana 9** and **Grafana 10** are required for major version 3.
+- **Grafana 8.5** and **Grafana 9** are required for major version 2.
+- **Grafana 7.3** is required for major version 1.
 
 ## Getting Started
 
@@ -45,15 +46,9 @@ grafana-cli plugins install marcusolsson-static-datasource
 | ---------------------------- | ------------------------------------------------------------ |
 | [Provisioning](https://volkovlabs.io/plugins/volkovlabs-static-datasource/provisioning/) | Demonstrates how to automatically provision the Data Source. |
 | [Variables](https://volkovlabs.io/plugins/volkovlabs-static-datasource/variables/)       | Demonstrates how to use variables.                           |
-
-### Panels
-
-| Section                          | Description                                                   |
-| -------------------------------- | ------------------------------------------------------------- |
-| [Base64 Image/PDF](https://volkovlabs.io/plugins/volkovlabs-static-datasource/panels/image) | Demonstrates how to use the data source with image panels.    |
-| [Logs](https://volkovlabs.io/plugins/volkovlabs-static-datasource/panels/logs)              | Demonstrates how to use the data source with logs panels.     |
-| [Node Graph](https://volkovlabs.io/plugins/volkovlabs-static-datasource/panels/graph)       | Demonstrates how to use the data source with graph panels.    |
-| [Pie Chart](https://volkovlabs.io/plugins/volkovlabs-static-datasource/panels/pie)          | Demonstrates how to use the data source with category panels. |
+| [Panels](https://volkovlabs.io/plugins/volkovlabs-static-datasource/panels/)             | Demonstrates how to use data source with panels.             |
+| [Variables](https://volkovlabs.io/plugins/volkovlabs-static-datasource/variables/)       | Demonstrates how to use variables.                           |
+| [Release Notes](https://volkovlabs.io/plugins/volkovlabs-static-datasource/release/)     | Stay up to date with the latest features and updates.        |
 
 ## Feedback
 

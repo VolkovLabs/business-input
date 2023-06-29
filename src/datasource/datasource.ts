@@ -14,7 +14,7 @@ import { interpolateVariables } from '../utils';
  * DataSource returns the data frame returned in the query model.
  */
 export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptions> {
-  private readonly codeEditorEnabled: boolean;
+  readonly codeEditorEnabled: boolean;
 
   /**
    * Constructor

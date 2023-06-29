@@ -31,7 +31,11 @@ export const ConfigEditor: React.FC<Props> = ({ options, onOptionsChange }) => {
   return (
     <FieldSet data-testid={TestIds.configEditor.root}>
       <InlineFieldRow>
-        <InlineField label="Code Editor" labelWidth={14} data-testid={TestIds.configEditor.codeEditorEnabledContainer}>
+        <InlineField
+          label="JavaScript Values Editor"
+          labelWidth={20}
+          data-testid={TestIds.configEditor.codeEditorEnabledContainer}
+        >
           <RadioButtonGroup
             options={CodeEditorEnabledOptions}
             value={options.jsonData.codeEditorEnabled || false}
