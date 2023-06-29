@@ -10,12 +10,12 @@
 
 - Refactor Types and Fields Editor (#37)
 - Update tests with testing-library/react (#40)
-- Update to Grafana 10.0.0 (#41, #45)
+- Update to Grafana 10.0.0 (#41, #46)
 - Migrate to Plugin Tools 1.5.2 (#42)
 - Update to Node 18 and npm (#42)
 - Add E2E Cypress testing (#43)
 - Add JavaScript Values Editor (#44)
-- Remove Grafana 8.5 support (#45)
+- Remove Grafana 8.5 support (#46)
 
 ## 2.2.0 (2023-03-27)
 
