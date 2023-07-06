@@ -111,9 +111,9 @@ export const ValueInput: React.FC<Props> = ({ onChange, value, type, label }) =>
    */
   if (type === FieldType.time && !disabled) {
     return (
-      <InlineField invalid={!valid} disabled={disabled} label={label} grow>
+      <InlineField invalid={!valid} label={label} grow>
         <DateTimePicker
-          date={disabled ? undefined : dateTime(Number(value))}
+          date={dateTime(Number(value))}
           onChange={(dateTime: DateTime) => {
             const timestamp = dateTime.valueOf().toString();
             setValid(verifyFieldValue(timestamp, type).ok);
