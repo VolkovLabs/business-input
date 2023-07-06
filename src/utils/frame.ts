@@ -45,9 +45,9 @@ export const prepareModel = (frame: DataFrameDTO): DataFrameModel => {
   if (frame.fields.length !== 0) {
     fields = frame.fields.map((field) => ({ name: field.name, type: field.type ?? FieldType.string }));
 
-    rows = Array.from({ length: frame.fields[0].values?.length ?? 0 }).map((row, i) =>
-      frame.fields.map((field: any) => (field.values as any[])[i]?.toString() ?? null)
-    );
+    rows = Array.from({ length: frame.fields[0].values?.length ?? 0 }).map((row, i) => {
+      return frame.fields.map((field: any) => (field.values as any[])[i]?.toString() ?? null);
+    });
   }
 
   return {
