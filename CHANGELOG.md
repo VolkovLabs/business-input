@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.1.0 (IN PROGRESS)
+
+### Features / Enhancements
+
+- Increase tests coverage (#47)
+
 ## 3.0.0 (2023-06-28)
 
 ### Breaking changes
