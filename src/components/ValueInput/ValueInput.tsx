@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { DateTime, dateTime, FieldType } from '@grafana/data';
 import { DateTimePicker, Icon, InlineField, Input, TextArea, useStyles2 } from '@grafana/ui';
 import { TestIds, TextAreaLength } from '../../constants';
@@ -56,7 +56,7 @@ export const ValueInput: React.FC<Props> = ({ onChange, value, type, label }) =>
   /**
    * Disable Input
    */
-  const disableInput = () => {
+  const disableInput = useCallback(() => {
     setDisabled(!disabled);
 
     /**
@@ -72,13 +72,18 @@ export const ValueInput: React.FC<Props> = ({ onChange, value, type, label }) =>
     onChange(lastValue ?? null);
     setValid(verifyFieldValue(value, type).ok);
     setLastValue(null);
-  };
+  }, [disabled, lastValue, onChange, type, value]);
 
   /**
    * Icon
    */
   const suffixElement = (
-    <Icon className={styles.suffixElement} name={disabled ? 'eye-slash' : 'eye'} onClick={disableInput} />
+    <Icon
+      className={styles.suffixElement}
+      name={disabled ? 'eye-slash' : 'eye'}
+      data-testid={TestIds.valueInput.iconDisable}
+      onClick={disableInput}
+    />
   );
 
   /**
@@ -95,6 +100,7 @@ export const ValueInput: React.FC<Props> = ({ onChange, value, type, label }) =>
           type="number"
           value={disabled ? undefined : value ?? ''}
           suffix={suffixElement}
+          data-testid={TestIds.valueInput.fieldNumber}
         />
       </InlineField>
     );
@@ -113,6 +119,7 @@ export const ValueInput: React.FC<Props> = ({ onChange, value, type, label }) =>
             setValid(verifyFieldValue(timestamp, type).ok);
             onChange(timestamp);
           }}
+          data-testid={TestIds.valueInput.fieldDateTime}
         />
       </InlineField>
     );
@@ -130,6 +137,7 @@ export const ValueInput: React.FC<Props> = ({ onChange, value, type, label }) =>
             setValid(verifyFieldValue(event.currentTarget.value, type).ok);
             onChange(event.currentTarget.value);
           }}
+          data-testid={TestIds.valueInput.fieldTextarea}
         />
       </InlineField>
     );

@@ -18,6 +18,10 @@ export const TestIds = {
   },
   valueInput: {
     fieldString: 'data-testid value-input field-string',
+    fieldTextarea: 'data-testid value-input field-textarea',
+    fieldDateTime: 'data-testid value-input field-date-time',
+    fieldNumber: 'data-testid value-input field-number',
+    iconDisable: 'data-testid value-input icon-disable',
   },
   valuesEditor: {
     buttonAddRow: 'data-testid values-editor button-add-row',
