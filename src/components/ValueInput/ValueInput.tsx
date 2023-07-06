@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { DateTime, dateTime, FieldType } from '@grafana/data';
 import { DateTimePicker, Icon, InlineField, Input, TextArea, useStyles2 } from '@grafana/ui';
 import { TestIds, TextAreaLength } from '../../constants';

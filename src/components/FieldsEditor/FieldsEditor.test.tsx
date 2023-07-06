@@ -1,6 +1,6 @@
 import React from 'react';
 import { FieldType } from '@grafana/data';
-import { render, screen, within, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import { TestIds } from '../../constants';
 import { FieldsEditor } from './FieldsEditor';
 
