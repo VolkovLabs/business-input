@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Field, FieldType } from '@grafana/data';
 import { Button, InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
 import { FieldTypes, TestIds } from '../../constants';
@@ -41,90 +41,150 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
   /**
    * Add Field
    */
-  const addField = (index: number) => {
-    /**
-     * Insert a field after the current position.
-     */
-    model.fields.splice(index + 1, 0, {
-      name: '',
-      type: FieldType.string,
-    } as Field);
+  const addField = useCallback(
+    (index: number) => {
+      /**
+       * Create another object to prevent mutations
+       */
+      const updatedModel = {
+        ...model,
+        fields: [...model.fields],
+        rows: [...model.rows],
+      };
 
-    /**
-     * Rebuild rows with the added field.
-     */
-    model.rows.forEach((row: any) => {
-      row.splice(index + 1, 0, '');
-    });
+      /**
+       * Insert a field after the current position.
+       */
+      updatedModel.fields.splice(index + 1, 0, {
+        name: '',
+        type: FieldType.string,
+      } as Field);
 
-    /**
-     * Change
-     */
-    onChange({ ...query, frame: convertToDataFrame(model) });
-    onRunQuery();
-  };
+      /**
+       * Rebuild rows with the added field.
+       */
+      updatedModel.rows.forEach((row: any) => {
+        row.splice(index + 1, 0, '');
+      });
+
+      /**
+       * Change
+       */
+      onChange({ ...query, frame: convertToDataFrame(updatedModel) });
+      onRunQuery();
+    },
+    [model, onChange, onRunQuery, query]
+  );
 
   /**
    * Remove Field
    */
-  const removeField = (index: number) => {
-    /**
-     * Remove the field at given position.
-     */
-    model.fields.splice(index, 1);
+  const removeField = useCallback(
+    (index: number) => {
+      /**
+       * Create another object to prevent mutations
+       */
+      const updatedModel = {
+        ...model,
+        fields: [...model.fields],
+        rows: [...model.rows],
+      };
 
-    /**
-     * Rebuild rows without the removed field.
-     */
-    model.rows.forEach((row) => {
-      row.splice(index, 1);
-    });
+      /**
+       * Remove the field at given position.
+       */
+      updatedModel.fields.splice(index, 1);
 
-    /**
-     * Remove all rows if there are no fields.
-     */
-    if (!model.fields.length) {
-      model.rows = [];
-    }
+      /**
+       * Rebuild rows without the removed field.
+       */
+      updatedModel.rows.forEach((row) => {
+        row.splice(index, 1);
+      });
 
-    /**
-     * Change
-     */
-    onChange({ ...query, frame: convertToDataFrame(model) });
-    onRunQuery();
-  };
+      /**
+       * Remove all rows if there are no fields.
+       */
+      if (!updatedModel.fields.length) {
+        updatedModel.rows = [];
+      }
+
+      /**
+       * Change
+       */
+      onChange({ ...query, frame: convertToDataFrame(updatedModel) });
+      onRunQuery();
+    },
+    [model, onChange, onRunQuery, query]
+  );
 
   /**
    * Rename Field
    */
-  const renameField = (name: string, index: number) => {
-    /**
-     * Rename
-     */
-    model.fields[index].name = name;
+  const renameField = useCallback(
+    (name: string, updatedIndex: number) => {
+      /**
+       * Create another object to prevent mutations
+       */
+      const updatedModel = {
+        ...model,
+        fields: [...model.fields],
+      };
 
-    /**
-     * Change
-     */
-    onChange({ ...query, frame: convertToDataFrame(model) });
-    onRunQuery();
-  };
+      /**
+       * Rename
+       */
+      updatedModel.fields = updatedModel.fields.map((field, index) =>
+        index === updatedIndex
+          ? {
+              ...field,
+              name,
+            }
+          : field
+      );
+
+      /**
+       * Change
+       */
+      onChange({ ...query, frame: convertToDataFrame(updatedModel) });
+      onRunQuery();
+    },
+    [model, onChange, onRunQuery, query]
+  );
 
   /**
    * Change Field Type
    */
-  const changeFieldType = (fieldType: FieldType, index: number) => {
-    /**
-     * Set Field Type
-     */
-    model.fields[index].type = fieldType;
+  const changeFieldType = useCallback(
+    (fieldType: FieldType, updatedIndex: number) => {
+      /**
+       * Create another object to prevent mutations
+       */
+      const updatedModel = {
+        ...model,
+        fields: [...model.fields],
+      };
 
-    /**
-     * Change
-     */
-    onChange({ ...query, frame: convertToDataFrame(model) });
-    onRunQuery();
-  };
+      /**
+       * Set Field Type
+       */
+      updatedModel.fields = updatedModel.fields.map((field, index) =>
+        index === updatedIndex
+          ? {
+              ...field,
+              type: fieldType,
+            }
+          : field
+      );
+
+      /**
+       * Change
+       */
+      onChange({ ...query, frame: convertToDataFrame(updatedModel) });
+      onRunQuery();
+    },
+    [model, onChange, onRunQuery, query]
+  );
 
   /**
    * No rows found
@@ -150,13 +210,14 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
   return (
     <>
       {model.fields.map((field, i) => (
-        <InlineFieldRow key={i}>
+        <InlineFieldRow key={i} data-testid={TestIds.fieldsEditor.item}>
           <InlineField label="Name" grow>
             <Input
               value={field.name}
               onChange={(e) => {
                 renameField(e.currentTarget.value, i);
               }}
+              data-testid={TestIds.fieldsEditor.fieldName}
             />
           </InlineField>
 
@@ -171,15 +232,28 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
                 label: t[0].toUpperCase() + t.substring(1),
                 value: t,
               }))}
+              aria-label={TestIds.fieldsEditor.fieldType}
             />
           </InlineField>
 
           <InlineField>
-            <Button variant="secondary" title="Add" onClick={() => addField(i)} icon="plus"></Button>
+            <Button
+              variant="secondary"
+              title="Add"
+              onClick={() => addField(i)}
+              icon="plus"
+              data-testid={TestIds.fieldsEditor.buttonAdd}
+            />
           </InlineField>
 
           <InlineField>
-            <Button variant="destructive" title="Remove" onClick={() => removeField(i)} icon="trash-alt"></Button>
+            <Button
+              variant="destructive"
+              title="Remove"
+              onClick={() => removeField(i)}
+              data-testid={TestIds.fieldsEditor.buttonRemove}
+              icon="trash-alt"
+            />
           </InlineField>
         </InlineFieldRow>
       ))}

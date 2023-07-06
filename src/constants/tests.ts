@@ -3,7 +3,11 @@
  */
 export const TestIds = {
   fieldsEditor: {
+    item: 'data-testid fields-editor item',
+    fieldName: 'data-testid fields-editor field-name',
+    fieldType: 'data-testid fields-editor field-type',
     buttonAdd: 'data-testid fields-editor button-add',
+    buttonRemove: 'data-testid fields-editor button-remove',
   },
   queryEditor: {
     fieldName: 'data-testid query-editor field-name',
