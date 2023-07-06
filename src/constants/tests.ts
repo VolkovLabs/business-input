@@ -24,7 +24,10 @@ export const TestIds = {
     iconDisable: 'data-testid value-input icon-disable',
   },
   valuesEditor: {
-    buttonAddRow: 'data-testid values-editor button-add-row',
+    row: 'data-testid values-editor row',
+    buttonAdd: 'data-testid values-editor button-add',
+    buttonCopy: 'data-testid values-editor button-copy',
+    buttonRemove: 'data-testid values-editor button-remove',
   },
   customValuesEditor: {
     root: 'data-testid custom-values-editor',
