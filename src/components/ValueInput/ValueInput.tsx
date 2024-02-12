@@ -2,7 +2,7 @@ import { DateTime, dateTime, FieldType } from '@grafana/data';
 import { DateTimePicker, Icon, InlineField, Input, TextArea, useStyles2 } from '@grafana/ui';
 import React, { useCallback, useState } from 'react';
 
-import { TestIds, TextAreaLength } from '../../constants';
+import { TEST_IDS, TEXT_AREA_LENGTH } from '../../constants';
 import { NullableString } from '../../types';
 import { verifyFieldValue } from '../../utils';
 import { getStyles } from './ValueInput.styles';
@@ -82,7 +82,7 @@ export const ValueInput: React.FC<Props> = ({ onChange, value, type, label }) =>
     <Icon
       className={styles.suffixElement}
       name={disabled ? 'eye-slash' : 'eye'}
-      data-testid={TestIds.valueInput.iconDisable}
+      data-testid={TEST_IDS.valueInput.iconDisable}
       onClick={disableInput}
     />
   );
@@ -101,7 +101,7 @@ export const ValueInput: React.FC<Props> = ({ onChange, value, type, label }) =>
           type="number"
           value={disabled ? undefined : value ?? ''}
           suffix={suffixElement}
-          data-testid={TestIds.valueInput.fieldNumber}
+          data-testid={TEST_IDS.valueInput.fieldNumber}
         />
       </InlineField>
     );
@@ -120,7 +120,7 @@ export const ValueInput: React.FC<Props> = ({ onChange, value, type, label }) =>
             setValid(verifyFieldValue(timestamp, type).ok);
             onChange(timestamp);
           }}
-          data-testid={TestIds.valueInput.fieldDateTime}
+          data-testid={TEST_IDS.valueInput.fieldDateTime}
         />
       </InlineField>
     );
@@ -129,7 +129,7 @@ export const ValueInput: React.FC<Props> = ({ onChange, value, type, label }) =>
   /**
    * Text Area
    */
-  if (type === FieldType.string && value?.length && value.length > TextAreaLength) {
+  if (type === FieldType.string && value?.length && value.length > TEXT_AREA_LENGTH) {
     return (
       <InlineField invalid={!valid} disabled={disabled} label={label} grow>
         <TextArea
@@ -138,7 +138,7 @@ export const ValueInput: React.FC<Props> = ({ onChange, value, type, label }) =>
             setValid(verifyFieldValue(event.currentTarget.value, type).ok);
             onChange(event.currentTarget.value);
           }}
-          data-testid={TestIds.valueInput.fieldTextarea}
+          data-testid={TEST_IDS.valueInput.fieldTextarea}
         />
       </InlineField>
     );
@@ -156,7 +156,7 @@ export const ValueInput: React.FC<Props> = ({ onChange, value, type, label }) =>
         }}
         value={disabled ? 'null' : value ?? ''}
         suffix={suffixElement}
-        data-testid={TestIds.valueInput.fieldString}
+        data-testid={TEST_IDS.valueInput.fieldString}
       />
     </InlineField>
   );

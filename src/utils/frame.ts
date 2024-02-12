@@ -1,6 +1,7 @@
-import { DataFrameDTO, FieldType, MutableDataFrame, toDataFrameDTO } from '@grafana/data';
+import { DataFrameDTO, Field, FieldType, MutableDataFrame, toDataFrameDTO } from '@grafana/data';
 
 import { DataFrameModel } from '../types';
+import { NullableString } from '../types/field';
 import { verifyFieldValue } from './field';
 
 /**
@@ -37,17 +38,17 @@ export const convertToDataFrame = (model: DataFrameModel): DataFrameDTO => {
  * Prepare Model
  */
 export const prepareModel = (frame: DataFrameDTO): DataFrameModel => {
-  let fields: any[] = [];
-  let rows: any[] = [];
+  let fields: Field[] = [];
+  let rows: NullableString[][] = [];
 
   /**
    * Set Field Types and Rows
    */
   if (frame.fields.length !== 0) {
-    fields = frame.fields.map((field) => ({ name: field.name, type: field.type ?? FieldType.string }));
+    fields = frame.fields.map((field) => ({ name: field.name, type: field.type ?? FieldType.string } as Field));
 
     rows = Array.from({ length: frame.fields[0].values?.length ?? 0 }).map((row, i) => {
-      return frame.fields.map((field: any) => (field.values as any[])[i]?.toString() ?? null);
+      return frame.fields.map((field) => (field.values as NullableString[])[i]?.toString() ?? null);
     });
   }
 

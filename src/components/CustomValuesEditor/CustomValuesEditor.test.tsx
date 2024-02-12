@@ -3,7 +3,7 @@ import { CodeEditor, CodeEditorSuggestionItemKind } from '@grafana/ui';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 
-import { CustomValuesEditorSuggestions, TestIds } from '../../constants';
+import { CUSTOM_VALUES_EDITOR_SUGGESTIONS, TEST_IDS } from '../../constants';
 import { CustomValuesEditor } from './CustomValuesEditor';
 
 /**
@@ -48,7 +48,7 @@ describe('Custom Values Editor', () => {
 
   it('Should find component', async () => {
     render(getComponent({}));
-    expect(screen.getByTestId(TestIds.customValuesEditor.root)).toBeInTheDocument();
+    expect(screen.getByTestId(TEST_IDS.customValuesEditor.root)).toBeInTheDocument();
   });
 
   it('Should enable formatting if enabled', () => {
@@ -161,7 +161,7 @@ describe('Custom Values Editor', () => {
 
     render(getComponent({}));
 
-    expect(suggestionsResult).toEqual(expect.arrayContaining(CustomValuesEditorSuggestions));
+    expect(suggestionsResult).toEqual(expect.arrayContaining(CUSTOM_VALUES_EDITOR_SUGGESTIONS));
     expect(suggestionsResult).toEqual(
       expect.arrayContaining([
         {

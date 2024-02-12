@@ -8,7 +8,7 @@ import {
 import { CollapsableSection, InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
 import React, { useCallback } from 'react';
 
-import { TestIds, ValuesEditorOptions } from '../../constants';
+import { TEST_IDS, VALUES_EDITOR_OPTIONS } from '../../constants';
 import { DataSource } from '../../datasource';
 import { StaticDataSourceOptions, StaticQuery, ValuesEditor as ValuesEditorType } from '../../types';
 import { convertToDataFrame, prepareModel } from '../../utils';
@@ -26,7 +26,6 @@ type Props = QueryEditorProps<DataSource, StaticQuery, StaticDataSourceOptions>;
  */
 export const QueryEditor: React.FC<Props> = ({ datasource, onChange, onRunQuery, query, app }) => {
   const model = prepareModel(query.frame ?? { fields: [] });
-
   /**
    * Rename Frame
    */
@@ -94,7 +93,7 @@ export const QueryEditor: React.FC<Props> = ({ datasource, onChange, onRunQuery,
           <Input
             onChange={(e) => renameFrame(e.currentTarget.value)}
             value={model.name}
-            data-testid={TestIds.queryEditor.fieldName}
+            data-testid={TEST_IDS.queryEditor.fieldName}
           />
         </InlineField>
 
@@ -111,7 +110,7 @@ export const QueryEditor: React.FC<Props> = ({ datasource, onChange, onRunQuery,
                   value: t,
                 }))
                 .sort((a, b) => a.value.localeCompare(b.value))}
-              aria-label={TestIds.queryEditor.fieldPreferredVisualizationType}
+              aria-label={TEST_IDS.queryEditor.fieldPreferredVisualizationType}
             />
           </InlineField>
         )}
@@ -122,8 +121,8 @@ export const QueryEditor: React.FC<Props> = ({ datasource, onChange, onRunQuery,
               width={17}
               value={model.meta?.custom?.valuesEditor || ValuesEditorType.MANUAL}
               onChange={onChangeValuesEditor}
-              options={ValuesEditorOptions}
-              aria-label={TestIds.queryEditor.fieldValuesEditor}
+              options={VALUES_EDITOR_OPTIONS}
+              aria-label={TEST_IDS.queryEditor.fieldValuesEditor}
             />
           </InlineField>
         )}
@@ -136,12 +135,12 @@ export const QueryEditor: React.FC<Props> = ({ datasource, onChange, onRunQuery,
         <CollapsableSection
           label="JavaScript Values Editor"
           isOpen={true}
-          contentDataTestId={TestIds.queryEditor.customValuesEditor}
+          contentDataTestId={TEST_IDS.queryEditor.customValuesEditor}
         >
           <CustomValuesEditor query={query} model={model} onChange={onChange} onRunQuery={onRunQuery} />
         </CollapsableSection>
       ) : (
-        <CollapsableSection label="Values" isOpen={true} contentDataTestId={TestIds.queryEditor.valuesEditor}>
+        <CollapsableSection label="Values" isOpen={true} contentDataTestId={TEST_IDS.queryEditor.valuesEditor}>
           <ValuesEditor query={query} model={model} onChange={onChange} onRunQuery={onRunQuery} />
         </CollapsableSection>
       )}

@@ -1,6 +1,6 @@
 import { SelectableValue } from '@grafana/data';
 
-import { TestIds } from './tests';
+import { TEST_IDS } from './tests';
 
 /**
  * Datasource test status
@@ -13,7 +13,7 @@ export enum DataSourceTestStatus {
 /**
  * Code Editor Enabled Options
  */
-export const CodeEditorEnabledOptions: Array<SelectableValue<boolean>> = [
-  { value: false, label: 'Disabled', ariaLabel: TestIds.configEditor.codeEditorEnabledOption('false') },
-  { value: true, label: 'Enabled', ariaLabel: TestIds.configEditor.codeEditorEnabledOption('true') },
+export const CODE_EDITOR_ENABLED_OPTIONS: Array<SelectableValue<boolean>> = [
+  { value: false, label: 'Disabled', ariaLabel: TEST_IDS.configEditor.codeEditorEnabledOption('false') },
+  { value: true, label: 'Enabled', ariaLabel: TEST_IDS.configEditor.codeEditorEnabledOption('true') },
 ];

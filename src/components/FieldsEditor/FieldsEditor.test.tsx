@@ -2,7 +2,7 @@ import { FieldType } from '@grafana/data';
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import React from 'react';
 
-import { TestIds } from '../../constants';
+import { TEST_IDS } from '../../constants';
 import { FieldsEditor } from './FieldsEditor';
 
 /**
@@ -59,9 +59,9 @@ describe('Editor', () => {
   it('Should add field if there is no any fields', async () => {
     render(getComponent({ model }));
 
-    expect(screen.getByTestId(TestIds.fieldsEditor.buttonAdd)).toBeInTheDocument();
+    expect(screen.getByTestId(TEST_IDS.fieldsEditor.buttonAdd)).toBeInTheDocument();
 
-    fireEvent.click(screen.getByTestId(TestIds.fieldsEditor.buttonAdd));
+    fireEvent.click(screen.getByTestId(TEST_IDS.fieldsEditor.buttonAdd));
 
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -95,7 +95,7 @@ describe('Editor', () => {
       })
     );
 
-    const items = screen.getAllByTestId(TestIds.fieldsEditor.item);
+    const items = screen.getAllByTestId(TEST_IDS.fieldsEditor.item);
 
     /**
      * Check name
@@ -104,8 +104,8 @@ describe('Editor', () => {
 
     const item1Selectors = within(items[0]);
 
-    expect(item1Selectors.getByTestId(TestIds.fieldsEditor.fieldName)).toHaveValue(field1.name);
-    expect(item1Selectors.getByLabelText(TestIds.fieldsEditor.fieldType)).toHaveValue(field1.type);
+    expect(item1Selectors.getByTestId(TEST_IDS.fieldsEditor.fieldName)).toHaveValue(field1.name);
+    expect(item1Selectors.getByLabelText(TEST_IDS.fieldsEditor.fieldType)).toHaveValue(field1.type);
 
     /**
      * Check amount
@@ -114,8 +114,8 @@ describe('Editor', () => {
 
     const item2Selectors = within(items[1]);
 
-    expect(item2Selectors.getByTestId(TestIds.fieldsEditor.fieldName)).toHaveValue(field2.name);
-    expect(item2Selectors.getByLabelText(TestIds.fieldsEditor.fieldType)).toHaveValue(field2.type);
+    expect(item2Selectors.getByTestId(TEST_IDS.fieldsEditor.fieldName)).toHaveValue(field2.name);
+    expect(item2Selectors.getByLabelText(TEST_IDS.fieldsEditor.fieldType)).toHaveValue(field2.type);
   });
 
   it('Should change name', () => {
@@ -136,12 +136,12 @@ describe('Editor', () => {
       })
     );
 
-    const items = screen.getAllByTestId(TestIds.fieldsEditor.item);
+    const items = screen.getAllByTestId(TEST_IDS.fieldsEditor.item);
     expect(items[0]).toBeInTheDocument();
 
     const item1Selectors = within(items[0]);
 
-    fireEvent.change(item1Selectors.getByTestId(TestIds.fieldsEditor.fieldName), { target: { value: 'hello' } });
+    fireEvent.change(item1Selectors.getByTestId(TEST_IDS.fieldsEditor.fieldName), { target: { value: 'hello' } });
 
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -174,12 +174,12 @@ describe('Editor', () => {
       })
     );
 
-    const items = screen.getAllByTestId(TestIds.fieldsEditor.item);
+    const items = screen.getAllByTestId(TEST_IDS.fieldsEditor.item);
     expect(items[0]).toBeInTheDocument();
 
     const item1Selectors = within(items[0]);
 
-    fireEvent.change(item1Selectors.getByLabelText(TestIds.fieldsEditor.fieldType), {
+    fireEvent.change(item1Selectors.getByLabelText(TEST_IDS.fieldsEditor.fieldType), {
       target: { value: FieldType.geo },
     });
 
@@ -210,7 +210,7 @@ describe('Editor', () => {
       })
     );
 
-    fireEvent.click(screen.getByTestId(TestIds.fieldsEditor.buttonAdd));
+    fireEvent.click(screen.getByTestId(TEST_IDS.fieldsEditor.buttonAdd));
 
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -240,7 +240,7 @@ describe('Editor', () => {
       })
     );
 
-    fireEvent.click(screen.getByTestId(TestIds.fieldsEditor.buttonRemove));
+    fireEvent.click(screen.getByTestId(TEST_IDS.fieldsEditor.buttonRemove));
 
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({

@@ -2,7 +2,7 @@ import { FieldType } from '@grafana/data';
 import { Button, InlineField, InlineFieldRow } from '@grafana/ui';
 import React, { useCallback } from 'react';
 
-import { TestIds } from '../../constants';
+import { TEST_IDS } from '../../constants';
 import { DataFrameModel, NullableString, StaticQuery } from '../../types';
 import { convertToDataFrame } from '../../utils';
 import { ValueInput } from '../ValueInput';
@@ -171,7 +171,7 @@ export const ValuesEditor = ({ model, query, onChange, onRunQuery }: Props) => {
     return (
       <InlineFieldRow>
         <InlineField>
-          <Button variant="primary" onClick={() => addRow(0)} icon="plus" data-testid={TestIds.valuesEditor.buttonAdd}>
+          <Button variant="primary" onClick={() => addRow(0)} icon="plus" data-testid={TEST_IDS.valuesEditor.buttonAdd}>
             Add a Row
           </Button>
         </InlineField>
@@ -185,7 +185,7 @@ export const ValuesEditor = ({ model, query, onChange, onRunQuery }: Props) => {
   return (
     <>
       {model.rows.map((row, i) => (
-        <InlineFieldRow key={i} data-testid={TestIds.valuesEditor.row}>
+        <InlineFieldRow key={i} data-testid={TEST_IDS.valuesEditor.row}>
           {row.map((value: NullableString, index: number) => (
             <ValueInput
               key={index}
@@ -202,7 +202,7 @@ export const ValuesEditor = ({ model, query, onChange, onRunQuery }: Props) => {
               title="Copy"
               onClick={() => duplicateRow(i)}
               icon="copy"
-              data-testid={TestIds.valuesEditor.buttonCopy}
+              data-testid={TEST_IDS.valuesEditor.buttonCopy}
             />
           </InlineField>
 
@@ -212,7 +212,7 @@ export const ValuesEditor = ({ model, query, onChange, onRunQuery }: Props) => {
               title="Add"
               onClick={() => addRow(i)}
               icon="plus"
-              data-testid={TestIds.valuesEditor.buttonAdd}
+              data-testid={TEST_IDS.valuesEditor.buttonAdd}
             />
           </InlineField>
 
@@ -222,7 +222,7 @@ export const ValuesEditor = ({ model, query, onChange, onRunQuery }: Props) => {
               title="Remove"
               onClick={() => removeRow(i)}
               icon="trash-alt"
-              data-testid={TestIds.valuesEditor.buttonRemove}
+              data-testid={TEST_IDS.valuesEditor.buttonRemove}
             />
           </InlineField>
         </InlineFieldRow>
