@@ -1,6 +1,7 @@
-import React from 'react';
 import { dateTime, FieldType } from '@grafana/data';
 import { fireEvent, render, screen } from '@testing-library/react';
+import React from 'react';
+
 import { TestIds, TextAreaLength } from '../../constants';
 import { ValueInput } from './ValueInput';
 

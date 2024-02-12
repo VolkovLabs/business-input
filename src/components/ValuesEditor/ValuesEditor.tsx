@@ -1,6 +1,7 @@
-import React, { useCallback } from 'react';
 import { FieldType } from '@grafana/data';
 import { Button, InlineField, InlineFieldRow } from '@grafana/ui';
+import React, { useCallback } from 'react';
+
 import { TestIds } from '../../constants';
 import { DataFrameModel, NullableString, StaticQuery } from '../../types';
 import { convertToDataFrame } from '../../utils';

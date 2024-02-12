@@ -1,6 +1,7 @@
-import React from 'react';
 import { CoreApp, DataSourcePluginContextProvider } from '@grafana/data';
 import { fireEvent, render, screen } from '@testing-library/react';
+import React from 'react';
+
 import { TestIds } from '../../constants';
 import { ValuesEditor } from '../../types';
 import { QueryEditor } from './QueryEditor';

@@ -1,4 +1,5 @@
 import { SelectableValue } from '@grafana/data';
+
 import { TestIds } from './tests';
 
 /**

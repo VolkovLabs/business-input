@@ -1,13 +1,14 @@
-import React, { useCallback } from 'react';
 import { DataSourcePluginOptionsEditorProps } from '@grafana/data';
 import { FieldSet, InlineField, InlineFieldRow, RadioButtonGroup } from '@grafana/ui';
+import React, { useCallback } from 'react';
+
 import { CodeEditorEnabledOptions, TestIds } from '../../constants';
 import { StaticDataSourceOptions } from '../../types';
 
 /**
  * Editor Properties
  */
-interface Props extends DataSourcePluginOptionsEditorProps<StaticDataSourceOptions> {}
+type Props = DataSourcePluginOptionsEditorProps<StaticDataSourceOptions>
 
 /**
  * Config Editor

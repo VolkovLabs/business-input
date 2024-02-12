@@ -1,4 +1,5 @@
 import { FieldType } from '@grafana/data';
+
 import { FieldResult, NullableString } from '../types';
 
 /**

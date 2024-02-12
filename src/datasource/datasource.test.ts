@@ -1,5 +1,6 @@
 import { dateTime, FieldType, toDataFrame } from '@grafana/data';
 import { getTemplateSrv } from '@grafana/runtime';
+
 import { DataSourceTestStatus } from '../constants';
 import { ValuesEditor } from '../types';
 import { DataSource } from './datasource';

@@ -1,4 +1,3 @@
-import React, { useCallback } from 'react';
 import {
   CoreApp,
   PreferredVisualisationType,
@@ -7,6 +6,8 @@ import {
   SelectableValue,
 } from '@grafana/data';
 import { CollapsableSection, InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
+import React, { useCallback } from 'react';
+
 import { TestIds, ValuesEditorOptions } from '../../constants';
 import { DataSource } from '../../datasource';
 import { StaticDataSourceOptions, StaticQuery, ValuesEditor as ValuesEditorType } from '../../types';

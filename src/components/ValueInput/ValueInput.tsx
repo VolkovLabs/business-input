@@ -1,10 +1,11 @@
-import React, { useCallback, useState } from 'react';
 import { DateTime, dateTime, FieldType } from '@grafana/data';
 import { DateTimePicker, Icon, InlineField, Input, TextArea, useStyles2 } from '@grafana/ui';
+import React, { useCallback, useState } from 'react';
+
 import { TestIds, TextAreaLength } from '../../constants';
-import { Styles } from '../../styles';
 import { NullableString } from '../../types';
 import { verifyFieldValue } from '../../utils';
+import { getStyles } from './ValueInput.styles';
 
 /**
  * Properties
@@ -44,7 +45,7 @@ export const ValueInput: React.FC<Props> = ({ onChange, value, type, label }) =>
   /**
    * Styles
    */
-  const styles = useStyles2(Styles);
+  const styles = useStyles2(getStyles);
 
   /**
    * Save the last value so we can toggle between null.

@@ -1,4 +1,5 @@
 import { DataSourcePlugin } from '@grafana/data';
+
 import { plugin } from './module';
 
 /**

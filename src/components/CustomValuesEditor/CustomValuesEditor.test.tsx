@@ -1,7 +1,8 @@
-import React from 'react';
 import { getTemplateSrv } from '@grafana/runtime';
 import { CodeEditor, CodeEditorSuggestionItemKind } from '@grafana/ui';
 import { render, screen } from '@testing-library/react';
+import React from 'react';
+
 import { CustomValuesEditorSuggestions, TestIds } from '../../constants';
 import { CustomValuesEditor } from './CustomValuesEditor';
 

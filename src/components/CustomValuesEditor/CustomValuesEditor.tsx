@@ -1,14 +1,14 @@
-import React, { useCallback } from 'react';
 import { getTemplateSrv } from '@grafana/runtime';
 import { CodeEditor, CodeEditorSuggestionItem, CodeEditorSuggestionItemKind, InlineField } from '@grafana/ui';
-import { CodeLanguage, CustomCode, CustomValuesEditorSuggestions, TestIds } from '../../constants';
-import { DataFrameModel, StaticQuery } from '../../types';
-import { convertToDataFrame } from '../../utils';
-
 /**
  * Monaco
  */
 import type * as monacoType from 'monaco-editor/esm/vs/editor/editor.api';
+import React, { useCallback } from 'react';
+
+import { CodeLanguage, CustomCode, CustomValuesEditorSuggestions, TestIds } from '../../constants';
+import { DataFrameModel, StaticQuery } from '../../types';
+import { convertToDataFrame } from '../../utils';
 
 /**
  * Properties

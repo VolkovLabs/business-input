@@ -1,4 +1,5 @@
 import { DataSourcePlugin } from '@grafana/data';
+
 import { ConfigEditor, QueryEditor } from './components';
 import { DataSource } from './datasource';
 import { StaticDataSourceOptions, StaticQuery } from './types';

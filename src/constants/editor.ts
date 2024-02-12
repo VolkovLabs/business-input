@@ -1,4 +1,5 @@
 import { CodeEditorSuggestionItem, CodeEditorSuggestionItemKind } from '@grafana/ui';
+
 import { ValuesEditor } from '../types';
 
 /**
