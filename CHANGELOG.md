@@ -5,6 +5,7 @@
 ### Features / Enhancements
 
 - Increase tests coverage (#47)
+- Update ESLint configuration and refactoring (#52)
 
 ## 3.0.0 (2023-06-28)
 
