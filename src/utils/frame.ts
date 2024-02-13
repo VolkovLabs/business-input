@@ -1,7 +1,6 @@
 import { DataFrameDTO, Field, FieldType, MutableDataFrame, toDataFrameDTO } from '@grafana/data';
 
-import { DataFrameModel } from '../types';
-import { NullableString } from '../types/field';
+import { DataFrameModel, NullableString } from '../types';
 import { verifyFieldValue } from './field';
 
 /**
