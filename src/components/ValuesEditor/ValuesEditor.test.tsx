@@ -1,7 +1,8 @@
-import React from 'react';
 import { FieldType } from '@grafana/data';
 import { fireEvent, render, screen, within } from '@testing-library/react';
-import { TestIds } from '../../constants';
+import React from 'react';
+
+import { TEST_IDS } from '../../constants';
 import { ValuesEditor } from './ValuesEditor';
 
 /**
@@ -35,7 +36,7 @@ describe('Editor', () => {
       })
     );
 
-    fireEvent.click(screen.getByTestId(TestIds.valuesEditor.buttonAdd));
+    fireEvent.click(screen.getByTestId(TEST_IDS.valuesEditor.buttonAdd));
 
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -60,7 +61,7 @@ describe('Editor', () => {
       })
     );
 
-    fireEvent.click(screen.getByTestId(TestIds.valuesEditor.buttonAdd));
+    fireEvent.click(screen.getByTestId(TEST_IDS.valuesEditor.buttonAdd));
 
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -85,7 +86,7 @@ describe('Editor', () => {
       })
     );
 
-    fireEvent.click(screen.getByTestId(TestIds.valuesEditor.buttonAdd));
+    fireEvent.click(screen.getByTestId(TEST_IDS.valuesEditor.buttonAdd));
 
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -113,7 +114,7 @@ describe('Editor', () => {
       })
     );
 
-    fireEvent.click(screen.getByTestId(TestIds.valuesEditor.buttonAdd));
+    fireEvent.click(screen.getByTestId(TEST_IDS.valuesEditor.buttonAdd));
 
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -131,13 +132,13 @@ describe('Editor', () => {
   it('Should add row', async () => {
     render(getComponent({ model }));
 
-    const row = screen.getByTestId(TestIds.valuesEditor.row);
+    const row = screen.getByTestId(TEST_IDS.valuesEditor.row);
 
     expect(row).toBeInTheDocument();
 
     const rowSelectors = within(row);
 
-    fireEvent.click(rowSelectors.getByTestId(TestIds.valuesEditor.buttonAdd));
+    fireEvent.click(rowSelectors.getByTestId(TEST_IDS.valuesEditor.buttonAdd));
 
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -155,13 +156,13 @@ describe('Editor', () => {
   it('Should remove row', async () => {
     render(getComponent({ model }));
 
-    const row = screen.getByTestId(TestIds.valuesEditor.row);
+    const row = screen.getByTestId(TEST_IDS.valuesEditor.row);
 
     expect(row).toBeInTheDocument();
 
     const rowSelectors = within(row);
 
-    fireEvent.click(rowSelectors.getByTestId(TestIds.valuesEditor.buttonRemove));
+    fireEvent.click(rowSelectors.getByTestId(TEST_IDS.valuesEditor.buttonRemove));
 
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -179,13 +180,13 @@ describe('Editor', () => {
   it('Should copy row', async () => {
     render(getComponent({ model }));
 
-    const row = screen.getByTestId(TestIds.valuesEditor.row);
+    const row = screen.getByTestId(TEST_IDS.valuesEditor.row);
 
     expect(row).toBeInTheDocument();
 
     const rowSelectors = within(row);
 
-    fireEvent.click(rowSelectors.getByTestId(TestIds.valuesEditor.buttonCopy));
+    fireEvent.click(rowSelectors.getByTestId(TEST_IDS.valuesEditor.buttonCopy));
 
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -203,13 +204,13 @@ describe('Editor', () => {
   it('Should update row', async () => {
     render(getComponent({ model }));
 
-    const row = screen.getByTestId(TestIds.valuesEditor.row);
+    const row = screen.getByTestId(TEST_IDS.valuesEditor.row);
 
     expect(row).toBeInTheDocument();
 
     const rowSelectors = within(row);
 
-    fireEvent.change(rowSelectors.getByTestId(TestIds.valueInput.fieldString), { target: { value: '123' } });
+    fireEvent.change(rowSelectors.getByTestId(TEST_IDS.valueInput.fieldString), { target: { value: '123' } });
 
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({

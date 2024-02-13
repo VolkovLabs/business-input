@@ -1,4 +1,5 @@
 import { FieldType } from '@grafana/data';
+
 import { prepareModel } from './frame';
 
 describe('Frame Utils', () => {

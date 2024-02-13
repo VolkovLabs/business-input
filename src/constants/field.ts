@@ -3,7 +3,7 @@ import { FieldType } from '@grafana/data';
 /**
  * Field Types
  */
-export const FieldTypes = [
+export const FIELD_TYPES = [
   FieldType.boolean,
   FieldType.geo,
   FieldType.number,
@@ -16,4 +16,4 @@ export const FieldTypes = [
 /**
  * Length to show Text Area instead of Input
  */
-export const TextAreaLength = 100;
+export const TEXT_AREA_LENGTH = 100;

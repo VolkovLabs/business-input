@@ -1,7 +1,7 @@
 /**
  * Tests Identifiers
  */
-export const TestIds = {
+export const TEST_IDS = {
   fieldsEditor: {
     buttonAdd: 'data-testid fields-editor button-add',
     buttonRemove: 'data-testid fields-editor button-remove',

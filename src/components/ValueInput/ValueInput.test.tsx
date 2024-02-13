@@ -1,7 +1,8 @@
-import React from 'react';
 import { dateTime, FieldType } from '@grafana/data';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { TestIds, TextAreaLength } from '../../constants';
+import React from 'react';
+
+import { TEST_IDS, TEXT_AREA_LENGTH } from '../../constants';
 import { ValueInput } from './ValueInput';
 
 /**
@@ -52,9 +53,9 @@ describe('Input', () => {
   it('Should update string value', async () => {
     render(getComponent({ value: '123', type: FieldType.string }));
 
-    expect(screen.getByTestId(TestIds.valueInput.fieldString)).toBeInTheDocument();
+    expect(screen.getByTestId(TEST_IDS.valueInput.fieldString)).toBeInTheDocument();
 
-    fireEvent.change(screen.getByTestId(TestIds.valueInput.fieldString), { target: { value: 'hello' } });
+    fireEvent.change(screen.getByTestId(TEST_IDS.valueInput.fieldString), { target: { value: 'hello' } });
 
     expect(onChange).toHaveBeenCalledWith('hello');
   });
@@ -62,39 +63,39 @@ describe('Input', () => {
   it('Should render disabled string value', async () => {
     render(getComponent({ value: null, type: FieldType.string }));
 
-    expect(screen.getByTestId(TestIds.valueInput.fieldString)).toBeInTheDocument();
-    expect(screen.getByTestId(TestIds.valueInput.fieldString)).toHaveValue('null');
+    expect(screen.getByTestId(TEST_IDS.valueInput.fieldString)).toBeInTheDocument();
+    expect(screen.getByTestId(TEST_IDS.valueInput.fieldString)).toHaveValue('null');
   });
 
   it('Should disable string value', async () => {
     render(getComponent({ value: 'hello', type: FieldType.string }));
 
-    expect(screen.getByTestId(TestIds.valueInput.fieldString)).toBeInTheDocument();
-    expect(screen.getByTestId(TestIds.valueInput.fieldString)).toHaveValue('hello');
+    expect(screen.getByTestId(TEST_IDS.valueInput.fieldString)).toBeInTheDocument();
+    expect(screen.getByTestId(TEST_IDS.valueInput.fieldString)).toHaveValue('hello');
 
-    fireEvent.click(screen.getByTestId(TestIds.valueInput.iconDisable));
+    fireEvent.click(screen.getByTestId(TEST_IDS.valueInput.iconDisable));
 
-    expect(screen.getByTestId(TestIds.valueInput.fieldString)).toHaveValue('null');
+    expect(screen.getByTestId(TEST_IDS.valueInput.fieldString)).toHaveValue('null');
   });
 
   it('Should enable string value', async () => {
     render(getComponent({ value: null, type: FieldType.string }));
 
-    expect(screen.getByTestId(TestIds.valueInput.fieldString)).toBeInTheDocument();
-    expect(screen.getByTestId(TestIds.valueInput.fieldString)).toHaveValue('null');
+    expect(screen.getByTestId(TEST_IDS.valueInput.fieldString)).toBeInTheDocument();
+    expect(screen.getByTestId(TEST_IDS.valueInput.fieldString)).toHaveValue('null');
 
-    fireEvent.click(screen.getByTestId(TestIds.valueInput.iconDisable));
+    fireEvent.click(screen.getByTestId(TEST_IDS.valueInput.iconDisable));
 
-    expect(screen.getByTestId(TestIds.valueInput.fieldString)).toHaveValue('');
+    expect(screen.getByTestId(TEST_IDS.valueInput.fieldString)).toHaveValue('');
   });
 
   it('Should update textarea value', async () => {
-    const value = new Array(TextAreaLength + 1).fill('a').join('');
+    const value = new Array(TEXT_AREA_LENGTH + 1).fill('a').join('');
     render(getComponent({ value: value, type: FieldType.string }));
 
-    expect(screen.getByTestId(TestIds.valueInput.fieldTextarea)).toBeInTheDocument();
+    expect(screen.getByTestId(TEST_IDS.valueInput.fieldTextarea)).toBeInTheDocument();
 
-    fireEvent.change(screen.getByTestId(TestIds.valueInput.fieldTextarea), { target: { value: value + 'new' } });
+    fireEvent.change(screen.getByTestId(TEST_IDS.valueInput.fieldTextarea), { target: { value: value + 'new' } });
 
     expect(onChange).toHaveBeenCalledWith(value + 'new');
   });
@@ -102,9 +103,9 @@ describe('Input', () => {
   it('Should update number value', async () => {
     render(getComponent({ value: '123', type: FieldType.number }));
 
-    expect(screen.getByTestId(TestIds.valueInput.fieldNumber)).toBeInTheDocument();
+    expect(screen.getByTestId(TEST_IDS.valueInput.fieldNumber)).toBeInTheDocument();
 
-    fireEvent.change(screen.getByTestId(TestIds.valueInput.fieldNumber), { target: { value: '111' } });
+    fireEvent.change(screen.getByTestId(TEST_IDS.valueInput.fieldNumber), { target: { value: '111' } });
 
     expect(onChange).toHaveBeenCalledWith('111');
   });
@@ -112,10 +113,10 @@ describe('Input', () => {
   it('Should update date time value', async () => {
     render(getComponent({ value: '123', type: FieldType.time }));
 
-    expect(screen.getByTestId(TestIds.valueInput.fieldDateTime)).toBeInTheDocument();
+    expect(screen.getByTestId(TEST_IDS.valueInput.fieldDateTime)).toBeInTheDocument();
 
     const safeDate = new Date('02-02-2023');
-    fireEvent.change(screen.getByTestId(TestIds.valueInput.fieldDateTime), { target: { value: dateTime(safeDate) } });
+    fireEvent.change(screen.getByTestId(TEST_IDS.valueInput.fieldDateTime), { target: { value: dateTime(safeDate) } });
 
     expect(onChange).toHaveBeenCalledWith(dateTime(safeDate).toString());
   });

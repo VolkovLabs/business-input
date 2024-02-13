@@ -1,4 +1,5 @@
 import { Field, PreferredVisualisationType } from '@grafana/data';
+
 import { NullableString } from './field';
 
 /**

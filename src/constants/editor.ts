@@ -1,10 +1,11 @@
 import { CodeEditorSuggestionItem, CodeEditorSuggestionItemKind } from '@grafana/ui';
+
 import { ValuesEditor } from '../types';
 
 /**
  * Custom Editor
  */
-export const CustomCode = `const result = {
+export const CUSTOM_CODE = `const result = {
     ...frame,
     fields: frame.fields.map((field) => ({
       ...field,
@@ -17,7 +18,7 @@ export const CustomCode = `const result = {
 /**
  * Values Editor Options
  */
-export const ValuesEditorOptions = [
+export const VALUES_EDITOR_OPTIONS = [
   {
     label: 'Manual',
     value: ValuesEditor.MANUAL,
@@ -38,7 +39,7 @@ export const enum CodeLanguage {
 /**
  * Suggestions
  */
-export const CustomValuesEditorSuggestions: CodeEditorSuggestionItem[] = [
+export const CUSTOM_VALUES_EDITOR_SUGGESTIONS: CodeEditorSuggestionItem[] = [
   {
     label: 'frame',
     kind: CodeEditorSuggestionItemKind.Property,

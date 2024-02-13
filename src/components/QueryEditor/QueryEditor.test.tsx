@@ -1,7 +1,8 @@
-import React from 'react';
 import { CoreApp, DataSourcePluginContextProvider } from '@grafana/data';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { TestIds } from '../../constants';
+import React from 'react';
+
+import { TEST_IDS } from '../../constants';
 import { ValuesEditor } from '../../types';
 import { QueryEditor } from './QueryEditor';
 
@@ -78,20 +79,20 @@ describe('Query Editor', () => {
     /**
      * Check name field presence
      */
-    expect(screen.getByTestId(TestIds.queryEditor.fieldName)).toBeInTheDocument();
+    expect(screen.getByTestId(TEST_IDS.queryEditor.fieldName)).toBeInTheDocument();
 
     /**
      * Change name
      */
     const newName = 'new';
-    fireEvent.change(screen.getByTestId(TestIds.queryEditor.fieldName), { target: { value: newName } });
+    fireEvent.change(screen.getByTestId(TEST_IDS.queryEditor.fieldName), { target: { value: newName } });
 
     rerender(getComponent({ query: currentQuery, onChange }));
 
     /**
      * Check if name is changed
      */
-    expect(screen.getByTestId(TestIds.queryEditor.fieldName)).toHaveValue(newName);
+    expect(screen.getByTestId(TEST_IDS.queryEditor.fieldName)).toHaveValue(newName);
   });
 
   it('Should Set Preferred Visualization Type', () => {
@@ -102,13 +103,13 @@ describe('Query Editor', () => {
     /**
      * Check name field presence
      */
-    expect(screen.getByLabelText(TestIds.queryEditor.fieldPreferredVisualizationType)).toBeInTheDocument();
+    expect(screen.getByLabelText(TEST_IDS.queryEditor.fieldPreferredVisualizationType)).toBeInTheDocument();
 
     /**
      * Change type
      */
     const newType = 'graph';
-    fireEvent.change(screen.getByLabelText(TestIds.queryEditor.fieldPreferredVisualizationType), {
+    fireEvent.change(screen.getByLabelText(TEST_IDS.queryEditor.fieldPreferredVisualizationType), {
       target: { value: newType },
     });
 
@@ -117,7 +118,7 @@ describe('Query Editor', () => {
     /**
      * Check if name is changed
      */
-    expect(screen.getByLabelText(TestIds.queryEditor.fieldPreferredVisualizationType)).toHaveValue(newType);
+    expect(screen.getByLabelText(TEST_IDS.queryEditor.fieldPreferredVisualizationType)).toHaveValue(newType);
   });
 
   it('Should show custom values editor', () => {
@@ -128,9 +129,9 @@ describe('Query Editor', () => {
     /**
      * Check if CustomValuesEditor is not rendered
      */
-    const fieldValuesEditor = screen.getByLabelText(TestIds.queryEditor.fieldValuesEditor);
+    const fieldValuesEditor = screen.getByLabelText(TEST_IDS.queryEditor.fieldValuesEditor);
     expect(fieldValuesEditor).toBeInTheDocument();
-    expect(screen.queryByTestId(TestIds.queryEditor.customValuesEditor)).not.toBeInTheDocument();
+    expect(screen.queryByTestId(TEST_IDS.queryEditor.customValuesEditor)).not.toBeInTheDocument();
 
     /**
      * Change valuesEditor to Custom
@@ -142,7 +143,7 @@ describe('Query Editor', () => {
     /**
      * Check if CustomValuesEditor is rendered
      */
-    expect(screen.getByTestId(TestIds.queryEditor.customValuesEditor)).toBeInTheDocument();
+    expect(screen.getByTestId(TEST_IDS.queryEditor.customValuesEditor)).toBeInTheDocument();
   });
 
   it('Should not allow to select values editor if disabled', () => {
@@ -153,12 +154,12 @@ describe('Query Editor', () => {
     /**
      * Check if Select values editor is not rendered
      */
-    expect(screen.queryByLabelText(TestIds.queryEditor.fieldValuesEditor)).not.toBeInTheDocument();
+    expect(screen.queryByLabelText(TEST_IDS.queryEditor.fieldValuesEditor)).not.toBeInTheDocument();
   });
 
   it('Should render fields if frame is not specified', () => {
     render(getComponent({ query: { frame: null } }));
 
-    expect(screen.getByTestId(TestIds.queryEditor.fieldName)).toBeInTheDocument();
+    expect(screen.getByTestId(TEST_IDS.queryEditor.fieldName)).toBeInTheDocument();
   });
 });

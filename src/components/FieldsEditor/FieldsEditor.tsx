@@ -1,7 +1,8 @@
-import React, { useCallback } from 'react';
 import { Field, FieldType } from '@grafana/data';
 import { Button, InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
-import { FieldTypes, TestIds } from '../../constants';
+import React, { useCallback } from 'react';
+
+import { FIELD_TYPES, TEST_IDS } from '../../constants';
 import { DataFrameModel, StaticQuery } from '../../types';
 import { convertToDataFrame } from '../../utils';
 
@@ -63,7 +64,7 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
       /**
        * Rebuild rows with the added field.
        */
-      updatedModel.rows.forEach((row: any) => {
+      updatedModel.rows.forEach((row) => {
         row.splice(index + 1, 0, '');
       });
 
@@ -198,7 +199,7 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
             title="Add a Field"
             onClick={() => addField(0)}
             icon="plus"
-            data-testid={TestIds.fieldsEditor.buttonAdd}
+            data-testid={TEST_IDS.fieldsEditor.buttonAdd}
           >
             Add a Field
           </Button>
@@ -210,14 +211,14 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
   return (
     <>
       {model.fields.map((field, i) => (
-        <InlineFieldRow key={i} data-testid={TestIds.fieldsEditor.item}>
+        <InlineFieldRow key={i} data-testid={TEST_IDS.fieldsEditor.item}>
           <InlineField label="Name" grow>
             <Input
               value={field.name}
               onChange={(e) => {
                 renameField(e.currentTarget.value, i);
               }}
-              data-testid={TestIds.fieldsEditor.fieldName}
+              data-testid={TEST_IDS.fieldsEditor.fieldName}
             />
           </InlineField>
 
@@ -228,11 +229,11 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
               onChange={(e) => {
                 changeFieldType(e.value as FieldType, i);
               }}
-              options={FieldTypes.map((t) => ({
+              options={FIELD_TYPES.map((t) => ({
                 label: t[0].toUpperCase() + t.substring(1),
                 value: t,
               }))}
-              aria-label={TestIds.fieldsEditor.fieldType}
+              aria-label={TEST_IDS.fieldsEditor.fieldType}
             />
           </InlineField>
 
@@ -242,7 +243,7 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
               title="Add"
               onClick={() => addField(i)}
               icon="plus"
-              data-testid={TestIds.fieldsEditor.buttonAdd}
+              data-testid={TEST_IDS.fieldsEditor.buttonAdd}
             />
           </InlineField>
 
@@ -251,7 +252,7 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
               variant="destructive"
               title="Remove"
               onClick={() => removeField(i)}
-              data-testid={TestIds.fieldsEditor.buttonRemove}
+              data-testid={TEST_IDS.fieldsEditor.buttonRemove}
               icon="trash-alt"
             />
           </InlineField>

@@ -1,7 +1,8 @@
-import React from 'react';
 import { DataSourceSettings } from '@grafana/data';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { TestIds } from '../../constants';
+import React from 'react';
+
+import { TEST_IDS } from '../../constants';
 import { StaticDataSourceOptions } from '../../types';
 import { ConfigEditor } from './ConfigEditor';
 
@@ -70,15 +71,15 @@ describe('ConfigEditor', () => {
 
       const { rerender } = render(<ConfigEditor options={appliedOptions} onOptionsChange={onChange} />);
 
-      expect(screen.getByTestId(TestIds.configEditor.codeEditorEnabledContainer)).toBeInTheDocument();
-      expect(screen.getByLabelText(TestIds.configEditor.codeEditorEnabledOption('false'))).toBeChecked();
+      expect(screen.getByTestId(TEST_IDS.configEditor.codeEditorEnabledContainer)).toBeInTheDocument();
+      expect(screen.getByLabelText(TEST_IDS.configEditor.codeEditorEnabledOption('false'))).toBeChecked();
 
-      fireEvent.click(screen.getByLabelText(TestIds.configEditor.codeEditorEnabledOption('true')));
+      fireEvent.click(screen.getByLabelText(TEST_IDS.configEditor.codeEditorEnabledOption('true')));
 
       rerender(<ConfigEditor options={appliedOptions} onOptionsChange={onChange} />);
 
-      expect(screen.getByLabelText(TestIds.configEditor.codeEditorEnabledOption('false'))).not.toBeChecked();
-      expect(screen.getByLabelText(TestIds.configEditor.codeEditorEnabledOption('true'))).toBeChecked();
+      expect(screen.getByLabelText(TEST_IDS.configEditor.codeEditorEnabledOption('false'))).not.toBeChecked();
+      expect(screen.getByLabelText(TEST_IDS.configEditor.codeEditorEnabledOption('true'))).toBeChecked();
     });
   });
 });

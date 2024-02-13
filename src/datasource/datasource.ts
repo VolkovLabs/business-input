@@ -6,6 +6,7 @@ import {
   DataSourceInstanceSettings,
   toDataFrame,
 } from '@grafana/data';
+
 import { DataSourceTestStatus } from '../constants';
 import { StaticDataSourceOptions, StaticQuery, ValuesEditor } from '../types';
 import { interpolateVariables } from '../utils';

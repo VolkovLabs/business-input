@@ -1,14 +1,14 @@
-import React, { useCallback } from 'react';
 import { getTemplateSrv } from '@grafana/runtime';
 import { CodeEditor, CodeEditorSuggestionItem, CodeEditorSuggestionItemKind, InlineField } from '@grafana/ui';
-import { CodeLanguage, CustomCode, CustomValuesEditorSuggestions, TestIds } from '../../constants';
-import { DataFrameModel, StaticQuery } from '../../types';
-import { convertToDataFrame } from '../../utils';
-
 /**
  * Monaco
  */
 import type * as monacoType from 'monaco-editor/esm/vs/editor/editor.api';
+import React, { useCallback } from 'react';
+
+import { CodeLanguage, CUSTOM_CODE, CUSTOM_VALUES_EDITOR_SUGGESTIONS, TEST_IDS } from '../../constants';
+import { DataFrameModel, StaticQuery } from '../../types';
+import { convertToDataFrame } from '../../utils';
 
 /**
  * Properties
@@ -95,14 +95,14 @@ export const CustomValuesEditor = ({ model, query, onChange, onRunQuery }: Props
       };
     });
 
-    return [...CustomValuesEditorSuggestions, ...suggestions];
+    return [...CUSTOM_VALUES_EDITOR_SUGGESTIONS, ...suggestions];
   }, [templateSrv]);
 
   return (
     <>
-      <InlineField grow={true} data-testid={TestIds.customValuesEditor.root}>
+      <InlineField grow={true} data-testid={TEST_IDS.customValuesEditor.root}>
         <CodeEditor
-          value={model?.meta?.custom?.customCode || CustomCode}
+          value={model?.meta?.custom?.customCode || CUSTOM_CODE}
           language={CodeLanguage.JAVASCRIPT}
           height={300}
           monacoOptions={{ formatOnPaste: true, formatOnType: true }}

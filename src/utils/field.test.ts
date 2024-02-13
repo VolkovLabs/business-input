@@ -1,4 +1,5 @@
 import { FieldType } from '@grafana/data';
+
 import { verifyFieldValue } from './field';
 
 describe('Field Utils', () => {
