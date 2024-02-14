@@ -1,11 +1,13 @@
 import { Field, FieldType } from '@grafana/data';
-import { Button, Icon, InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
+import { Button, Icon, IconButton, InlineField, InlineFieldRow, Input, Select, useStyles2 } from '@grafana/ui';
 import { DragDropContext, Draggable, DraggingStyle, Droppable, DropResult, NotDraggingStyle } from '@hello-pangea/dnd';
+import { Collapse } from '@volkovlabs/components';
 import React, { useCallback, useState } from 'react';
 
 import { FIELD_TYPES, TEST_IDS } from '../../constants';
 import { DataFrameModel, StaticQuery } from '../../types';
 import { convertToDataFrame, reorder } from '../../utils';
+import { getStyles } from './FieldsEditor.styles';
 
 /**
  * Properties
@@ -51,9 +53,24 @@ const getItemStyle = (isDragging: boolean, draggableStyle: DraggingStyle | NotDr
  */
 export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
   /**
-   * States
+   * Styles and Theme
+   */
+  const styles = useStyles2(getStyles);
+
+  /**
+   * State
    */
   const [items, setItems] = useState(model.fields);
+  const [collapseState, setCollapseState] = useState<Record<string, boolean>>({});
+  /**
+   * Toggle collapse state for item
+   */
+  const onToggleItem = useCallback((item: Field, index: number) => {
+    setCollapseState((prev) => ({
+      ...prev,
+      [`${item.name}-${item.type}`]: !prev[`${item.name}-${item.type}`],
+    }));
+  }, []);
 
   /**
    * Add Field
@@ -165,6 +182,10 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
       /**
        * Change
        */
+      // setCollapseState((prev) => ({
+      //   ...prev,
+      //   [`${item.name}-${item.type}`]: !prev[`${item.name}-${item.type}`],
+      // }));
       onChange({ ...query, frame: convertToDataFrame(updatedModel) });
       onRunQuery();
       setItems(updatedModel.fields);
@@ -289,52 +310,71 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
                     {...provided.draggableProps}
                     style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
                   >
-                    <InlineFieldRow data-testid={TEST_IDS.fieldsEditor.item}>
-                      <InlineField label="Name" grow>
-                        <Input
-                          value={field.name}
-                          onChange={(e) => {
-                            renameField(e.currentTarget.value, index);
-                          }}
-                          data-testid={TEST_IDS.fieldsEditor.fieldName}
-                        />
-                      </InlineField>
-                      <InlineField label="Type">
-                        <Select
-                          width={12}
-                          value={field.type}
-                          onChange={(e) => {
-                            changeFieldType(e.value as FieldType, index);
-                          }}
-                          options={FIELD_TYPES.map((t) => ({
-                            label: t[0].toUpperCase() + t.substring(1),
-                            value: t,
-                          }))}
-                          aria-label={TEST_IDS.fieldsEditor.fieldType}
-                        />
-                      </InlineField>
-                      <InlineField>
-                        <Button
-                          variant="secondary"
-                          title="Add"
-                          onClick={() => addField(index)}
-                          icon="plus"
-                          data-testid={TEST_IDS.fieldsEditor.buttonAdd}
-                        />
-                      </InlineField>
-                      <InlineField>
-                        <Button
-                          variant="destructive"
-                          title="Remove"
-                          onClick={() => removeField(index)}
-                          data-testid={TEST_IDS.fieldsEditor.buttonRemove}
-                          icon="trash-alt"
-                        />
-                      </InlineField>
-                      <div {...provided.dragHandleProps}>
-                        <Icon title="Drag and drop to reorder" name="draggabledots" size="lg" />
-                      </div>
-                    </InlineFieldRow>
+                    <Collapse
+                      fill="solid"
+                      isOpen={collapseState[`${field.name}-${field.type}`]}
+                      onToggle={() => onToggleItem(field, index)}
+                      title={
+                        <>
+                          {field.name} | {field.type}
+                        </>
+                      }
+                      actions={
+                        <div className={styles.buttons}>
+                          <IconButton
+                            name="plus"
+                            size="md"
+                            tooltip="Add new field"
+                            variant="destructive"
+                            ariaLabel="Add new field"
+                            data-testid={TEST_IDS.fieldsEditor.buttonAdd}
+                            onClick={() => addField(index)}
+                            className={styles.button}
+                          />
+                          <IconButton
+                            name="trash-alt"
+                            size="md"
+                            tooltip="Remove field"
+                            variant="destructive"
+                            ariaLabel="Remove field"
+                            data-testid={TEST_IDS.fieldsEditor.buttonRemove}
+                            onClick={() => removeField(index)}
+                            className={styles.button}
+                          />
+                          <div {...provided.dragHandleProps}>
+                            <Icon title="Drag and drop to reorder" name="draggabledots" size="md" />
+                          </div>
+                        </div>
+                      }
+                    >
+                      <InlineFieldRow data-testid={TEST_IDS.fieldsEditor.item}>
+                        <div className={styles.controls}>
+                          <InlineField label="Name" grow>
+                            <Input
+                              value={field.name}
+                              onChange={(e) => {
+                                renameField(e.currentTarget.value, index);
+                              }}
+                              data-testid={TEST_IDS.fieldsEditor.fieldName}
+                            />
+                          </InlineField>
+                          <InlineField label="Type">
+                            <Select
+                              width={12}
+                              value={field.type}
+                              onChange={(e) => {
+                                changeFieldType(e.value as FieldType, index);
+                              }}
+                              options={FIELD_TYPES.map((t) => ({
+                                label: t[0].toUpperCase() + t.substring(1),
+                                value: t,
+                              }))}
+                              aria-label={TEST_IDS.fieldsEditor.fieldType}
+                            />
+                          </InlineField>
+                        </div>
+                      </InlineFieldRow>
+                    </Collapse>
                   </div>
                 )}
               </Draggable>

@@ -1,5 +1,5 @@
 import { FieldType } from '@grafana/data';
-import { Button, Icon, InlineField, InlineFieldRow } from '@grafana/ui';
+import { Button, Icon, InlineField, InlineFieldRow, useStyles2 } from '@grafana/ui';
 import { DragDropContext, Draggable, DraggingStyle, Droppable, DropResult, NotDraggingStyle } from '@hello-pangea/dnd';
 import React, { useCallback } from 'react';
 
@@ -7,7 +7,7 @@ import { TEST_IDS } from '../../constants';
 import { DataFrameModel, NullableString, StaticQuery } from '../../types';
 import { convertToDataFrame, reorder } from '../../utils';
 import { ValueInput } from '../ValueInput';
-
+import { getStyles } from './ValuesEditor.style';
 /**
  * Properties
  */
@@ -51,6 +51,11 @@ const getItemStyle = (isDragging: boolean, draggableStyle: DraggingStyle | NotDr
  * Values Editor
  */
 export const ValuesEditor = ({ model, query, onChange, onRunQuery }: Props) => {
+  /**
+   * Styles and Theme
+   */
+  const styles = useStyles2(getStyles);
+
   /**
    * Add Row
    */
@@ -240,48 +245,51 @@ export const ValuesEditor = ({ model, query, onChange, onRunQuery }: Props) => {
                     {...provided.draggableProps}
                     style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
                   >
-                    <InlineFieldRow data-testid={TEST_IDS.valuesEditor.row}>
-                      {row.map((value: NullableString, index: number) => (
-                        <ValueInput
-                          key={index}
-                          value={value}
-                          type={model.fields[index].type}
-                          label={model.fields[index].name}
-                          onChange={(value) => editValue(value, i, index)}
-                        />
-                      ))}
+                    <InlineFieldRow data-testid={TEST_IDS.valuesEditor.row} className={styles.field}>
+                      <div className={styles.buttons}>
+                        <InlineField className={styles.button}>
+                          <Button
+                            variant="secondary"
+                            title="Copy"
+                            onClick={() => duplicateRow(i)}
+                            icon="copy"
+                            data-testid={TEST_IDS.valuesEditor.buttonCopy}
+                          />
+                        </InlineField>
 
-                      <InlineField>
-                        <Button
-                          variant="secondary"
-                          title="Copy"
-                          onClick={() => duplicateRow(i)}
-                          icon="copy"
-                          data-testid={TEST_IDS.valuesEditor.buttonCopy}
-                        />
-                      </InlineField>
+                        <InlineField className={styles.button}>
+                          <Button
+                            variant="secondary"
+                            title="Add"
+                            onClick={() => addRow(i)}
+                            icon="plus"
+                            data-testid={TEST_IDS.valuesEditor.buttonAdd}
+                          />
+                        </InlineField>
 
-                      <InlineField>
-                        <Button
-                          variant="secondary"
-                          title="Add"
-                          onClick={() => addRow(i)}
-                          icon="plus"
-                          data-testid={TEST_IDS.valuesEditor.buttonAdd}
-                        />
-                      </InlineField>
-
-                      <InlineField>
-                        <Button
-                          variant="destructive"
-                          title="Remove"
-                          onClick={() => removeRow(i)}
-                          icon="trash-alt"
-                          data-testid={TEST_IDS.valuesEditor.buttonRemove}
-                        />
-                      </InlineField>
-                      <div {...provided.dragHandleProps}>
-                        <Icon title="Drag and drop to reorder" name="draggabledots" size="lg" />
+                        <InlineField className={styles.button}>
+                          <Button
+                            variant="destructive"
+                            title="Remove"
+                            onClick={() => removeRow(i)}
+                            icon="trash-alt"
+                            data-testid={TEST_IDS.valuesEditor.buttonRemove}
+                          />
+                        </InlineField>
+                        <div {...provided.dragHandleProps}>
+                          <Icon title="Drag and drop to reorder" name="draggabledots" size="lg" />
+                        </div>
+                      </div>
+                      <div className={styles.controls}>
+                        {row.map((value: NullableString, index: number) => (
+                          <ValueInput
+                            key={index}
+                            value={value}
+                            type={model.fields[index].type}
+                            label={model.fields[index].name}
+                            onChange={(value) => editValue(value, i, index)}
+                          />
+                        ))}
                       </div>
                     </InlineFieldRow>
                   </div>
