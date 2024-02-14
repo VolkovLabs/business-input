@@ -1,14 +1,7 @@
 import { FieldType } from '@grafana/data';
 import { Button, Icon, InlineField, InlineFieldRow } from '@grafana/ui';
+import { DragDropContext, Draggable, DraggingStyle, Droppable, DropResult, NotDraggingStyle } from '@hello-pangea/dnd';
 import React, { useCallback } from 'react';
-import {
-  DragDropContext,
-  Draggable,
-  DraggingStyle,
-  Droppable,
-  DropResult,
-  NotDraggingStyle,
-} from 'react-beautiful-dnd';
 
 import { TEST_IDS } from '../../constants';
 import { DataFrameModel, NullableString, StaticQuery } from '../../types';
