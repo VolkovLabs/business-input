@@ -1,10 +1,18 @@
 import { FieldType } from '@grafana/data';
-import { Button, InlineField, InlineFieldRow } from '@grafana/ui';
+import { Button, Icon, InlineField, InlineFieldRow } from '@grafana/ui';
 import React, { useCallback } from 'react';
+import {
+  DragDropContext,
+  Draggable,
+  DraggingStyle,
+  Droppable,
+  DropResult,
+  NotDraggingStyle,
+} from 'react-beautiful-dnd';
 
 import { TEST_IDS } from '../../constants';
 import { DataFrameModel, NullableString, StaticQuery } from '../../types';
-import { convertToDataFrame } from '../../utils';
+import { convertToDataFrame, reorder } from '../../utils';
 import { ValueInput } from '../ValueInput';
 
 /**
@@ -35,6 +43,16 @@ interface Props {
    */
   onRunQuery: () => void;
 }
+
+/**
+ * Get Item Style
+ */
+const getItemStyle = (isDragging: boolean, draggableStyle: DraggingStyle | NotDraggingStyle | undefined) => ({
+  /**
+   * styles we need to apply on draggables
+   */
+  ...draggableStyle,
+});
 
 /**
  * Values Editor
@@ -165,6 +183,40 @@ export const ValuesEditor = ({ model, query, onChange, onRunQuery }: Props) => {
   );
 
   /**
+   * Drag End
+   */
+  const onDragEnd = useCallback(
+    (result: DropResult) => {
+      /**
+       * Dropped outside the list
+       */
+      if (!result.destination) {
+        return;
+      }
+
+      /**
+       * Сreate rows with the new order
+       */
+      const newRows = reorder(model.rows, result.source.index, result.destination.index);
+
+      /**
+       * Set updated rows
+       */
+      const updatedModel = {
+        ...model,
+        rows: newRows,
+      };
+
+      /**
+       * Change
+       */
+      onChange({ ...query, frame: convertToDataFrame(updatedModel) });
+      onRunQuery();
+    },
+    [model, onChange, onRunQuery, query]
+  );
+
+  /**
    * No rows found
    */
   if (!model.rows.length) {
@@ -183,50 +235,70 @@ export const ValuesEditor = ({ model, query, onChange, onRunQuery }: Props) => {
    * Display rows
    */
   return (
-    <>
-      {model.rows.map((row, i) => (
-        <InlineFieldRow key={i} data-testid={TEST_IDS.valuesEditor.row}>
-          {row.map((value: NullableString, index: number) => (
-            <ValueInput
-              key={index}
-              value={value}
-              type={model.fields[index].type}
-              label={model.fields[index].name}
-              onChange={(value) => editValue(value, i, index)}
-            />
-          ))}
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Droppable droppableId="dataset">
+        {(provided) => (
+          <div {...provided.droppableProps} ref={provided.innerRef}>
+            {model.rows.map((row, i) => (
+              <Draggable disableInteractiveElementBlocking={false} draggableId={`draggable-${i}`} key={i} index={i}>
+                {(provided, snapshot) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
+                  >
+                    <InlineFieldRow data-testid={TEST_IDS.valuesEditor.row}>
+                      {row.map((value: NullableString, index: number) => (
+                        <ValueInput
+                          key={index}
+                          value={value}
+                          type={model.fields[index].type}
+                          label={model.fields[index].name}
+                          onChange={(value) => editValue(value, i, index)}
+                        />
+                      ))}
 
-          <InlineField>
-            <Button
-              variant="secondary"
-              title="Copy"
-              onClick={() => duplicateRow(i)}
-              icon="copy"
-              data-testid={TEST_IDS.valuesEditor.buttonCopy}
-            />
-          </InlineField>
+                      <InlineField>
+                        <Button
+                          variant="secondary"
+                          title="Copy"
+                          onClick={() => duplicateRow(i)}
+                          icon="copy"
+                          data-testid={TEST_IDS.valuesEditor.buttonCopy}
+                        />
+                      </InlineField>
 
-          <InlineField>
-            <Button
-              variant="secondary"
-              title="Add"
-              onClick={() => addRow(i)}
-              icon="plus"
-              data-testid={TEST_IDS.valuesEditor.buttonAdd}
-            />
-          </InlineField>
+                      <InlineField>
+                        <Button
+                          variant="secondary"
+                          title="Add"
+                          onClick={() => addRow(i)}
+                          icon="plus"
+                          data-testid={TEST_IDS.valuesEditor.buttonAdd}
+                        />
+                      </InlineField>
 
-          <InlineField>
-            <Button
-              variant="destructive"
-              title="Remove"
-              onClick={() => removeRow(i)}
-              icon="trash-alt"
-              data-testid={TEST_IDS.valuesEditor.buttonRemove}
-            />
-          </InlineField>
-        </InlineFieldRow>
-      ))}
-    </>
+                      <InlineField>
+                        <Button
+                          variant="destructive"
+                          title="Remove"
+                          onClick={() => removeRow(i)}
+                          icon="trash-alt"
+                          data-testid={TEST_IDS.valuesEditor.buttonRemove}
+                        />
+                      </InlineField>
+                      <div {...provided.dragHandleProps}>
+                        <Icon title="Drag and drop to reorder" name="draggabledots" size="lg" />
+                      </div>
+                    </InlineFieldRow>
+                  </div>
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
   );
 };

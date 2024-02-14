@@ -1,10 +1,18 @@
 import { Field, FieldType } from '@grafana/data';
-import { Button, InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
-import React, { useCallback } from 'react';
+import { Button, Icon, InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
+import React, { useCallback, useState } from 'react';
+import {
+  DragDropContext,
+  Draggable,
+  DraggingStyle,
+  Droppable,
+  DropResult,
+  NotDraggingStyle,
+} from 'react-beautiful-dnd';
 
 import { FIELD_TYPES, TEST_IDS } from '../../constants';
 import { DataFrameModel, StaticQuery } from '../../types';
-import { convertToDataFrame } from '../../utils';
+import { convertToDataFrame, reorder } from '../../utils';
 
 /**
  * Properties
@@ -36,9 +44,24 @@ interface Props {
 }
 
 /**
+ * Get Item Style
+ */
+const getItemStyle = (isDragging: boolean, draggableStyle: DraggingStyle | NotDraggingStyle | undefined) => ({
+  /**
+   * styles we need to apply on draggables
+   */
+  ...draggableStyle,
+});
+
+/**
  * Fields Editor
  */
 export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
+  /**
+   * States
+   */
+  const [items, setItems] = useState(model.fields);
+
   /**
    * Add Field
    */
@@ -73,6 +96,7 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
        */
       onChange({ ...query, frame: convertToDataFrame(updatedModel) });
       onRunQuery();
+      setItems(updatedModel.fields);
     },
     [model, onChange, onRunQuery, query]
   );
@@ -115,6 +139,7 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
        */
       onChange({ ...query, frame: convertToDataFrame(updatedModel) });
       onRunQuery();
+      setItems(updatedModel.fields);
     },
     [model, onChange, onRunQuery, query]
   );
@@ -149,6 +174,7 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
        */
       onChange({ ...query, frame: convertToDataFrame(updatedModel) });
       onRunQuery();
+      setItems(updatedModel.fields);
     },
     [model, onChange, onRunQuery, query]
   );
@@ -183,8 +209,52 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
        */
       onChange({ ...query, frame: convertToDataFrame(updatedModel) });
       onRunQuery();
+      setItems(updatedModel.fields);
     },
     [model, onChange, onRunQuery, query]
+  );
+
+  /**
+   * Drag End
+   */
+  const onDragEnd = useCallback(
+    (result: DropResult) => {
+      /**
+       * Dropped outside the list
+       */
+      if (!result.destination) {
+        return;
+      }
+
+      /**
+       * Сreate fields with the new order
+       */
+      const newFields = reorder(items, result.source.index, result.destination.index);
+
+      const newRows = model.rows.map((row) => {
+        if (!result.destination) {
+          return row;
+        }
+        return reorder(row, result.source.index, result.destination.index);
+      });
+
+      /**
+       * Set updated fields
+       */
+      const updatedModel = {
+        ...model,
+        fields: newFields,
+        rows: newRows,
+      };
+      setItems(newFields);
+
+      /**
+       * Change
+       */
+      onChange({ ...query, frame: convertToDataFrame(updatedModel) });
+      onRunQuery();
+    },
+    [items, model, onChange, onRunQuery, query]
   );
 
   /**
@@ -209,55 +279,77 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
   }
 
   return (
-    <>
-      {model.fields.map((field, i) => (
-        <InlineFieldRow key={i} data-testid={TEST_IDS.fieldsEditor.item}>
-          <InlineField label="Name" grow>
-            <Input
-              value={field.name}
-              onChange={(e) => {
-                renameField(e.currentTarget.value, i);
-              }}
-              data-testid={TEST_IDS.fieldsEditor.fieldName}
-            />
-          </InlineField>
-
-          <InlineField label="Type">
-            <Select
-              width={12}
-              value={field.type}
-              onChange={(e) => {
-                changeFieldType(e.value as FieldType, i);
-              }}
-              options={FIELD_TYPES.map((t) => ({
-                label: t[0].toUpperCase() + t.substring(1),
-                value: t,
-              }))}
-              aria-label={TEST_IDS.fieldsEditor.fieldType}
-            />
-          </InlineField>
-
-          <InlineField>
-            <Button
-              variant="secondary"
-              title="Add"
-              onClick={() => addField(i)}
-              icon="plus"
-              data-testid={TEST_IDS.fieldsEditor.buttonAdd}
-            />
-          </InlineField>
-
-          <InlineField>
-            <Button
-              variant="destructive"
-              title="Remove"
-              onClick={() => removeField(i)}
-              data-testid={TEST_IDS.fieldsEditor.buttonRemove}
-              icon="trash-alt"
-            />
-          </InlineField>
-        </InlineFieldRow>
-      ))}
-    </>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Droppable droppableId="dataset">
+        {(provided) => (
+          <div {...provided.droppableProps} ref={provided.innerRef}>
+            {items.map((field, index) => (
+              <Draggable
+                disableInteractiveElementBlocking={false}
+                draggableId={`draggable-${index}`}
+                key={index}
+                index={index}
+              >
+                {(provided, snapshot) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
+                  >
+                    <InlineFieldRow data-testid={TEST_IDS.fieldsEditor.item}>
+                      <InlineField label="Name" grow>
+                        <Input
+                          value={field.name}
+                          onChange={(e) => {
+                            renameField(e.currentTarget.value, index);
+                          }}
+                          data-testid={TEST_IDS.fieldsEditor.fieldName}
+                        />
+                      </InlineField>
+                      <InlineField label="Type">
+                        <Select
+                          width={12}
+                          value={field.type}
+                          onChange={(e) => {
+                            changeFieldType(e.value as FieldType, index);
+                          }}
+                          options={FIELD_TYPES.map((t) => ({
+                            label: t[0].toUpperCase() + t.substring(1),
+                            value: t,
+                          }))}
+                          aria-label={TEST_IDS.fieldsEditor.fieldType}
+                        />
+                      </InlineField>
+                      <InlineField>
+                        <Button
+                          variant="secondary"
+                          title="Add"
+                          onClick={() => addField(index)}
+                          icon="plus"
+                          data-testid={TEST_IDS.fieldsEditor.buttonAdd}
+                        />
+                      </InlineField>
+                      <InlineField>
+                        <Button
+                          variant="destructive"
+                          title="Remove"
+                          onClick={() => removeField(index)}
+                          data-testid={TEST_IDS.fieldsEditor.buttonRemove}
+                          icon="trash-alt"
+                        />
+                      </InlineField>
+                      <div {...provided.dragHandleProps}>
+                        <Icon title="Drag and drop to reorder" name="draggabledots" size="lg" />
+                      </div>
+                    </InlineFieldRow>
+                  </div>
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
   );
 };
