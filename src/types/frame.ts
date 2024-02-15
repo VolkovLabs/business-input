@@ -10,6 +10,17 @@ export enum ValuesEditor {
   CUSTOM = 'custom',
 }
 
+export interface ModelField extends Field {
+  uid: string;
+}
+
+export interface ModelRow {
+  value: NullableString[];
+  uid: string;
+}
+
+export type ModelRows = ModelRow[];
+
 /**
  * Data Frame Model is used as a intermediate frame state for easier
  * manipulation and validation.
@@ -38,14 +49,14 @@ export interface DataFrameModel {
   /**
    * Fields
    *
-   * @type {Field[]}
+   * @type {ModelField[]}
    */
-  fields: Field[];
+  fields: ModelField[];
 
   /**
    * Rows
    *
    * @type {NullableString[][]}
    */
-  rows: NullableString[][];
+  rows: ModelRows;
 }

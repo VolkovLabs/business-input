@@ -7,14 +7,13 @@ import { GrafanaTheme2 } from '@grafana/data';
 export const getStyles = (theme: GrafanaTheme2) => {
   return {
     field: css`
-      margin: ${theme.spacing(0, 0, 2, 0)};
-      display: flex;
-      flex-direction: column;
+      margin: ${theme.spacing(0, 0, 0.5, 0)};
     `,
     controls: css`
       display: flex;
       align-items: center;
       flex-wrap: wrap;
+      width: 100%;
     `,
     buttons: css`
       padding: ${theme.spacing(0.5, 0.5)};

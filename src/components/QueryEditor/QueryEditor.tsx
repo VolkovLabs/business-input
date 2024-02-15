@@ -6,11 +6,11 @@ import {
   SelectableValue,
 } from '@grafana/data';
 import { CollapsableSection, InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { TEST_IDS, VALUES_EDITOR_OPTIONS } from '../../constants';
 import { DataSource } from '../../datasource';
-import { StaticDataSourceOptions, StaticQuery, ValuesEditor as ValuesEditorType } from '../../types';
+import { DataFrameModel, StaticDataSourceOptions, StaticQuery, ValuesEditor as ValuesEditorType } from '../../types';
 import { convertToDataFrame, prepareModel } from '../../utils';
 import { CustomValuesEditor } from '../CustomValuesEditor';
 import { FieldsEditor } from '../FieldsEditor';
@@ -25,7 +25,8 @@ type Props = QueryEditorProps<DataSource, StaticQuery, StaticDataSourceOptions>;
  * Query Editor
  */
 export const QueryEditor: React.FC<Props> = ({ datasource, onChange, onRunQuery, query, app }) => {
-  const model = prepareModel(query.frame ?? { fields: [] });
+  const [model, setModel] = useState(prepareModel(query.frame ?? { fields: [] }));
+
   /**
    * Rename Frame
    */
@@ -34,6 +35,12 @@ export const QueryEditor: React.FC<Props> = ({ datasource, onChange, onRunQuery,
      * Change
      */
     onChange({ ...query, frame: convertToDataFrame({ ...model, name }) });
+    onRunQuery();
+  };
+
+  const onChangeModel = (value: DataFrameModel) => {
+    setModel(value);
+    onChange({ ...query, frame: convertToDataFrame(value) });
     onRunQuery();
   };
 
@@ -128,7 +135,7 @@ export const QueryEditor: React.FC<Props> = ({ datasource, onChange, onRunQuery,
         )}
       </InlineFieldRow>
       <CollapsableSection label="Fields" isOpen={true}>
-        <FieldsEditor query={query} model={model} onChange={onChange} onRunQuery={onRunQuery} />
+        <FieldsEditor model={model} onChange={onChangeModel} />
       </CollapsableSection>
 
       {model.meta?.custom?.valuesEditor === ValuesEditorType.CUSTOM && datasource.codeEditorEnabled ? (
@@ -141,7 +148,7 @@ export const QueryEditor: React.FC<Props> = ({ datasource, onChange, onRunQuery,
         </CollapsableSection>
       ) : (
         <CollapsableSection label="Values" isOpen={true} contentDataTestId={TEST_IDS.queryEditor.valuesEditor}>
-          <ValuesEditor query={query} model={model} onChange={onChange} onRunQuery={onRunQuery} />
+          <ValuesEditor query={query} model={model} onChange={onChangeModel} onRunQuery={onRunQuery} />
         </CollapsableSection>
       )}
     </>

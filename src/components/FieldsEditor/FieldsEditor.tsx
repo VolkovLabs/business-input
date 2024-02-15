@@ -1,12 +1,13 @@
-import { Field, FieldType } from '@grafana/data';
+import { FieldType } from '@grafana/data';
 import { Button, Icon, IconButton, InlineField, InlineFieldRow, Input, Select, useStyles2 } from '@grafana/ui';
 import { DragDropContext, Draggable, DraggingStyle, Droppable, DropResult, NotDraggingStyle } from '@hello-pangea/dnd';
 import { Collapse } from '@volkovlabs/components';
 import React, { useCallback, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import { FIELD_TYPES, TEST_IDS } from '../../constants';
-import { DataFrameModel, StaticQuery } from '../../types';
-import { convertToDataFrame, reorder } from '../../utils';
+import { DataFrameModel, ModelField } from '../../types';
+import { reorder } from '../../utils';
 import { getStyles } from './FieldsEditor.styles';
 
 /**
@@ -21,21 +22,9 @@ interface Props {
   model: DataFrameModel;
 
   /**
-   * Query
-   *
-   * @type {StaticQuery}
-   */
-  query: StaticQuery;
-
-  /**
    * On Change
    */
-  onChange: (value: StaticQuery) => void;
-
-  /**
-   * On Run Query
-   */
-  onRunQuery: () => void;
+  onChange: (value: DataFrameModel) => void;
 }
 
 /**
@@ -51,7 +40,7 @@ const getItemStyle = (isDragging: boolean, draggableStyle: DraggingStyle | NotDr
 /**
  * Fields Editor
  */
-export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
+export const FieldsEditor = ({ model, onChange }: Props) => {
   /**
    * Styles and Theme
    */
@@ -62,15 +51,27 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
    */
   const [items, setItems] = useState(model.fields);
   const [collapseState, setCollapseState] = useState<Record<string, boolean>>({});
+
   /**
    * Toggle collapse state for item
    */
-  const onToggleItem = useCallback((item: Field, index: number) => {
+  const onToggleItem = useCallback((item: ModelField) => {
     setCollapseState((prev) => ({
       ...prev,
-      [`${item.name}-${item.type}`]: !prev[`${item.name}-${item.type}`],
+      [item.uid]: !prev[item.uid],
     }));
   }, []);
+
+  /**
+   * Create another object to prevent mutations
+   */
+  const createUpdatedModel = useCallback(() => {
+    return {
+      ...model,
+      fields: [...model.fields],
+      rows: [...model.rows],
+    };
+  }, [model]);
 
   /**
    * Add Field
@@ -80,11 +81,7 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
       /**
        * Create another object to prevent mutations
        */
-      const updatedModel = {
-        ...model,
-        fields: [...model.fields],
-        rows: [...model.rows],
-      };
+      const updatedModel = createUpdatedModel();
 
       /**
        * Insert a field after the current position.
@@ -92,23 +89,24 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
       updatedModel.fields.splice(index + 1, 0, {
         name: '',
         type: FieldType.string,
-      } as Field);
+        uid: uuidv4(),
+      } as ModelField);
 
       /**
        * Rebuild rows with the added field.
        */
       updatedModel.rows.forEach((row) => {
-        row.splice(index + 1, 0, '');
+        row.value.splice(index + 1, 0, '');
       });
 
       /**
        * Change
        */
-      onChange({ ...query, frame: convertToDataFrame(updatedModel) });
-      onRunQuery();
+      onToggleItem(updatedModel.fields[updatedModel.fields.length - 1]);
+      onChange(updatedModel);
       setItems(updatedModel.fields);
     },
-    [model, onChange, onRunQuery, query]
+    [createUpdatedModel, onChange, onToggleItem]
   );
 
   /**
@@ -119,11 +117,7 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
       /**
        * Create another object to prevent mutations
        */
-      const updatedModel = {
-        ...model,
-        fields: [...model.fields],
-        rows: [...model.rows],
-      };
+      const updatedModel = createUpdatedModel();
 
       /**
        * Remove the field at given position.
@@ -134,7 +128,7 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
        * Rebuild rows without the removed field.
        */
       updatedModel.rows.forEach((row) => {
-        row.splice(index, 1);
+        row.value.splice(index, 1);
       });
 
       /**
@@ -147,11 +141,10 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
       /**
        * Change
        */
-      onChange({ ...query, frame: convertToDataFrame(updatedModel) });
-      onRunQuery();
+      onChange(updatedModel);
       setItems(updatedModel.fields);
     },
-    [model, onChange, onRunQuery, query]
+    [createUpdatedModel, onChange]
   );
 
   /**
@@ -162,10 +155,7 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
       /**
        * Create another object to prevent mutations
        */
-      const updatedModel = {
-        ...model,
-        fields: [...model.fields],
-      };
+      const updatedModel = createUpdatedModel();
 
       /**
        * Rename
@@ -182,15 +172,11 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
       /**
        * Change
        */
-      // setCollapseState((prev) => ({
-      //   ...prev,
-      //   [`${item.name}-${item.type}`]: !prev[`${item.name}-${item.type}`],
-      // }));
-      onChange({ ...query, frame: convertToDataFrame(updatedModel) });
-      onRunQuery();
+
+      onChange(updatedModel);
       setItems(updatedModel.fields);
     },
-    [model, onChange, onRunQuery, query]
+    [createUpdatedModel, onChange]
   );
 
   /**
@@ -201,10 +187,7 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
       /**
        * Create another object to prevent mutations
        */
-      const updatedModel = {
-        ...model,
-        fields: [...model.fields],
-      };
+      const updatedModel = createUpdatedModel();
 
       /**
        * Set Field Type
@@ -221,11 +204,10 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
       /**
        * Change
        */
-      onChange({ ...query, frame: convertToDataFrame(updatedModel) });
-      onRunQuery();
+      onChange(updatedModel);
       setItems(updatedModel.fields);
     },
-    [model, onChange, onRunQuery, query]
+    [createUpdatedModel, onChange]
   );
 
   /**
@@ -249,7 +231,10 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
         if (!result.destination) {
           return row;
         }
-        return reorder(row, result.source.index, result.destination.index);
+        return {
+          ...row,
+          value: reorder(row.value, result.source.index, result.destination.index),
+        };
       });
 
       /**
@@ -260,15 +245,14 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
         fields: newFields,
         rows: newRows,
       };
-      setItems(newFields);
 
       /**
        * Change
        */
-      onChange({ ...query, frame: convertToDataFrame(updatedModel) });
-      onRunQuery();
+      onChange(updatedModel);
+      setItems(newFields);
     },
-    [items, model, onChange, onRunQuery, query]
+    [items, model, onChange]
   );
 
   /**
@@ -309,11 +293,12 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
+                    className={styles.field}
                   >
                     <Collapse
                       fill="solid"
-                      isOpen={collapseState[`${field.name}-${field.type}`]}
-                      onToggle={() => onToggleItem(field, index)}
+                      isOpen={collapseState[field.uid]}
+                      onToggle={() => onToggleItem(field)}
                       title={
                         <>
                           {field.name} | {field.type}
@@ -325,7 +310,7 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
                             name="plus"
                             size="md"
                             tooltip="Add new field"
-                            variant="destructive"
+                            variant="secondary"
                             ariaLabel="Add new field"
                             data-testid={TEST_IDS.fieldsEditor.buttonAdd}
                             onClick={() => addField(index)}
@@ -335,7 +320,7 @@ export const FieldsEditor = ({ query, model, onChange, onRunQuery }: Props) => {
                             name="trash-alt"
                             size="md"
                             tooltip="Remove field"
-                            variant="destructive"
+                            variant="secondary"
                             ariaLabel="Remove field"
                             data-testid={TEST_IDS.fieldsEditor.buttonRemove}
                             onClick={() => removeField(index)}
