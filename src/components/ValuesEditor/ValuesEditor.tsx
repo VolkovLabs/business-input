@@ -6,7 +6,7 @@ import React, { useCallback, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { TEST_IDS } from '../../constants';
-import { DataFrameModel, ModelRow, NullableString, StaticQuery } from '../../types';
+import { DataFrameModel, ModelRow, NullableString } from '../../types';
 import { reorder } from '../../utils';
 import { ValueInput } from '../ValueInput';
 import { getStyles } from './ValuesEditor.style';
@@ -22,21 +22,9 @@ interface Props {
   model: DataFrameModel;
 
   /**
-   * Query
-   *
-   * @type {StaticQuery}
-   */
-  query: StaticQuery;
-
-  /**
    * On Change
    */
   onChange: (value: DataFrameModel) => void;
-
-  /**
-   * On Run Query
-   */
-  onRunQuery: () => void;
 }
 
 /**
@@ -252,84 +240,88 @@ export const ValuesEditor = ({ model, onChange }: Props) => {
    * Display rows
    */
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="dataset">
-        {(provided) => (
-          <div {...provided.droppableProps} ref={provided.innerRef}>
-            {model.rows.map((row, i) => (
-              <Draggable disableInteractiveElementBlocking={false} draggableId={`draggable-${i}`} key={i} index={i}>
-                {(provided, snapshot) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
-                    className={styles.field}
-                  >
-                    <Collapse
-                      fill="solid"
-                      isOpen={collapseState[row.uid]}
-                      onToggle={() => onToggleItem(row)}
-                      title={<>Value #{i}</>}
-                      actions={
-                        <div className={styles.buttons}>
-                          <IconButton
-                            name="copy"
-                            size="md"
-                            tooltip="Copy row"
-                            variant="secondary"
-                            ariaLabel="Copy row"
-                            data-testid={TEST_IDS.valuesEditor.buttonCopy}
-                            onClick={() => duplicateRow(i)}
-                            className={styles.button}
-                          />
-                          <IconButton
-                            name="plus"
-                            size="md"
-                            tooltip="Add new row"
-                            variant="secondary"
-                            ariaLabel="Add new row"
-                            data-testid={TEST_IDS.valuesEditor.buttonAdd}
-                            onClick={() => addRow(i)}
-                            className={styles.button}
-                          />
-                          <IconButton
-                            name="trash-alt"
-                            size="md"
-                            tooltip="Remove row"
-                            variant="secondary"
-                            ariaLabel="Remove row"
-                            data-testid={TEST_IDS.valuesEditor.buttonRemove}
-                            onClick={() => removeRow(i)}
-                            className={styles.button}
-                          />
-                          <div {...provided.dragHandleProps}>
-                            <Icon title="Drag and drop to reorder" name="draggabledots" size="md" />
-                          </div>
-                        </div>
-                      }
+    <div data-testid={TEST_IDS.valuesEditor.root}>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="dataset">
+          {(provided) => (
+            <div {...provided.droppableProps} ref={provided.innerRef}>
+              {model.rows.map((row, i) => (
+                <Draggable disableInteractiveElementBlocking={false} draggableId={`draggable-${i}`} key={i} index={i}>
+                  {(provided, snapshot) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
+                      className={styles.field}
                     >
-                      <InlineFieldRow data-testid={TEST_IDS.valuesEditor.row}>
-                        <div className={styles.controls}>
-                          {row.value.map((value: NullableString, index: number) => (
-                            <ValueInput
-                              key={index}
-                              value={value}
-                              type={model.fields[index].type}
-                              label={model.fields[index].name}
-                              onChange={(value) => editValue(value, i, index)}
+                      <Collapse
+                        headerTestId={TEST_IDS.valuesEditor.itemHeader(row.uid)}
+                        contentTestId={TEST_IDS.valuesEditor.itemContent(row.uid)}
+                        fill="solid"
+                        isOpen={collapseState[row.uid]}
+                        onToggle={() => onToggleItem(row)}
+                        title={<>Value #{i}</>}
+                        actions={
+                          <div className={styles.buttons}>
+                            <IconButton
+                              name="copy"
+                              size="md"
+                              tooltip="Copy row"
+                              variant="secondary"
+                              ariaLabel="Copy row"
+                              data-testid={TEST_IDS.valuesEditor.buttonCopy}
+                              onClick={() => duplicateRow(i)}
+                              className={styles.button}
                             />
-                          ))}
-                        </div>
-                      </InlineFieldRow>
-                    </Collapse>
-                  </div>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
+                            <IconButton
+                              name="plus"
+                              size="md"
+                              tooltip="Add new row"
+                              variant="secondary"
+                              ariaLabel="Add new row"
+                              data-testid={TEST_IDS.valuesEditor.buttonAdd}
+                              onClick={() => addRow(i)}
+                              className={styles.button}
+                            />
+                            <IconButton
+                              name="trash-alt"
+                              size="md"
+                              tooltip="Remove row"
+                              variant="secondary"
+                              ariaLabel="Remove row"
+                              data-testid={TEST_IDS.valuesEditor.buttonRemove}
+                              onClick={() => removeRow(i)}
+                              className={styles.button}
+                            />
+                            <div {...provided.dragHandleProps}>
+                              <Icon title="Drag and drop to reorder" name="draggabledots" size="md" />
+                            </div>
+                          </div>
+                        }
+                      >
+                        <InlineFieldRow data-testid={TEST_IDS.valuesEditor.row}>
+                          <div className={styles.controls}>
+                            {row.value.map((value: NullableString, index: number) => (
+                              <ValueInput
+                                key={index}
+                                value={value}
+                                type={model.fields[index].type}
+                                label={model.fields[index].name}
+                                onChange={(value) => editValue(value, i, index)}
+                              />
+                            ))}
+                          </div>
+                        </InlineFieldRow>
+                      </Collapse>
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </div>
   );
 };

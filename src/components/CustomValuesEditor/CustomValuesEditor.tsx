@@ -7,8 +7,7 @@ import type * as monacoType from 'monaco-editor/esm/vs/editor/editor.api';
 import React, { useCallback } from 'react';
 
 import { CodeLanguage, CUSTOM_CODE, CUSTOM_VALUES_EDITOR_SUGGESTIONS, TEST_IDS } from '../../constants';
-import { DataFrameModel, StaticQuery } from '../../types';
-import { convertToDataFrame } from '../../utils';
+import { DataFrameModel } from '../../types';
 
 /**
  * Properties
@@ -22,27 +21,15 @@ interface Props {
   model: DataFrameModel;
 
   /**
-   * Query
-   *
-   * @type {StaticQuery}
-   */
-  query: StaticQuery;
-
-  /**
    * On Change
    */
-  onChange: (value: StaticQuery) => void;
-
-  /**
-   * On Run Query
-   */
-  onRunQuery: () => void;
+  onChange: (value: DataFrameModel) => void;
 }
 
 /**
  * Custom Values Editor
  */
-export const CustomValuesEditor = ({ model, query, onChange, onRunQuery }: Props) => {
+export const CustomValuesEditor = ({ model, onChange }: Props) => {
   /**
    * Template Service to get Variables
    */
@@ -53,22 +40,19 @@ export const CustomValuesEditor = ({ model, query, onChange, onRunQuery }: Props
    */
   const onChangeCode = useCallback(
     (code: string) => {
-      onChange({
-        ...query,
-        frame: convertToDataFrame({
-          ...model,
-          meta: {
-            ...(model.meta || {}),
-            custom: {
-              ...(model.meta?.custom || {}),
-              customCode: code,
-            },
+      const updatedModel = {
+        ...model,
+        meta: {
+          ...(model.meta || {}),
+          custom: {
+            ...(model.meta?.custom || {}),
+            customCode: code,
           },
-        }),
-      });
-      onRunQuery();
+        },
+      };
+      onChange(updatedModel);
     },
-    [model, onChange, onRunQuery, query]
+    [model, onChange]
   );
 
   /**

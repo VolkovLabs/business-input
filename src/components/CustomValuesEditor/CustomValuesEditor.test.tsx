@@ -38,8 +38,8 @@ describe('Custom Values Editor', () => {
    * @param query
    * @param restProps
    */
-  const getComponent = ({ query = {}, ...restProps }: any) => {
-    return <CustomValuesEditor model={model} onRunQuery={onRunQuery} {...restProps} query={query} />;
+  const getComponent = ({ ...restProps }: any) => {
+    return <CustomValuesEditor model={model} onRunQuery={onRunQuery} {...restProps} />;
   };
 
   beforeEach(() => {
@@ -83,7 +83,6 @@ describe('Custom Values Editor', () => {
   it('Should save changes on blur', () => {
     const value = 'some value';
     const onChange = jest.fn();
-    const onRunQuery = jest.fn();
 
     jest.mocked(CodeEditor).mockImplementation(({ onBlur }: any) => {
       onBlur(value);
@@ -93,28 +92,24 @@ describe('Custom Values Editor', () => {
     render(
       getComponent({
         onChange,
-        onRunQuery,
       })
     );
 
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
-        frame: expect.objectContaining({
-          meta: expect.objectContaining({
-            custom: {
-              customCode: value,
-            },
-          }),
+        meta: expect.objectContaining({
+          custom: {
+            customCode: value,
+          },
         }),
       })
     );
-    expect(onRunQuery).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledTimes(1);
   });
 
   it('Should pass value on save', () => {
     const value = 'some value';
     const onChange = jest.fn();
-    const onRunQuery = jest.fn();
 
     jest.mocked(CodeEditor).mockImplementation(({ onSave }: any) => {
       onSave(value);
@@ -124,22 +119,19 @@ describe('Custom Values Editor', () => {
     render(
       getComponent({
         onChange,
-        onRunQuery,
       })
     );
 
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
-        frame: expect.objectContaining({
-          meta: expect.objectContaining({
-            custom: {
-              customCode: value,
-            },
-          }),
+        meta: expect.objectContaining({
+          custom: {
+            customCode: value,
+          },
         }),
       })
     );
-    expect(onRunQuery).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledTimes(1);
   });
 
   it('Should make correct suggestions', () => {

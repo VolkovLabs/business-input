@@ -277,97 +277,102 @@ export const FieldsEditor = ({ model, onChange }: Props) => {
   }
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="dataset">
-        {(provided) => (
-          <div {...provided.droppableProps} ref={provided.innerRef}>
-            {items.map((field, index) => (
-              <Draggable
-                disableInteractiveElementBlocking={false}
-                draggableId={`draggable-${index}`}
-                key={index}
-                index={index}
-              >
-                {(provided, snapshot) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
-                    className={styles.field}
-                  >
-                    <Collapse
-                      fill="solid"
-                      isOpen={collapseState[field.uid]}
-                      onToggle={() => onToggleItem(field)}
-                      title={
-                        <>
-                          {field.name} | {field.type}
-                        </>
-                      }
-                      actions={
-                        <div className={styles.buttons}>
-                          <IconButton
-                            name="plus"
-                            size="md"
-                            tooltip="Add new field"
-                            variant="secondary"
-                            ariaLabel="Add new field"
-                            data-testid={TEST_IDS.fieldsEditor.buttonAdd}
-                            onClick={() => addField(index)}
-                            className={styles.button}
-                          />
-                          <IconButton
-                            name="trash-alt"
-                            size="md"
-                            tooltip="Remove field"
-                            variant="secondary"
-                            ariaLabel="Remove field"
-                            data-testid={TEST_IDS.fieldsEditor.buttonRemove}
-                            onClick={() => removeField(index)}
-                            className={styles.button}
-                          />
-                          <div {...provided.dragHandleProps}>
-                            <Icon title="Drag and drop to reorder" name="draggabledots" size="md" />
-                          </div>
-                        </div>
-                      }
+    <div data-testid={TEST_IDS.fieldsEditor.root}>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="dataset">
+          {(provided) => (
+            <div {...provided.droppableProps} ref={provided.innerRef}>
+              {items.map((field, index) => (
+                <Draggable
+                  disableInteractiveElementBlocking={false}
+                  draggableId={`draggable-${index}`}
+                  key={index}
+                  index={index}
+                >
+                  {(provided, snapshot) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
+                      className={styles.field}
+                      data-testid={TEST_IDS.fieldsEditor.item}
                     >
-                      <InlineFieldRow data-testid={TEST_IDS.fieldsEditor.item}>
-                        <div className={styles.controls}>
-                          <InlineField label="Name" grow>
-                            <Input
-                              value={field.name}
-                              onChange={(e) => {
-                                renameField(e.currentTarget.value, index);
-                              }}
-                              data-testid={TEST_IDS.fieldsEditor.fieldName}
+                      <Collapse
+                        headerTestId={TEST_IDS.fieldsEditor.itemHeader(field.uid)}
+                        contentTestId={TEST_IDS.fieldsEditor.itemContent(field.uid)}
+                        fill="solid"
+                        isOpen={collapseState[field.uid]}
+                        onToggle={() => onToggleItem(field)}
+                        title={
+                          <>
+                            {field.name} | {field.type}
+                          </>
+                        }
+                        actions={
+                          <div className={styles.buttons}>
+                            <IconButton
+                              name="plus"
+                              size="md"
+                              tooltip="Add new field"
+                              variant="secondary"
+                              ariaLabel="Add new field"
+                              data-testid={TEST_IDS.fieldsEditor.buttonAdd}
+                              onClick={() => addField(index)}
+                              className={styles.button}
                             />
-                          </InlineField>
-                          <InlineField label="Type">
-                            <Select
-                              width={12}
-                              value={field.type}
-                              onChange={(e) => {
-                                changeFieldType(e.value as FieldType, index);
-                              }}
-                              options={FIELD_TYPES.map((t) => ({
-                                label: t[0].toUpperCase() + t.substring(1),
-                                value: t,
-                              }))}
-                              aria-label={TEST_IDS.fieldsEditor.fieldType}
+                            <IconButton
+                              name="trash-alt"
+                              size="md"
+                              tooltip="Remove field"
+                              variant="secondary"
+                              ariaLabel="Remove field"
+                              data-testid={TEST_IDS.fieldsEditor.buttonRemove}
+                              onClick={() => removeField(index)}
+                              className={styles.button}
                             />
-                          </InlineField>
-                        </div>
-                      </InlineFieldRow>
-                    </Collapse>
-                  </div>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
+                            <div {...provided.dragHandleProps}>
+                              <Icon title="Drag and drop to reorder" name="draggabledots" size="md" />
+                            </div>
+                          </div>
+                        }
+                      >
+                        <InlineFieldRow>
+                          <div className={styles.controls}>
+                            <InlineField label="Name" grow>
+                              <Input
+                                value={field.name}
+                                onChange={(e) => {
+                                  renameField(e.currentTarget.value, index);
+                                }}
+                                data-testid={TEST_IDS.fieldsEditor.fieldName}
+                              />
+                            </InlineField>
+                            <InlineField label="Type">
+                              <Select
+                                width={12}
+                                value={field.type}
+                                onChange={(e) => {
+                                  changeFieldType(e.value as FieldType, index);
+                                }}
+                                options={FIELD_TYPES.map((t) => ({
+                                  label: t[0].toUpperCase() + t.substring(1),
+                                  value: t,
+                                }))}
+                                aria-label={TEST_IDS.fieldsEditor.fieldType}
+                              />
+                            </InlineField>
+                          </div>
+                        </InlineFieldRow>
+                      </Collapse>
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </div>
   );
 };

@@ -30,19 +30,29 @@ export const QueryEditor: React.FC<Props> = ({ datasource, onChange, onRunQuery,
   /**
    * Rename Frame
    */
-  const renameFrame = (name: string) => {
-    /**
-     * Change
-     */
-    onChange({ ...query, frame: convertToDataFrame({ ...model, name }) });
-    onRunQuery();
-  };
+  const renameFrame = useCallback(
+    (name: string) => {
+      /**
+       * Change
+       */
+      setModel({
+        ...model,
+        name: name,
+      });
+      onChange({ ...query, frame: convertToDataFrame({ ...model, name }) });
+      onRunQuery();
+    },
+    [model, onChange, onRunQuery, query]
+  );
 
-  const onChangeModel = (value: DataFrameModel) => {
-    setModel(value);
-    onChange({ ...query, frame: convertToDataFrame(value) });
-    onRunQuery();
-  };
+  const onChangeModel = useCallback(
+    (value: DataFrameModel) => {
+      setModel(value);
+      onChange({ ...query, frame: convertToDataFrame(value) });
+      onRunQuery();
+    },
+    [onChange, onRunQuery, query]
+  );
 
   /**
    * Set Preferred Visualization Type
@@ -52,6 +62,13 @@ export const QueryEditor: React.FC<Props> = ({ datasource, onChange, onRunQuery,
       /**
        * Change
        */
+      setModel({
+        ...model,
+        meta: {
+          ...model.meta,
+          preferredVisualisationType: event.value,
+        },
+      });
       onChange({
         ...query,
         frame: convertToDataFrame({
@@ -75,6 +92,16 @@ export const QueryEditor: React.FC<Props> = ({ datasource, onChange, onRunQuery,
       /**
        * Change
        */
+      setModel({
+        ...model,
+        meta: {
+          ...model.meta,
+          custom: {
+            ...(model.meta?.custom || {}),
+            valuesEditor: event.value,
+          },
+        },
+      });
       onChange({
         ...query,
         frame: convertToDataFrame({
@@ -144,11 +171,11 @@ export const QueryEditor: React.FC<Props> = ({ datasource, onChange, onRunQuery,
           isOpen={true}
           contentDataTestId={TEST_IDS.queryEditor.customValuesEditor}
         >
-          <CustomValuesEditor query={query} model={model} onChange={onChange} onRunQuery={onRunQuery} />
+          <CustomValuesEditor model={model} onChange={onChangeModel} />
         </CollapsableSection>
       ) : (
         <CollapsableSection label="Values" isOpen={true} contentDataTestId={TEST_IDS.queryEditor.valuesEditor}>
-          <ValuesEditor query={query} model={model} onChange={onChangeModel} onRunQuery={onRunQuery} />
+          <ValuesEditor model={model} onChange={onChangeModel} />
         </CollapsableSection>
       )}
     </>

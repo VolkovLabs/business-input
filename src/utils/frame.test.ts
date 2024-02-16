@@ -2,6 +2,10 @@ import { FieldType } from '@grafana/data';
 
 import { prepareModel } from './frame';
 
+jest.mock('uuid', () => ({
+  v4: jest.fn(() => '123456'),
+}));
+
 describe('Frame Utils', () => {
   describe('Prepare Model', () => {
     it('Should take rows', () => {
@@ -24,8 +28,8 @@ describe('Frame Utils', () => {
         ],
       };
       expect(prepareModel(dataFrame).rows).toEqual([
-        ['key1', 'value1', null],
-        ['key2', 'value2', null],
+        { uid: '123456', value: ['key1', 'value1', null] },
+        { uid: '123456', value: ['key2', 'value2', null] },
       ]);
     });
 
