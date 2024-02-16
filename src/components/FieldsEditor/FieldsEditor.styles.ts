@@ -21,9 +21,10 @@ export const getStyles = (theme: GrafanaTheme2) => {
       align-items: center;
       justify-content: flex-end;
       width: 100%;
+      gap: ${theme.spacing(0.5)};
     `,
-    button: css`
-      margin: ${theme.spacing(0, 0.5, 0, 0)};
+    dragIcon: css`
+      color: ${theme.colors.text.disabled};
     `,
   };
 };

@@ -305,33 +305,29 @@ export const FieldsEditor = ({ model, onChange }: Props) => {
                         onToggle={() => onToggleItem(field)}
                         title={
                           <>
-                            {field.name} | {field.type}
+                            {field.name} [{field.type}]
                           </>
                         }
                         actions={
                           <div className={styles.buttons}>
                             <IconButton
                               name="plus"
-                              size="md"
                               tooltip="Add new field"
                               variant="secondary"
                               ariaLabel="Add new field"
                               data-testid={TEST_IDS.fieldsEditor.buttonAdd}
                               onClick={() => addField(index)}
-                              className={styles.button}
                             />
                             <IconButton
                               name="trash-alt"
-                              size="md"
                               tooltip="Remove field"
                               variant="secondary"
                               ariaLabel="Remove field"
                               data-testid={TEST_IDS.fieldsEditor.buttonRemove}
                               onClick={() => removeField(index)}
-                              className={styles.button}
                             />
-                            <div {...provided.dragHandleProps}>
-                              <Icon title="Drag and drop to reorder" name="draggabledots" size="md" />
+                            <div {...provided.dragHandleProps} className={styles.dragIcon}>
+                              <Icon title="Drag and drop to reorder" name="draggabledots" />
                             </div>
                           </div>
                         }

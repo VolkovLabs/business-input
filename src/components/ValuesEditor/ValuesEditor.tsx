@@ -260,28 +260,24 @@ export const ValuesEditor = ({ model, onChange }: Props) => {
                         fill="solid"
                         isOpen={collapseState[row.uid]}
                         onToggle={() => onToggleItem(row)}
-                        title={<>Value #{i}</>}
+                        title={<>#{i + 1}</>}
                         actions={
                           <div className={styles.buttons}>
                             <IconButton
                               name="copy"
-                              size="md"
                               tooltip="Copy row"
                               variant="secondary"
                               ariaLabel="Copy row"
                               data-testid={TEST_IDS.valuesEditor.buttonCopy}
                               onClick={() => duplicateRow(i)}
-                              className={styles.button}
                             />
                             <IconButton
                               name="plus"
-                              size="md"
                               tooltip="Add new row"
                               variant="secondary"
                               ariaLabel="Add new row"
                               data-testid={TEST_IDS.valuesEditor.buttonAdd}
                               onClick={() => addRow(i)}
-                              className={styles.button}
                             />
                             <IconButton
                               name="trash-alt"
@@ -291,10 +287,9 @@ export const ValuesEditor = ({ model, onChange }: Props) => {
                               ariaLabel="Remove row"
                               data-testid={TEST_IDS.valuesEditor.buttonRemove}
                               onClick={() => removeRow(i)}
-                              className={styles.button}
                             />
-                            <div {...provided.dragHandleProps}>
-                              <Icon title="Drag and drop to reorder" name="draggabledots" size="md" />
+                            <div {...provided.dragHandleProps} className={styles.dragIcon}>
+                              <Icon title="Drag and drop to reorder" name="draggabledots" />
                             </div>
                           </div>
                         }
