@@ -46,12 +46,12 @@ export const prepareModel = (frame: DataFrameDTO): DataFrameModel => {
    */
   if (frame.fields.length !== 0) {
     fields = frame.fields.map(
-      (field) => ({ name: field.name, type: field.type ?? FieldType.string, uid: uuidv4() } as ModelField)
+      (field) => ({ name: field.name, type: field.type ?? FieldType.string, id: uuidv4() } as ModelField)
     );
 
     rows = Array.from({ length: frame.fields[0].values?.length ?? 0 }).map((row, i) => ({
       value: frame.fields.map((field) => (field.values as NullableString[])[i]?.toString() ?? null),
-      uid: uuidv4(),
+      id: uuidv4(),
     }));
   }
 

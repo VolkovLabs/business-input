@@ -41,8 +41,8 @@ jest.mock('uuid', () => ({
  */
 describe('Editor', () => {
   const model = {
-    fields: [{ name: 'key', type: FieldType.string, uid: '12' }] as any,
-    rows: [{ uid: '121', value: ['key1'] }],
+    fields: [{ name: 'key', type: FieldType.string, id: '12' }] as any,
+    rows: [{ id: '121', value: ['key1'] }],
   };
   const onChange = jest.fn();
   const onRunQuery = jest.fn();
@@ -161,7 +161,7 @@ describe('Editor', () => {
     render(
       getComponent({
         model: {
-          fields: [{ name: 'key', type: FieldType.boolean, uid: '12' }] as any,
+          fields: [{ name: 'key', type: FieldType.boolean, id: '12' }] as any,
           rows: [],
         },
       })
@@ -187,14 +187,15 @@ describe('Editor', () => {
 
   it('Should add row', async () => {
     render(getComponent({ model }));
+
     expect(selectors.root()).toBeInTheDocument();
     fireEvent.click(selectors.buttonAdd());
 
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
         rows: expect.arrayContaining([
-          { uid: '121', value: ['key1'] },
-          { uid: '123456', value: [''] },
+          { id: '121', value: ['key1'] },
+          { id: '123456', value: [''] },
         ]),
       })
     );
@@ -222,8 +223,8 @@ describe('Editor', () => {
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
         rows: expect.arrayContaining([
-          { uid: '121', value: ['key1'] },
-          { uid: '123456', value: ['key1'] },
+          { id: '121', value: ['key1'] },
+          { id: '123456', value: ['key1'] },
         ]),
       })
     );
@@ -234,7 +235,7 @@ describe('Editor', () => {
 
     expect(selectors.root()).toBeInTheDocument();
 
-    openItem(model.rows[0].uid);
+    openItem(model.rows[0].id);
     const items = screen.getAllByTestId(TEST_IDS.valuesEditor.row);
 
     expect(items[0]).toBeInTheDocument();
@@ -246,7 +247,7 @@ describe('Editor', () => {
 
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
-        rows: expect.arrayContaining([{ uid: '121', value: ['New Key'] }]),
+        rows: expect.arrayContaining([{ id: '121', value: ['New Key'] }]),
       })
     );
   });
@@ -261,26 +262,27 @@ describe('Editor', () => {
     const field1 = {
       name: 'Name',
       type: FieldType.string,
-      uid: '12',
+      id: '12',
     };
     const field2 = {
       name: 'Name',
       type: FieldType.string,
-      uid: '13',
+      id: '13',
     };
     const field3 = {
       name: 'Name',
       type: FieldType.string,
-      uid: '14',
+      id: '14',
     };
+
     render(
       getComponent({
         model: {
           fields: [field1, field2, field3] as any,
           name: 'sales',
           rows: [
-            { uid: '121', value: ['Graph', 'Logs', 'Node Graph'] },
-            { uid: '122', value: ['Graph 2', 'Logs 2', 'Node Graph 2'] },
+            { id: '121', value: ['Graph', 'Logs', 'Node Graph'] },
+            { id: '122', value: ['Graph 2', 'Logs 2', 'Node Graph 2'] },
           ],
         },
       })
@@ -302,14 +304,14 @@ describe('Editor', () => {
 
     expect(onChange).toHaveBeenCalledWith({
       fields: [
-        { name: 'Name', type: 'string', uid: '12' },
-        { name: 'Name', type: 'string', uid: '13' },
-        { name: 'Name', type: 'string', uid: '14' },
+        { name: 'Name', type: 'string', id: '12' },
+        { name: 'Name', type: 'string', id: '13' },
+        { name: 'Name', type: 'string', id: '14' },
       ],
       name: 'sales',
       rows: [
-        { uid: '122', value: ['Graph 2', 'Logs 2', 'Node Graph 2'] },
-        { uid: '121', value: ['Graph', 'Logs', 'Node Graph'] },
+        { id: '122', value: ['Graph 2', 'Logs 2', 'Node Graph 2'] },
+        { id: '121', value: ['Graph', 'Logs', 'Node Graph'] },
       ],
     });
   });
@@ -320,27 +322,29 @@ describe('Editor', () => {
       onDragEndHandler = onDragEnd;
       return children;
     });
+
     const field1 = {
       name: 'Name',
       type: FieldType.string,
-      uid: '12',
+      id: '12',
     };
     const field2 = {
       name: 'Name',
       type: FieldType.string,
-      uid: '13',
+      id: '13',
     };
     const field3 = {
       name: 'Name',
       type: FieldType.string,
-      uid: '14',
+      id: '14',
     };
+
     render(
       getComponent({
         model: {
           fields: [field1, field2, field3] as any,
           name: 'sales',
-          rows: [{ uid: '121', value: ['Graph', 'Logs', 'Node Graph'] }],
+          rows: [{ id: '121', value: ['Graph', 'Logs', 'Node Graph'] }],
         },
       })
     );

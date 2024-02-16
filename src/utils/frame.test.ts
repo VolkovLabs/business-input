@@ -28,8 +28,8 @@ describe('Frame Utils', () => {
         ],
       };
       expect(prepareModel(dataFrame).rows).toEqual([
-        { uid: '123456', value: ['key1', 'value1', null] },
-        { uid: '123456', value: ['key2', 'value2', null] },
+        { id: '123456', value: ['key1', 'value1', null] },
+        { id: '123456', value: ['key2', 'value2', null] },
       ]);
     });
 

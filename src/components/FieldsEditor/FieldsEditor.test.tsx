@@ -116,8 +116,6 @@ describe('Editor', () => {
 
   /**
    * Get Tested Component
-   * @param query
-   * @param restProps
    */
   const getComponent = ({ ...restProps }: Partial<Props>) => {
     return <FieldsEditor onChange={onChange} onRunQuery={onRunQuery} {...(restProps as any)} />;
@@ -140,7 +138,7 @@ describe('Editor', () => {
         expect.objectContaining({
           type: FieldType.string,
           name: '',
-          uid: '123456',
+          id: '123456',
         }),
       ]),
       rows: [],
@@ -151,13 +149,14 @@ describe('Editor', () => {
     const field1 = {
       name: 'name',
       type: FieldType.string,
-      uid: '12',
+      id: '12',
     };
     const field2 = {
       name: 'amount',
       type: FieldType.number,
-      uid: '13',
+      id: '13',
     };
+
     render(
       getComponent({
         model: {
@@ -170,21 +169,18 @@ describe('Editor', () => {
     expect(selectors.root()).toBeInTheDocument();
     expect(selectors.itemHeader(false, '12')).toBeInTheDocument();
     expect(selectors.itemHeader(false, '13')).toBeInTheDocument();
-
-    openItem(field1.uid);
-    openItem(field2.uid);
   });
 
   it('Should change name', () => {
     const field1 = {
       name: 'name',
       type: FieldType.string,
-      uid: '12',
+      id: '12',
     };
     const field2 = {
       name: 'amount',
       type: FieldType.number,
-      uid: '13',
+      id: '13',
     };
 
     render(
@@ -195,8 +191,9 @@ describe('Editor', () => {
         },
       })
     );
-    const item = openItem(field1.uid);
-    const item2 = openItem(field2.uid);
+
+    const item = openItem(field1.id);
+    const item2 = openItem(field2.id);
     fireEvent.change(item.fieldName(), { target: { value: 'Name New' } });
 
     const items = screen.getAllByTestId(TEST_IDS.fieldsEditor.fieldName);
@@ -211,13 +208,14 @@ describe('Editor', () => {
     const field1 = {
       name: 'name',
       type: FieldType.string,
-      uid: '12',
+      id: '12',
     };
     const field2 = {
       name: 'amount',
       type: FieldType.number,
-      uid: '13',
+      id: '13',
     };
+
     render(
       getComponent({
         model: {
@@ -226,7 +224,7 @@ describe('Editor', () => {
         },
       })
     );
-    openItem(field1.uid);
+    openItem(field1.id);
     const items = screen.getAllByTestId(TEST_IDS.fieldsEditor.item);
     expect(items[0]).toBeInTheDocument();
 
@@ -238,16 +236,16 @@ describe('Editor', () => {
 
     expect(onChange).toHaveBeenCalledWith({
       fields: [
-        { name: 'name', type: 'geo', uid: '12' },
-        { name: 'amount', type: 'number', uid: '13' },
+        { name: 'name', type: 'geo', id: '12' },
+        { name: 'amount', type: 'number', id: '13' },
       ],
       rows: [],
     });
 
     expect(onChange).toHaveBeenCalledWith({
       fields: expect.arrayContaining([
-        { name: 'name', type: 'geo', uid: '12' },
-        { name: 'amount', type: 'number', uid: '13' },
+        { name: 'name', type: 'geo', id: '12' },
+        { name: 'amount', type: 'number', id: '13' },
       ]),
       rows: [],
     });
@@ -257,13 +255,14 @@ describe('Editor', () => {
     const field1 = {
       name: 'name',
       type: FieldType.string,
-      uid: '12',
+      id: '12',
     };
+
     render(
       getComponent({
         model: {
           fields: [field1] as any,
-          rows: [{ uid: 'row123', value: ['some data'] }],
+          rows: [{ id: 'row123', value: ['some data'] }],
         },
       })
     );
@@ -273,8 +272,8 @@ describe('Editor', () => {
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
         fields: expect.arrayContaining([
-          { name: 'name', type: 'string', uid: '12' },
-          { name: '', type: 'string', uid: '123456' },
+          { name: 'name', type: 'string', id: '12' },
+          { name: '', type: 'string', id: '123456' },
         ]),
       })
     );
@@ -284,13 +283,13 @@ describe('Editor', () => {
     const field1 = {
       name: 'name',
       type: FieldType.string,
-      uid: '12',
+      id: '12',
     };
 
     const { value } = createOnChangeHandler({
       model: {
         fields: [field1] as any,
-        rows: [{ uid: 'row123', value: ['some data'] }],
+        rows: [{ id: 'row123', value: ['some data'] }],
       },
     });
 
@@ -312,16 +311,18 @@ describe('Editor', () => {
       onDragEndHandler = onDragEnd;
       return children;
     });
+
     const field1 = {
       name: 'Drag Key',
       type: FieldType.string,
-      uid: '12',
+      id: '12',
     };
     const field2 = {
       name: 'Drag Key 2',
       type: FieldType.number,
-      uid: '13',
+      id: '13',
     };
+
     render(
       getComponent({
         model: {
@@ -357,16 +358,18 @@ describe('Editor', () => {
       onDragEndHandler = onDragEnd;
       return children;
     });
+
     const field1 = {
       name: 'Drag Key',
       type: FieldType.string,
-      uid: '12',
+      id: '12',
     };
     const field2 = {
       name: 'Drag Key 2',
       type: FieldType.number,
-      uid: '13',
+      id: '13',
     };
+
     render(
       getComponent({
         model: {

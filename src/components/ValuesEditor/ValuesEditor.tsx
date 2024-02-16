@@ -67,7 +67,7 @@ export const ValuesEditor = ({ model, onChange }: Props) => {
   const onToggleItem = useCallback((row: ModelRow) => {
     setCollapseState((prev) => ({
       ...prev,
-      [row.uid]: !prev[row.uid],
+      [row.id]: !prev[row.id],
     }));
   }, []);
 
@@ -92,7 +92,7 @@ export const ValuesEditor = ({ model, onChange }: Props) => {
               return '';
           }
         }),
-        uid: uuidv4(),
+        id: uuidv4(),
       };
 
       /**
@@ -152,7 +152,7 @@ export const ValuesEditor = ({ model, onChange }: Props) => {
 
       const cloneRow = {
         value: JSON.parse(JSON.stringify(updatedModel.rows[index].value)),
-        uid: uuidv4(),
+        id: uuidv4(),
       };
 
       updatedModel.rows.splice(index + 1, 0, cloneRow);
@@ -255,10 +255,10 @@ export const ValuesEditor = ({ model, onChange }: Props) => {
                       className={styles.field}
                     >
                       <Collapse
-                        headerTestId={TEST_IDS.valuesEditor.itemHeader(row.uid)}
-                        contentTestId={TEST_IDS.valuesEditor.itemContent(row.uid)}
+                        headerTestId={TEST_IDS.valuesEditor.itemHeader(row.id)}
+                        contentTestId={TEST_IDS.valuesEditor.itemContent(row.id)}
                         fill="solid"
-                        isOpen={collapseState[row.uid]}
+                        isOpen={collapseState[row.id]}
                         onToggle={() => onToggleItem(row)}
                         title={<>#{i + 1}</>}
                         actions={

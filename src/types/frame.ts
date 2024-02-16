@@ -10,15 +10,40 @@ export enum ValuesEditor {
   CUSTOM = 'custom',
 }
 
+/**
+ * Model Field
+ */
 export interface ModelField extends Field {
-  uid: string;
+  /**
+   * Id
+   *
+   * @type {string}
+   */
+  id: string;
 }
 
+/**
+ * Model Row
+ */
 export interface ModelRow {
+  /**
+   * Value
+   *
+   * @type {NullableString[]}
+   */
   value: NullableString[];
-  uid: string;
+
+  /**
+   * Id
+   *
+   * @type {string}
+   */
+  id: string;
 }
 
+/**
+ * Model Rows
+ */
 export type ModelRows = ModelRow[];
 
 /**

@@ -58,7 +58,7 @@ export const FieldsEditor = ({ model, onChange }: Props) => {
   const onToggleItem = useCallback((item: ModelField) => {
     setCollapseState((prev) => ({
       ...prev,
-      [item.uid]: !prev[item.uid],
+      [item.id]: !prev[item.id],
     }));
   }, []);
 
@@ -89,7 +89,7 @@ export const FieldsEditor = ({ model, onChange }: Props) => {
       updatedModel.fields.splice(index + 1, 0, {
         name: '',
         type: FieldType.string,
-        uid: uuidv4(),
+        id: uuidv4(),
       } as ModelField);
 
       /**
@@ -298,10 +298,10 @@ export const FieldsEditor = ({ model, onChange }: Props) => {
                       data-testid={TEST_IDS.fieldsEditor.item}
                     >
                       <Collapse
-                        headerTestId={TEST_IDS.fieldsEditor.itemHeader(field.uid)}
-                        contentTestId={TEST_IDS.fieldsEditor.itemContent(field.uid)}
+                        headerTestId={TEST_IDS.fieldsEditor.itemHeader(field.id)}
+                        contentTestId={TEST_IDS.fieldsEditor.itemContent(field.id)}
                         fill="solid"
-                        isOpen={collapseState[field.uid]}
+                        isOpen={collapseState[field.id]}
                         onToggle={() => onToggleItem(field)}
                         title={
                           <>
