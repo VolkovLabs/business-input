@@ -2,7 +2,7 @@ import { FieldType } from '@grafana/data';
 import { Button, Icon, IconButton, InlineField, InlineFieldRow, useStyles2 } from '@grafana/ui';
 import { DragDropContext, Draggable, DraggingStyle, Droppable, DropResult, NotDraggingStyle } from '@hello-pangea/dnd';
 import { Collapse } from '@volkovlabs/components';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { TEST_IDS } from '../../constants';
@@ -70,6 +70,26 @@ export const ValuesEditor = ({ model, onChange }: Props) => {
       [row.id]: !prev[row.id],
     }));
   }, []);
+
+  /**
+   * Toggle collapse state for all item
+   */
+  const isAllItemsOpen: boolean = useMemo(() => {
+    const currentIds = Object.values(collapseState).filter((item) => !!item);
+
+    return currentIds.length === model.rows.length;
+  }, [collapseState, model.rows.length]);
+
+  const onToggleAllItems = useCallback(
+    (isOpen: boolean) => {
+      const ids = model.rows.reduce((acc, item) => {
+        return { ...acc, [item.id]: isOpen };
+      }, {});
+
+      setCollapseState(ids);
+    },
+    [model.rows]
+  );
 
   /**
    * Add Row
@@ -243,6 +263,16 @@ export const ValuesEditor = ({ model, onChange }: Props) => {
    */
   return (
     <div data-testid={TEST_IDS.valuesEditor.root}>
+      <div className={styles.field}>
+        <Button
+          icon={isAllItemsOpen ? 'eye-slash' : 'eye'}
+          variant="secondary"
+          onClick={() => onToggleAllItems(!isAllItemsOpen)}
+          data-testid={TEST_IDS.valuesEditor.collapsedAllButton}
+        >
+          {isAllItemsOpen ? 'Collapse All' : 'Expand All'}
+        </Button>
+      </div>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="dataset">
           {(provided) => (

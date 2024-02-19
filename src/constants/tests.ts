@@ -11,6 +11,7 @@ export const TEST_IDS = {
     item: 'data-testid fields-editor item',
     itemHeader: (name: string) => `data-testid fields-editor item-header-${name}`,
     itemContent: (name: string) => `data-testid fields-editor item-content-${name}`,
+    collapsedAllButton: 'data-testid fields-editor button-collapsed-all',
   },
   queryEditor: {
     customValuesEditor: 'data-testid query-editor custom-values-editor',
@@ -34,6 +35,7 @@ export const TEST_IDS = {
     row: 'data-testid values-editor row',
     itemHeader: (name: string) => `data-testid values-editor item-header-${name}`,
     itemContent: (name: string) => `data-testid values-editor item-content-${name}`,
+    collapsedAllButton: 'data-testid values-editor button-collapsed-all',
   },
   customValuesEditor: {
     root: 'data-testid custom-values-editor',

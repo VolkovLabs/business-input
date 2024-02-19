@@ -363,4 +363,40 @@ describe('Editor', () => {
 
     expect(onChange).not.toHaveBeenCalled();
   });
+
+  it('Should expand/collapse all fields', () => {
+    const field1 = {
+      name: 'Name',
+      type: FieldType.string,
+      id: '12',
+    };
+    const field2 = {
+      name: 'Name',
+      type: FieldType.string,
+      id: '13',
+    };
+    const field3 = {
+      name: 'Name',
+      type: FieldType.string,
+      id: '14',
+    };
+
+    render(
+      getComponent({
+        model: {
+          fields: [field1, field2, field3] as any,
+          name: 'sales',
+          rows: [{ id: '121', value: ['Graph', 'Logs', 'Node Graph'] }],
+        },
+      })
+    );
+
+    fireEvent.click(selectors.collapsedAllButton());
+    const items = screen.getAllByTestId(TEST_IDS.valuesEditor.row);
+
+    expect(items[0]).toBeInTheDocument();
+
+    fireEvent.click(selectors.collapsedAllButton());
+    expect(items[0]).not.toBeInTheDocument();
+  });
 });
