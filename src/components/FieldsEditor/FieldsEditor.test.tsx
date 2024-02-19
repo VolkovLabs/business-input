@@ -1,5 +1,7 @@
 import { FieldType } from '@grafana/data';
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { DragDropContext, DropResult } from '@hello-pangea/dnd';
+import { act, fireEvent, render, screen, within } from '@testing-library/react';
+import { getJestSelectors } from '@volkovlabs/jest-selectors';
 import React from 'react';
 
 import { TEST_IDS } from '../../constants';
@@ -32,6 +34,30 @@ jest.mock('@grafana/ui', () => ({
   )),
 }));
 
+/**
+ * Mock @hello-pangea/dnd
+ */
+jest.mock('@hello-pangea/dnd', () => ({
+  ...jest.requireActual('@hello-pangea/dnd'),
+  DragDropContext: jest.fn(({ children }) => children),
+  Droppable: jest.fn(({ children }) => children({})),
+  Draggable: jest.fn(({ children }) =>
+    children(
+      {
+        draggableProps: {},
+      },
+      {}
+    )
+  ),
+}));
+
+/**
+ * Mock uuid
+ */
+jest.mock('uuid', () => ({
+  v4: jest.fn(() => '123456'),
+}));
+
 type Props = React.ComponentProps<typeof FieldsEditor>;
 
 /**
@@ -43,12 +69,56 @@ describe('Editor', () => {
   const onRunQuery = jest.fn();
 
   /**
-   * Get Tested Component
-   * @param query
-   * @param restProps
+   * Open Item
+   * @param id
    */
-  const getComponent = ({ query, ...restProps }: Partial<Props>) => {
-    return <FieldsEditor onChange={onChange} onRunQuery={onRunQuery} {...(restProps as any)} query={query || {}} />;
+  const openItem = (id: string): ReturnType<typeof getSelectors> => {
+    /**
+     * Check item presence
+     */
+    expect(selectors.itemHeader(false, id)).toBeInTheDocument();
+
+    /**
+     * Make Item is opened
+     */
+    fireEvent.click(selectors.itemHeader(false, id));
+
+    /**
+     * Check if item content exists
+     */
+    const elementContent = selectors.itemContent(false, id);
+    expect(elementContent).toBeInTheDocument();
+
+    /**
+     * Return selectors for opened item
+     */
+    return getSelectors(within(elementContent));
+  };
+
+  /**
+   * Create On Change Handler
+   */
+  const createOnChangeHandler = (initialValue: any) => {
+    let value = initialValue;
+    return {
+      value,
+      onChange: jest.fn((newValue) => {
+        value = newValue;
+      }),
+    };
+  };
+
+  /**
+   * Selectors
+   */
+  const getSelectors = getJestSelectors(TEST_IDS.fieldsEditor);
+  const selectors = getSelectors(screen);
+
+  /**
+   * Get Tested Component
+   */
+  const getComponent = ({ ...restProps }: Partial<Props>) => {
+    return <FieldsEditor onChange={onChange} onRunQuery={onRunQuery} {...(restProps as any)} />;
   };
 
   beforeEach(() => {
@@ -63,29 +133,30 @@ describe('Editor', () => {
 
     fireEvent.click(screen.getByTestId(TEST_IDS.fieldsEditor.buttonAdd));
 
-    expect(onChange).toHaveBeenCalledWith(
-      expect.objectContaining({
-        frame: expect.objectContaining({
-          fields: expect.arrayContaining([
-            expect.objectContaining({
-              type: FieldType.string,
-              name: 'Field 1',
-            }),
-          ]),
+    expect(onChange).toHaveBeenCalledWith({
+      fields: expect.arrayContaining([
+        expect.objectContaining({
+          type: FieldType.string,
+          name: '',
+          id: '123456',
         }),
-      })
-    );
+      ]),
+      rows: [],
+    });
   });
 
   it('Should render fields with values', () => {
     const field1 = {
       name: 'name',
       type: FieldType.string,
+      id: '12',
     };
     const field2 = {
       name: 'amount',
       type: FieldType.number,
+      id: '13',
     };
+
     render(
       getComponent({
         model: {
@@ -95,38 +166,23 @@ describe('Editor', () => {
       })
     );
 
-    const items = screen.getAllByTestId(TEST_IDS.fieldsEditor.item);
-
-    /**
-     * Check name
-     */
-    expect(items[0]).toBeInTheDocument();
-
-    const item1Selectors = within(items[0]);
-
-    expect(item1Selectors.getByTestId(TEST_IDS.fieldsEditor.fieldName)).toHaveValue(field1.name);
-    expect(item1Selectors.getByLabelText(TEST_IDS.fieldsEditor.fieldType)).toHaveValue(field1.type);
-
-    /**
-     * Check amount
-     */
-    expect(items[1]).toBeInTheDocument();
-
-    const item2Selectors = within(items[1]);
-
-    expect(item2Selectors.getByTestId(TEST_IDS.fieldsEditor.fieldName)).toHaveValue(field2.name);
-    expect(item2Selectors.getByLabelText(TEST_IDS.fieldsEditor.fieldType)).toHaveValue(field2.type);
+    expect(selectors.root()).toBeInTheDocument();
+    expect(selectors.itemHeader(false, '12')).toBeInTheDocument();
+    expect(selectors.itemHeader(false, '13')).toBeInTheDocument();
   });
 
   it('Should change name', () => {
     const field1 = {
       name: 'name',
       type: FieldType.string,
+      id: '12',
     };
     const field2 = {
       name: 'amount',
       type: FieldType.number,
+      id: '13',
     };
+
     render(
       getComponent({
         model: {
@@ -136,35 +192,30 @@ describe('Editor', () => {
       })
     );
 
-    const items = screen.getAllByTestId(TEST_IDS.fieldsEditor.item);
+    const item = openItem(field1.id);
+    const item2 = openItem(field2.id);
+    fireEvent.change(item.fieldName(), { target: { value: 'Name New' } });
+
+    const items = screen.getAllByTestId(TEST_IDS.fieldsEditor.fieldName);
+
     expect(items[0]).toBeInTheDocument();
-
-    const item1Selectors = within(items[0]);
-
-    fireEvent.change(item1Selectors.getByTestId(TEST_IDS.fieldsEditor.fieldName), { target: { value: 'hello' } });
-
-    expect(onChange).toHaveBeenCalledWith(
-      expect.objectContaining({
-        frame: expect.objectContaining({
-          fields: expect.arrayContaining([
-            expect.objectContaining({
-              name: 'hello',
-            }),
-          ]),
-        }),
-      })
-    );
+    expect(items[1]).toBeInTheDocument();
+    expect(item.fieldName()).toHaveValue('Name New');
+    expect(item2.fieldName()).toHaveValue('amount');
   });
 
   it('Should change type', () => {
     const field1 = {
       name: 'name',
       type: FieldType.string,
+      id: '12',
     };
     const field2 = {
       name: 'amount',
       type: FieldType.number,
+      id: '13',
     };
+
     render(
       getComponent({
         model: {
@@ -173,7 +224,7 @@ describe('Editor', () => {
         },
       })
     );
-
+    openItem(field1.id);
     const items = screen.getAllByTestId(TEST_IDS.fieldsEditor.item);
     expect(items[0]).toBeInTheDocument();
 
@@ -183,29 +234,35 @@ describe('Editor', () => {
       target: { value: FieldType.geo },
     });
 
-    expect(onChange).toHaveBeenCalledWith(
-      expect.objectContaining({
-        frame: expect.objectContaining({
-          fields: expect.arrayContaining([
-            expect.objectContaining({
-              type: FieldType.geo,
-            }),
-          ]),
-        }),
-      })
-    );
+    expect(onChange).toHaveBeenCalledWith({
+      fields: [
+        { name: 'name', type: 'geo', id: '12' },
+        { name: 'amount', type: 'number', id: '13' },
+      ],
+      rows: [],
+    });
+
+    expect(onChange).toHaveBeenCalledWith({
+      fields: expect.arrayContaining([
+        { name: 'name', type: 'geo', id: '12' },
+        { name: 'amount', type: 'number', id: '13' },
+      ]),
+      rows: [],
+    });
   });
 
-  it('Should add field', () => {
+  it('Should add field', async () => {
     const field1 = {
       name: 'name',
       type: FieldType.string,
+      id: '12',
     };
+
     render(
       getComponent({
         model: {
           fields: [field1] as any,
-          rows: [['some data']],
+          rows: [{ id: 'row123', value: ['some data'] }],
         },
       })
     );
@@ -214,14 +271,10 @@ describe('Editor', () => {
 
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
-        frame: expect.objectContaining({
-          fields: expect.arrayContaining([
-            expect.objectContaining({
-              type: FieldType.string,
-              name: 'Field 2',
-            }),
-          ]),
-        }),
+        fields: expect.arrayContaining([
+          { name: 'name', type: 'string', id: '12' },
+          { name: '', type: 'string', id: '123456' },
+        ]),
       })
     );
   });
@@ -230,24 +283,116 @@ describe('Editor', () => {
     const field1 = {
       name: 'name',
       type: FieldType.string,
+      id: '12',
     };
+
+    const { value } = createOnChangeHandler({
+      model: {
+        fields: [field1] as any,
+        rows: [{ id: 'row123', value: ['some data'] }],
+      },
+    });
+
+    const { rerender } = render(getComponent(value));
+
+    expect(selectors.root()).toBeInTheDocument();
+    const item = selectors.itemHeader(false, '12');
+
+    fireEvent.click(getSelectors(within(item)).buttonRemove());
+
+    rerender(getComponent(value));
+
+    expect(selectors.itemHeader(true, '12')).not.toBeInTheDocument();
+  });
+
+  it('Should reorder items', async () => {
+    let onDragEndHandler: (result: DropResult) => void;
+    jest.mocked(DragDropContext).mockImplementation(({ children, onDragEnd }: any) => {
+      onDragEndHandler = onDragEnd;
+      return children;
+    });
+
+    const field1 = {
+      name: 'Drag Key',
+      type: FieldType.string,
+      id: '12',
+    };
+    const field2 = {
+      name: 'Drag Key 2',
+      type: FieldType.number,
+      id: '13',
+    };
+
     render(
       getComponent({
         model: {
-          fields: [field1] as any,
-          rows: [['some data']],
+          fields: [field1, field2] as any,
+          rows: [],
         },
       })
     );
 
-    fireEvent.click(screen.getByTestId(TEST_IDS.fieldsEditor.buttonRemove));
+    /**
+     * Simulate drop field 1 to index 0
+     */
+    await act(() =>
+      onDragEndHandler({
+        destination: {
+          index: 0,
+        },
+        source: {
+          index: 1,
+        },
+      } as any)
+    );
 
-    expect(onChange).toHaveBeenCalledWith(
-      expect.objectContaining({
-        frame: expect.objectContaining({
-          fields: [],
-        }),
+    const items = screen.getAllByTestId(TEST_IDS.fieldsEditor.item);
+
+    expect(getSelectors(within(items[0])).itemHeader(false, '13')).toBeInTheDocument();
+    expect(getSelectors(within(items[1])).itemHeader(false, '12')).toBeInTheDocument();
+  });
+
+  it('Should not reorder items if drop outside the list', async () => {
+    let onDragEndHandler: (result: DropResult) => void;
+    jest.mocked(DragDropContext).mockImplementation(({ children, onDragEnd }: any) => {
+      onDragEndHandler = onDragEnd;
+      return children;
+    });
+
+    const field1 = {
+      name: 'Drag Key',
+      type: FieldType.string,
+      id: '12',
+    };
+    const field2 = {
+      name: 'Drag Key 2',
+      type: FieldType.number,
+      id: '13',
+    };
+
+    render(
+      getComponent({
+        model: {
+          fields: [field1, field2] as any,
+          rows: [],
+        },
       })
     );
+
+    /**
+     * Simulate drop field 1 to outside the list
+     */
+    await act(async () =>
+      onDragEndHandler({
+        destination: null,
+        source: {
+          index: 1,
+        },
+      } as any)
+    );
+    const items = screen.getAllByTestId(TEST_IDS.fieldsEditor.item);
+
+    expect(getSelectors(within(items[0])).itemHeader(false, '12')).toBeInTheDocument();
+    expect(getSelectors(within(items[1])).itemHeader(false, '13')).toBeInTheDocument();
   });
 });

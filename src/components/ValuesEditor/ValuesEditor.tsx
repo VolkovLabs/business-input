@@ -1,12 +1,15 @@
 import { FieldType } from '@grafana/data';
-import { Button, InlineField, InlineFieldRow } from '@grafana/ui';
-import React, { useCallback } from 'react';
+import { Button, Icon, IconButton, InlineField, InlineFieldRow, useStyles2 } from '@grafana/ui';
+import { DragDropContext, Draggable, DraggingStyle, Droppable, DropResult, NotDraggingStyle } from '@hello-pangea/dnd';
+import { Collapse } from '@volkovlabs/components';
+import React, { useCallback, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import { TEST_IDS } from '../../constants';
-import { DataFrameModel, NullableString, StaticQuery } from '../../types';
-import { convertToDataFrame } from '../../utils';
+import { DataFrameModel, ModelRow, NullableString } from '../../types';
+import { reorder } from '../../utils';
 import { ValueInput } from '../ValueInput';
-
+import { getStyles } from './ValuesEditor.style';
 /**
  * Properties
  */
@@ -19,27 +22,55 @@ interface Props {
   model: DataFrameModel;
 
   /**
-   * Query
-   *
-   * @type {StaticQuery}
-   */
-  query: StaticQuery;
-
-  /**
    * On Change
    */
-  onChange: (value: StaticQuery) => void;
-
-  /**
-   * On Run Query
-   */
-  onRunQuery: () => void;
+  onChange: (value: DataFrameModel) => void;
 }
+
+/**
+ * Get Item Style
+ */
+const getItemStyle = (isDragging: boolean, draggableStyle: DraggingStyle | NotDraggingStyle | undefined) => ({
+  /**
+   * styles we need to apply on draggables
+   */
+  ...draggableStyle,
+});
 
 /**
  * Values Editor
  */
-export const ValuesEditor = ({ model, query, onChange, onRunQuery }: Props) => {
+export const ValuesEditor = ({ model, onChange }: Props) => {
+  /**
+   * Styles and Theme
+   */
+  const styles = useStyles2(getStyles);
+
+  /**
+   * State
+   */
+  const [collapseState, setCollapseState] = useState<Record<string, boolean>>({});
+
+  /**
+   * Create another object to prevent mutations
+   */
+  const createUpdatedModel = useCallback(() => {
+    return {
+      ...model,
+      rows: [...model.rows],
+    };
+  }, [model]);
+
+  /**
+   * Toggle collapse state for item
+   */
+  const onToggleItem = useCallback((row: ModelRow) => {
+    setCollapseState((prev) => ({
+      ...prev,
+      [row.id]: !prev[row.id],
+    }));
+  }, []);
+
   /**
    * Add Row
    */
@@ -48,26 +79,26 @@ export const ValuesEditor = ({ model, query, onChange, onRunQuery }: Props) => {
       /**
        * New Row
        */
-      const newRow = Array.from({ length: model.fields.length }).map((field, i) => {
-        switch (model.fields[i].type) {
-          case FieldType.number:
-            return '0';
-          case FieldType.time:
-            return Date.now().valueOf().toString();
-          case FieldType.boolean:
-            return 'false';
-          default:
-            return '';
-        }
-      });
+      const newRow = {
+        value: Array.from({ length: model.fields.length }).map((field, i) => {
+          switch (model.fields[i].type) {
+            case FieldType.number:
+              return '0';
+            case FieldType.time:
+              return Date.now().valueOf().toString();
+            case FieldType.boolean:
+              return 'false';
+            default:
+              return '';
+          }
+        }),
+        id: uuidv4(),
+      };
 
       /**
        * Create another object to prevent mutations
        */
-      const updatedModel = {
-        ...model,
-        rows: [...model.rows],
-      };
+      const updatedModel = createUpdatedModel();
 
       /**
        * Add Row
@@ -77,10 +108,10 @@ export const ValuesEditor = ({ model, query, onChange, onRunQuery }: Props) => {
       /**
        * Change
        */
-      onChange({ ...query, frame: convertToDataFrame(updatedModel) });
-      onRunQuery();
+      onToggleItem(newRow);
+      onChange(updatedModel);
     },
-    [model, onChange, onRunQuery, query]
+    [createUpdatedModel, model.fields, onChange, onToggleItem]
   );
 
   /**
@@ -91,10 +122,7 @@ export const ValuesEditor = ({ model, query, onChange, onRunQuery }: Props) => {
       /**
        * Create another object to prevent mutations
        */
-      const updatedModel = {
-        ...model,
-        rows: [...model.rows],
-      };
+      const updatedModel = createUpdatedModel();
 
       /**
        * Remove
@@ -104,10 +132,9 @@ export const ValuesEditor = ({ model, query, onChange, onRunQuery }: Props) => {
       /**
        * Change
        */
-      onChange({ ...query, frame: convertToDataFrame(updatedModel) });
-      onRunQuery();
+      onChange(updatedModel);
     },
-    [model, onChange, onRunQuery, query]
+    [createUpdatedModel, onChange]
   );
 
   /**
@@ -118,23 +145,26 @@ export const ValuesEditor = ({ model, query, onChange, onRunQuery }: Props) => {
       /**
        * Create another object to prevent mutations
        */
-      const updatedModel = {
-        ...model,
-        rows: [...model.rows],
-      };
+      const updatedModel = createUpdatedModel();
 
       /**
        * Clone
        */
-      updatedModel.rows.splice(index + 1, 0, JSON.parse(JSON.stringify(updatedModel.rows[index])));
+
+      const cloneRow = {
+        value: JSON.parse(JSON.stringify(updatedModel.rows[index].value)),
+        id: uuidv4(),
+      };
+
+      updatedModel.rows.splice(index + 1, 0, cloneRow);
 
       /**
        * Change
        */
-      onChange({ ...query, frame: convertToDataFrame(updatedModel) });
-      onRunQuery();
+      onToggleItem(cloneRow);
+      onChange(updatedModel);
     },
-    [model, onChange, onRunQuery, query]
+    [createUpdatedModel, onChange, onToggleItem]
   );
 
   /**
@@ -145,23 +175,52 @@ export const ValuesEditor = ({ model, query, onChange, onRunQuery }: Props) => {
       /**
        * Create another object to prevent mutations
        */
-      const updatedModel = {
-        ...model,
-        rows: [...model.rows],
-      };
+      const updatedModel = createUpdatedModel();
 
       /**
        * Update
        */
-      updatedModel.rows[rowIndex][fieldIndex] = value;
+      updatedModel.rows[rowIndex].value[fieldIndex] = value;
 
       /**
        * Change
        */
-      onChange({ ...query, frame: convertToDataFrame(updatedModel) });
-      onRunQuery();
+      onChange(updatedModel);
     },
-    [model, onChange, onRunQuery, query]
+    [createUpdatedModel, onChange]
+  );
+
+  /**
+   * Drag End
+   */
+  const onDragEnd = useCallback(
+    (result: DropResult) => {
+      /**
+       * Dropped outside the list
+       */
+      if (!result.destination) {
+        return;
+      }
+
+      /**
+       * Сreate rows with the new order
+       */
+      const newRows = reorder(model.rows, result.source.index, result.destination.index);
+
+      /**
+       * Set updated rows
+       */
+      const updatedModel = {
+        ...model,
+        rows: newRows,
+      };
+
+      /**
+       * Change
+       */
+      onChange(updatedModel);
+    },
+    [model, onChange]
   );
 
   /**
@@ -183,50 +242,83 @@ export const ValuesEditor = ({ model, query, onChange, onRunQuery }: Props) => {
    * Display rows
    */
   return (
-    <>
-      {model.rows.map((row, i) => (
-        <InlineFieldRow key={i} data-testid={TEST_IDS.valuesEditor.row}>
-          {row.map((value: NullableString, index: number) => (
-            <ValueInput
-              key={index}
-              value={value}
-              type={model.fields[index].type}
-              label={model.fields[index].name}
-              onChange={(value) => editValue(value, i, index)}
-            />
-          ))}
-
-          <InlineField>
-            <Button
-              variant="secondary"
-              title="Copy"
-              onClick={() => duplicateRow(i)}
-              icon="copy"
-              data-testid={TEST_IDS.valuesEditor.buttonCopy}
-            />
-          </InlineField>
-
-          <InlineField>
-            <Button
-              variant="secondary"
-              title="Add"
-              onClick={() => addRow(i)}
-              icon="plus"
-              data-testid={TEST_IDS.valuesEditor.buttonAdd}
-            />
-          </InlineField>
-
-          <InlineField>
-            <Button
-              variant="destructive"
-              title="Remove"
-              onClick={() => removeRow(i)}
-              icon="trash-alt"
-              data-testid={TEST_IDS.valuesEditor.buttonRemove}
-            />
-          </InlineField>
-        </InlineFieldRow>
-      ))}
-    </>
+    <div data-testid={TEST_IDS.valuesEditor.root}>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="dataset">
+          {(provided) => (
+            <div {...provided.droppableProps} ref={provided.innerRef}>
+              {model.rows.map((row, i) => (
+                <Draggable disableInteractiveElementBlocking={false} draggableId={`draggable-${i}`} key={i} index={i}>
+                  {(provided, snapshot) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
+                      className={styles.field}
+                    >
+                      <Collapse
+                        headerTestId={TEST_IDS.valuesEditor.itemHeader(row.id)}
+                        contentTestId={TEST_IDS.valuesEditor.itemContent(row.id)}
+                        fill="solid"
+                        isOpen={collapseState[row.id]}
+                        onToggle={() => onToggleItem(row)}
+                        title={<>#{i + 1}</>}
+                        actions={
+                          <div className={styles.buttons}>
+                            <IconButton
+                              name="copy"
+                              tooltip="Copy row"
+                              variant="secondary"
+                              ariaLabel="Copy row"
+                              data-testid={TEST_IDS.valuesEditor.buttonCopy}
+                              onClick={() => duplicateRow(i)}
+                            />
+                            <IconButton
+                              name="plus"
+                              tooltip="Add new row"
+                              variant="secondary"
+                              ariaLabel="Add new row"
+                              data-testid={TEST_IDS.valuesEditor.buttonAdd}
+                              onClick={() => addRow(i)}
+                            />
+                            <IconButton
+                              name="trash-alt"
+                              size="md"
+                              tooltip="Remove row"
+                              variant="secondary"
+                              ariaLabel="Remove row"
+                              data-testid={TEST_IDS.valuesEditor.buttonRemove}
+                              onClick={() => removeRow(i)}
+                            />
+                            <div {...provided.dragHandleProps} className={styles.dragIcon}>
+                              <Icon title="Drag and drop to reorder" name="draggabledots" />
+                            </div>
+                          </div>
+                        }
+                      >
+                        <InlineFieldRow data-testid={TEST_IDS.valuesEditor.row}>
+                          <div className={styles.controls}>
+                            {row.value.map((value: NullableString, index: number) => (
+                              <ValueInput
+                                key={index}
+                                value={value}
+                                type={model.fields[index].type}
+                                label={model.fields[index].name}
+                                onChange={(value) => editValue(value, i, index)}
+                              />
+                            ))}
+                          </div>
+                        </InlineFieldRow>
+                      </Collapse>
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </div>
   );
 };
