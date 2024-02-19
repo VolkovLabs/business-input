@@ -104,6 +104,7 @@ export const ValuesEditor = ({ model, onChange }: Props) => {
        * Add Row
        */
       updatedModel.rows.splice(index + 1, 0, newRow);
+
       /**
        * Change
        */
@@ -156,6 +157,7 @@ export const ValuesEditor = ({ model, onChange }: Props) => {
       };
 
       updatedModel.rows.splice(index + 1, 0, cloneRow);
+
       /**
        * Change
        */

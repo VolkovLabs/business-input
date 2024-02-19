@@ -172,7 +172,6 @@ export const FieldsEditor = ({ model, onChange }: Props) => {
       /**
        * Change
        */
-
       onChange(updatedModel);
       setItems(updatedModel.fields);
     },
