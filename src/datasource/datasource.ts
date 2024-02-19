@@ -10,6 +10,7 @@ import {
 import { DataSourceTestStatus } from '../constants';
 import { StaticDataSourceOptions, StaticQuery, ValuesEditor } from '../types';
 import { interpolateVariables } from '../utils';
+import { VariableSupport } from './variable';
 
 /**
  * DataSource returns the data frame returned in the query model.
@@ -24,6 +25,11 @@ export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptio
     super(instanceSettings);
 
     this.codeEditorEnabled = instanceSettings.jsonData.codeEditorEnabled || false;
+
+    /**
+     * Enable variable support
+     */
+    this.variables = new VariableSupport();
   }
 
   /**
