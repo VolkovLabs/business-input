@@ -7,6 +7,7 @@
 - Increase tests coverage (#47)
 - Update ESLint configuration and refactoring (#52)
 - Add drag-and-drop for rows and fields (#54)
+- Update custom code when switching the value editor from manual to JS (#59)
 
 ## 3.0.0 (2023-06-28)
 

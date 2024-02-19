@@ -8,7 +8,7 @@ import {
 import { CollapsableSection, InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
 import React, { useCallback, useState } from 'react';
 
-import { TEST_IDS, VALUES_EDITOR_OPTIONS } from '../../constants';
+import { CUSTOM_CODE, TEST_IDS, VALUES_EDITOR_OPTIONS } from '../../constants';
 import { DataSource } from '../../datasource';
 import { DataFrameModel, StaticDataSourceOptions, StaticQuery, ValuesEditor as ValuesEditorType } from '../../types';
 import { convertToDataFrame, prepareModel } from '../../utils';
@@ -99,6 +99,7 @@ export const QueryEditor: React.FC<Props> = ({ datasource, onChange, onRunQuery,
           custom: {
             ...(model.meta?.custom || {}),
             valuesEditor: event.value,
+            customCode: model.meta?.custom?.customCode || CUSTOM_CODE,
           },
         },
       });
@@ -111,6 +112,7 @@ export const QueryEditor: React.FC<Props> = ({ datasource, onChange, onRunQuery,
             custom: {
               ...(model.meta?.custom || {}),
               valuesEditor: event.value,
+              customCode: model.meta?.custom?.customCode || CUSTOM_CODE,
             },
           },
         }),
