@@ -75,7 +75,6 @@ export const FieldsEditor = ({ model, onChange }: Props) => {
   /**
    * Toggle collapse state for all item
    */
-
   const onToggleAllItems = useCallback(
     (isOpen: boolean) => {
       const ids = items.reduce((acc, item) => {
@@ -323,7 +322,7 @@ export const FieldsEditor = ({ model, onChange }: Props) => {
         </ButtonGroup>
         <Button
           variant="primary"
-          title="Add a Field"
+          title="Add Field"
           icon="plus"
           data-testid={TEST_IDS.fieldsEditor.buttonAdd}
           onClick={() => addField(items.length ? items.length - 1 : 0)}

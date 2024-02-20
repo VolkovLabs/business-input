@@ -278,7 +278,7 @@ export const ValuesEditor = ({ model, onChange }: Props) => {
         </ButtonGroup>
         <Button
           variant="primary"
-          title="Add a Field"
+          title="Add Field"
           icon="plus"
           data-testid={TEST_IDS.valuesEditor.buttonAdd}
           onClick={() => addRow(model.rows.length ? model.rows.length - 1 : 0)}
