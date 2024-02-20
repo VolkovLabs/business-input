@@ -1,4 +1,5 @@
 import {
+  CoreApp,
   DataFrameDTO,
   DataQueryRequest,
   DataQueryResponse,
@@ -73,7 +74,7 @@ export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptio
       })
     );
 
-    if (options.app === 'dashboard' && !dataFrames[0].fields.length) {
+    if (options.app === CoreApp.Dashboard && !dataFrames[0].fields.length) {
       const defaultDataFrames = dataFrames.map((target) => ({
         ...target,
         fields: [
