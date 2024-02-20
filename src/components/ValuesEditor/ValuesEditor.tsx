@@ -281,7 +281,7 @@ export const ValuesEditor = ({ model, onChange }: Props) => {
           data-testid={TEST_IDS.valuesEditor.buttonAdd}
           onClick={() => addRow(model.rows.length ? model.rows.length - 1 : 0)}
         >
-          Add a row
+          Add a Row
         </Button>
       </div>
       <DragDropContext onDragEnd={onDragEnd}>

@@ -316,7 +316,7 @@ export const FieldsEditor = ({ model, onChange }: Props) => {
           data-testid={TEST_IDS.fieldsEditor.buttonAdd}
           onClick={() => addField(items.length ? items.length - 1 : 0)}
         >
-          Add a filed
+          Add a Field
         </Button>
       </div>
       <DragDropContext onDragEnd={onDragEnd}>
