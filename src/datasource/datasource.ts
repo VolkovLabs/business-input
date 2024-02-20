@@ -1,5 +1,4 @@
 import {
-  CoreApp,
   DataFrameDTO,
   DataQueryRequest,
   DataQueryResponse,
