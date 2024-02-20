@@ -2,7 +2,7 @@ import { FieldType } from '@grafana/data';
 import { Button, Icon, IconButton, InlineField, InlineFieldRow, useStyles2 } from '@grafana/ui';
 import { DragDropContext, Draggable, DraggingStyle, Droppable, DropResult, NotDraggingStyle } from '@hello-pangea/dnd';
 import { Collapse } from '@volkovlabs/components';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { TEST_IDS } from '../../constants';
@@ -74,12 +74,6 @@ export const ValuesEditor = ({ model, onChange }: Props) => {
   /**
    * Toggle collapse state for all item
    */
-  const isAllItemsOpen: boolean = useMemo(() => {
-    const currentIds = Object.values(collapseState).filter((item) => !!item);
-
-    return currentIds.length === model.rows.length;
-  }, [collapseState, model.rows.length]);
-
   const onToggleAllItems = useCallback(
     (isOpen: boolean) => {
       const ids = model.rows.reduce((acc, item) => {
@@ -265,12 +259,29 @@ export const ValuesEditor = ({ model, onChange }: Props) => {
     <div data-testid={TEST_IDS.valuesEditor.root}>
       <div className={styles.field}>
         <Button
-          icon={isAllItemsOpen ? 'eye-slash' : 'eye'}
+          icon="angle-double-down"
+          tooltip="Expand all rows"
+          tooltipPlacement="top"
           variant="secondary"
-          onClick={() => onToggleAllItems(!isAllItemsOpen)}
-          data-testid={TEST_IDS.valuesEditor.collapsedAllButton}
+          onClick={() => onToggleAllItems(true)}
+          data-testid={TEST_IDS.valuesEditor.buttonExpandAll}
+        />
+        <Button
+          icon="angle-double-up"
+          tooltip="Collapse all rows"
+          tooltipPlacement="top"
+          variant="secondary"
+          onClick={() => onToggleAllItems(false)}
+          data-testid={TEST_IDS.valuesEditor.buttonCollapseAll}
+        />
+        <Button
+          variant="secondary"
+          title="Add a Field"
+          icon="plus"
+          data-testid={TEST_IDS.valuesEditor.buttonAdd}
+          onClick={() => addRow(model.rows.length ? model.rows.length - 1 : 0)}
         >
-          {isAllItemsOpen ? 'Collapse All' : 'Expand All'}
+          Add a row
         </Button>
       </div>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -302,14 +313,6 @@ export const ValuesEditor = ({ model, onChange }: Props) => {
                               ariaLabel="Copy row"
                               data-testid={TEST_IDS.valuesEditor.buttonCopy}
                               onClick={() => duplicateRow(i)}
-                            />
-                            <IconButton
-                              name="plus"
-                              tooltip="Add new row"
-                              variant="secondary"
-                              ariaLabel="Add new row"
-                              data-testid={TEST_IDS.valuesEditor.buttonAdd}
-                              onClick={() => addRow(i)}
                             />
                             <IconButton
                               name="trash-alt"

@@ -391,12 +391,12 @@ describe('Editor', () => {
       })
     );
 
-    fireEvent.click(selectors.collapsedAllButton());
+    fireEvent.click(selectors.buttonExpandAll());
     const items = screen.getAllByTestId(TEST_IDS.valuesEditor.row);
 
     expect(items[0]).toBeInTheDocument();
 
-    fireEvent.click(selectors.collapsedAllButton());
+    fireEvent.click(selectors.buttonCollapseAll());
     expect(items[0]).not.toBeInTheDocument();
   });
 });

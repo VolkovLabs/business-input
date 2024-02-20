@@ -2,7 +2,7 @@ import { FieldType } from '@grafana/data';
 import { Button, Icon, IconButton, InlineField, InlineFieldRow, Input, Select, useStyles2 } from '@grafana/ui';
 import { DragDropContext, Draggable, DraggingStyle, Droppable, DropResult, NotDraggingStyle } from '@hello-pangea/dnd';
 import { Collapse } from '@volkovlabs/components';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { FIELD_TYPES, TEST_IDS } from '../../constants';
@@ -65,11 +65,6 @@ export const FieldsEditor = ({ model, onChange }: Props) => {
   /**
    * Toggle collapse state for all item
    */
-  const isAllItemsOpen: boolean = useMemo(() => {
-    const currentIds = Object.values(collapseState).filter((item) => !!item);
-
-    return currentIds.length === items.length;
-  }, [collapseState, items.length]);
 
   const onToggleAllItems = useCallback(
     (isOpen: boolean) => {
@@ -299,12 +294,29 @@ export const FieldsEditor = ({ model, onChange }: Props) => {
     <div data-testid={TEST_IDS.fieldsEditor.root}>
       <div className={styles.field}>
         <Button
-          icon={isAllItemsOpen ? 'eye-slash' : 'eye'}
+          icon="angle-double-down"
+          tooltip="Expand all fields"
+          tooltipPlacement="top"
           variant="secondary"
-          onClick={() => onToggleAllItems(!isAllItemsOpen)}
-          data-testid={TEST_IDS.fieldsEditor.collapsedAllButton}
+          onClick={() => onToggleAllItems(true)}
+          data-testid={TEST_IDS.fieldsEditor.buttonExpandAll}
+        />
+        <Button
+          icon="angle-double-up"
+          tooltip="Collapse all fields"
+          tooltipPlacement="top"
+          variant="secondary"
+          onClick={() => onToggleAllItems(false)}
+          data-testid={TEST_IDS.fieldsEditor.buttonCollapseAll}
+        />
+        <Button
+          variant="secondary"
+          title="Add a Field"
+          icon="plus"
+          data-testid={TEST_IDS.fieldsEditor.buttonAdd}
+          onClick={() => addField(items.length ? items.length - 1 : 0)}
         >
-          {isAllItemsOpen ? 'Collapse All' : 'Expand All'}
+          Add a filed
         </Button>
       </div>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -339,14 +351,6 @@ export const FieldsEditor = ({ model, onChange }: Props) => {
                         }
                         actions={
                           <div className={styles.buttons}>
-                            <IconButton
-                              name="plus"
-                              tooltip="Add new field"
-                              variant="secondary"
-                              ariaLabel="Add new field"
-                              data-testid={TEST_IDS.fieldsEditor.buttonAdd}
-                              onClick={() => addField(index)}
-                            />
                             <IconButton
                               name="trash-alt"
                               tooltip="Remove field"

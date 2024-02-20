@@ -409,14 +409,14 @@ describe('Editor', () => {
       })
     );
 
-    fireEvent.click(selectors.collapsedAllButton());
+    fireEvent.click(selectors.buttonExpandAll());
 
     const items = screen.getAllByTestId(TEST_IDS.fieldsEditor.fieldName);
 
     expect(items[0]).toBeInTheDocument();
     expect(items[1]).toBeInTheDocument();
 
-    fireEvent.click(selectors.collapsedAllButton());
+    fireEvent.click(selectors.buttonCollapseAll());
 
     expect(items[0]).not.toBeInTheDocument();
     expect(items[1]).not.toBeInTheDocument();
