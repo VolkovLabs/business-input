@@ -1,9 +1,11 @@
 import {
+  CoreApp,
   DataFrameDTO,
   DataQueryRequest,
   DataQueryResponse,
   DataSourceApi,
   DataSourceInstanceSettings,
+  FieldType,
   toDataFrame,
 } from '@grafana/data';
 
@@ -71,6 +73,24 @@ export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptio
         return { ...toDataFrame(target.frame), refId: target.refId };
       })
     );
+
+    if (options.app === 'dashboard' && !dataFrames[0].fields.length) {
+      const defaultDataFrames = dataFrames.map((target) => ({
+        ...target,
+        fields: [
+          {
+            name: 'Default',
+            type: FieldType.string,
+            config: {},
+            values: [],
+          },
+        ],
+      }));
+
+      return {
+        data: defaultDataFrames.map((target) => interpolateVariables(target, options.scopedVars)),
+      };
+    }
 
     return {
       data: dataFrames.map((target) => interpolateVariables(target, options.scopedVars)),
