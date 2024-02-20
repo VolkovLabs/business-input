@@ -1,5 +1,15 @@
 import { FieldType } from '@grafana/data';
-import { Button, Icon, IconButton, InlineField, InlineFieldRow, Input, Select, useStyles2 } from '@grafana/ui';
+import {
+  Button,
+  ButtonGroup,
+  Icon,
+  IconButton,
+  InlineField,
+  InlineFieldRow,
+  Input,
+  Select,
+  useStyles2,
+} from '@grafana/ui';
 import { DragDropContext, Draggable, DraggingStyle, Droppable, DropResult, NotDraggingStyle } from '@hello-pangea/dnd';
 import { Collapse } from '@volkovlabs/components';
 import React, { useCallback, useState } from 'react';
@@ -292,25 +302,27 @@ export const FieldsEditor = ({ model, onChange }: Props) => {
 
   return (
     <div data-testid={TEST_IDS.fieldsEditor.root}>
-      <div className={styles.field}>
+      <div className={styles.header}>
+        <ButtonGroup>
+          <Button
+            icon="angle-double-down"
+            tooltip="Expand all fields"
+            tooltipPlacement="top"
+            variant="secondary"
+            onClick={() => onToggleAllItems(true)}
+            data-testid={TEST_IDS.fieldsEditor.buttonExpandAll}
+          />
+          <Button
+            icon="angle-double-up"
+            tooltip="Collapse all fields"
+            tooltipPlacement="top"
+            variant="secondary"
+            onClick={() => onToggleAllItems(false)}
+            data-testid={TEST_IDS.fieldsEditor.buttonCollapseAll}
+          />
+        </ButtonGroup>
         <Button
-          icon="angle-double-down"
-          tooltip="Expand all fields"
-          tooltipPlacement="top"
-          variant="secondary"
-          onClick={() => onToggleAllItems(true)}
-          data-testid={TEST_IDS.fieldsEditor.buttonExpandAll}
-        />
-        <Button
-          icon="angle-double-up"
-          tooltip="Collapse all fields"
-          tooltipPlacement="top"
-          variant="secondary"
-          onClick={() => onToggleAllItems(false)}
-          data-testid={TEST_IDS.fieldsEditor.buttonCollapseAll}
-        />
-        <Button
-          variant="secondary"
+          variant="primary"
           title="Add a Field"
           icon="plus"
           data-testid={TEST_IDS.fieldsEditor.buttonAdd}
