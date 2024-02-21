@@ -16,9 +16,9 @@ The Static Data Source is a plugin for Grafana that allows storing and emulating
 
 ## Requirements
 
-- **Grafana 9.2** and **Grafana 10** are required for major version 3.
-- **Grafana 8.5** and **Grafana 9** are required for major version 2.
-- **Grafana 7.3** is required for major version 1.
+- Version 3.X requires **Grafana 9.2** or **Grafana 10**.
+- Version 2.X requires **Grafana 8.5** or **Grafana 9**.
+- Version 1.X requires **Grafana 7.3**.
 
 ## Getting Started
 
