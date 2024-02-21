@@ -248,7 +248,9 @@ describe('DataSource', () => {
       const response = await dataSource.query(options as any);
       const frames = response.data;
 
-      // Assert that the frames contain the expected data
+      /**
+       * Assert that the frames contain the expected data
+       */
       expect(frames.length).toEqual(2);
       expect(frames[0].fields.length).toEqual(1);
       expect(frames[0].fields[0].name).toEqual('Default');

@@ -7,7 +7,7 @@ describe('VariableSupport', () => {
   const variableSupport = new VariableSupport();
 
   /**
-   * Query
+   * Type
    */
   describe('GetType', () => {
     it('Should return correct type', async () => {

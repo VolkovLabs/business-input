@@ -74,6 +74,9 @@ export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptio
       })
     );
 
+    /**
+     * Add default data frame
+     */
     if (options.app === CoreApp.Dashboard && !dataFrames[0].fields.length) {
       const defaultDataFrames = dataFrames.map((target) => ({
         ...target,
