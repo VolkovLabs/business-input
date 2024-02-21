@@ -241,14 +241,6 @@ describe('Editor', () => {
       ],
       rows: [],
     });
-
-    expect(onChange).toHaveBeenCalledWith({
-      fields: expect.arrayContaining([
-        { name: 'name', type: 'geo', id: '12' },
-        { name: 'amount', type: 'number', id: '13' },
-      ]),
-      rows: [],
-    });
   });
 
   it('Should add field', async () => {
@@ -394,5 +386,39 @@ describe('Editor', () => {
 
     expect(getSelectors(within(items[0])).itemHeader(false, '12')).toBeInTheDocument();
     expect(getSelectors(within(items[1])).itemHeader(false, '13')).toBeInTheDocument();
+  });
+
+  it('Should expand/collapse all fields', () => {
+    const field1 = {
+      name: 'name',
+      type: FieldType.string,
+      id: '12',
+    };
+    const field2 = {
+      name: 'amount',
+      type: FieldType.number,
+      id: '13',
+    };
+
+    render(
+      getComponent({
+        model: {
+          fields: [field1, field2] as any,
+          rows: [],
+        },
+      })
+    );
+
+    fireEvent.click(selectors.buttonExpandAll());
+
+    const items = screen.getAllByTestId(TEST_IDS.fieldsEditor.fieldName);
+
+    expect(items[0]).toBeInTheDocument();
+    expect(items[1]).toBeInTheDocument();
+
+    fireEvent.click(selectors.buttonCollapseAll());
+
+    expect(items[0]).not.toBeInTheDocument();
+    expect(items[1]).not.toBeInTheDocument();
   });
 });

@@ -5,7 +5,7 @@ import {
   QueryEditorProps,
   SelectableValue,
 } from '@grafana/data';
-import { CollapsableSection, InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
+import { CollapsableSection, InlineField, InlineFieldRow, Input, Select, useStyles2 } from '@grafana/ui';
 import React, { useCallback, useState } from 'react';
 
 import { CUSTOM_CODE, TEST_IDS, VALUES_EDITOR_OPTIONS } from '../../constants';
@@ -15,7 +15,7 @@ import { convertToDataFrame, prepareModel } from '../../utils';
 import { CustomValuesEditor } from '../CustomValuesEditor';
 import { FieldsEditor } from '../FieldsEditor';
 import { ValuesEditor } from '../ValuesEditor';
-
+import { getStyles } from './QueryEditor.styles';
 /**
  * Properties
  */
@@ -25,6 +25,14 @@ type Props = QueryEditorProps<DataSource, StaticQuery, StaticDataSourceOptions>;
  * Query Editor
  */
 export const QueryEditor: React.FC<Props> = ({ datasource, onChange, onRunQuery, query, app }) => {
+  /**
+   * Styles and Theme
+   */
+  const styles = useStyles2(getStyles);
+
+  /**
+   * States
+   */
   const [model, setModel] = useState(prepareModel(query.frame ?? { fields: [] }));
 
   /**
@@ -163,7 +171,7 @@ export const QueryEditor: React.FC<Props> = ({ datasource, onChange, onRunQuery,
           </InlineField>
         )}
       </InlineFieldRow>
-      <CollapsableSection label="Fields" isOpen={true}>
+      <CollapsableSection label="Fields" isOpen={true} contentClassName={styles.content}>
         <FieldsEditor model={model} onChange={onChangeModel} />
       </CollapsableSection>
 
@@ -172,11 +180,17 @@ export const QueryEditor: React.FC<Props> = ({ datasource, onChange, onRunQuery,
           label="JavaScript Values Editor"
           isOpen={true}
           contentDataTestId={TEST_IDS.queryEditor.customValuesEditor}
+          contentClassName={styles.content}
         >
           <CustomValuesEditor model={model} onChange={onChangeModel} />
         </CollapsableSection>
       ) : (
-        <CollapsableSection label="Values" isOpen={true} contentDataTestId={TEST_IDS.queryEditor.valuesEditor}>
+        <CollapsableSection
+          label="Values"
+          isOpen={true}
+          contentDataTestId={TEST_IDS.queryEditor.valuesEditor}
+          contentClassName={styles.content}
+        >
           <ValuesEditor model={model} onChange={onChangeModel} />
         </CollapsableSection>
       )}

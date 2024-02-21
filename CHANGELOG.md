@@ -9,6 +9,7 @@
 - Add drag-and-drop for rows and fields (#54)
 - Update custom code when switching the value editor from manual to JS (#59)
 - Add Variable Editor with Fields and Java Script (#58)
+- Add Collapse/Expand All for Fields and Values (#57)
 
 ## 3.0.0 (2023-06-28)
 

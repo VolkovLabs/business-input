@@ -1,5 +1,5 @@
 import { FieldType } from '@grafana/data';
-import { Button, Icon, IconButton, InlineField, InlineFieldRow, useStyles2 } from '@grafana/ui';
+import { Button, ButtonGroup, Icon, IconButton, InlineField, InlineFieldRow, useStyles2 } from '@grafana/ui';
 import { DragDropContext, Draggable, DraggingStyle, Droppable, DropResult, NotDraggingStyle } from '@hello-pangea/dnd';
 import { Collapse } from '@volkovlabs/components';
 import React, { useCallback, useState } from 'react';
@@ -70,6 +70,20 @@ export const ValuesEditor = ({ model, onChange }: Props) => {
       [row.id]: !prev[row.id],
     }));
   }, []);
+
+  /**
+   * Toggle collapse state for all item
+   */
+  const onToggleAllItems = useCallback(
+    (isOpen: boolean) => {
+      const ids = model.rows.reduce((acc, item) => {
+        return { ...acc, [item.id]: isOpen };
+      }, {});
+
+      setCollapseState(ids);
+    },
+    [model.rows]
+  );
 
   /**
    * Add Row
@@ -243,6 +257,35 @@ export const ValuesEditor = ({ model, onChange }: Props) => {
    */
   return (
     <div data-testid={TEST_IDS.valuesEditor.root}>
+      <div className={styles.header}>
+        <ButtonGroup>
+          <Button
+            icon="angle-double-down"
+            tooltip="Expand all rows"
+            tooltipPlacement="top"
+            variant="secondary"
+            onClick={() => onToggleAllItems(true)}
+            data-testid={TEST_IDS.valuesEditor.buttonExpandAll}
+          />
+          <Button
+            icon="angle-double-up"
+            tooltip="Collapse all rows"
+            tooltipPlacement="top"
+            variant="secondary"
+            onClick={() => onToggleAllItems(false)}
+            data-testid={TEST_IDS.valuesEditor.buttonCollapseAll}
+          />
+        </ButtonGroup>
+        <Button
+          variant="primary"
+          title="Add Field"
+          icon="plus"
+          data-testid={TEST_IDS.valuesEditor.buttonAdd}
+          onClick={() => addRow(model.rows.length ? model.rows.length - 1 : 0)}
+        >
+          Add a Row
+        </Button>
+      </div>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="dataset">
           {(provided) => (
@@ -272,14 +315,6 @@ export const ValuesEditor = ({ model, onChange }: Props) => {
                               ariaLabel="Copy row"
                               data-testid={TEST_IDS.valuesEditor.buttonCopy}
                               onClick={() => duplicateRow(i)}
-                            />
-                            <IconButton
-                              name="plus"
-                              tooltip="Add new row"
-                              variant="secondary"
-                              ariaLabel="Add new row"
-                              data-testid={TEST_IDS.valuesEditor.buttonAdd}
-                              onClick={() => addRow(i)}
                             />
                             <IconButton
                               name="trash-alt"

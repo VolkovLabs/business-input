@@ -15,6 +15,11 @@ export const getStyles = (theme: GrafanaTheme2) => {
       align-items: center;
       flex-wrap: wrap;
     `,
+    header: css`
+      margin-bottom: ${theme.spacing(1)};
+      gap: ${theme.spacing(0.5)};
+      display: flex;
+    `,
     buttons: css`
       background: ${theme.colors.background.secondary};
       display: flex;

@@ -1,5 +1,15 @@
 import { FieldType } from '@grafana/data';
-import { Button, Icon, IconButton, InlineField, InlineFieldRow, Input, Select, useStyles2 } from '@grafana/ui';
+import {
+  Button,
+  ButtonGroup,
+  Icon,
+  IconButton,
+  InlineField,
+  InlineFieldRow,
+  Input,
+  Select,
+  useStyles2,
+} from '@grafana/ui';
 import { DragDropContext, Draggable, DraggingStyle, Droppable, DropResult, NotDraggingStyle } from '@hello-pangea/dnd';
 import { Collapse } from '@volkovlabs/components';
 import React, { useCallback, useState } from 'react';
@@ -61,6 +71,20 @@ export const FieldsEditor = ({ model, onChange }: Props) => {
       [item.id]: !prev[item.id],
     }));
   }, []);
+
+  /**
+   * Toggle collapse state for all item
+   */
+  const onToggleAllItems = useCallback(
+    (isOpen: boolean) => {
+      const ids = items.reduce((acc, item) => {
+        return { ...acc, [item.id]: isOpen };
+      }, {});
+
+      setCollapseState(ids);
+    },
+    [items]
+  );
 
   /**
    * Create another object to prevent mutations
@@ -277,6 +301,35 @@ export const FieldsEditor = ({ model, onChange }: Props) => {
 
   return (
     <div data-testid={TEST_IDS.fieldsEditor.root}>
+      <div className={styles.header}>
+        <ButtonGroup>
+          <Button
+            icon="angle-double-down"
+            tooltip="Expand all fields"
+            tooltipPlacement="top"
+            variant="secondary"
+            onClick={() => onToggleAllItems(true)}
+            data-testid={TEST_IDS.fieldsEditor.buttonExpandAll}
+          />
+          <Button
+            icon="angle-double-up"
+            tooltip="Collapse all fields"
+            tooltipPlacement="top"
+            variant="secondary"
+            onClick={() => onToggleAllItems(false)}
+            data-testid={TEST_IDS.fieldsEditor.buttonCollapseAll}
+          />
+        </ButtonGroup>
+        <Button
+          variant="primary"
+          title="Add Field"
+          icon="plus"
+          data-testid={TEST_IDS.fieldsEditor.buttonAdd}
+          onClick={() => addField(items.length ? items.length - 1 : 0)}
+        >
+          Add a Field
+        </Button>
+      </div>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="dataset">
           {(provided) => (
@@ -309,14 +362,6 @@ export const FieldsEditor = ({ model, onChange }: Props) => {
                         }
                         actions={
                           <div className={styles.buttons}>
-                            <IconButton
-                              name="plus"
-                              tooltip="Add new field"
-                              variant="secondary"
-                              ariaLabel="Add new field"
-                              data-testid={TEST_IDS.fieldsEditor.buttonAdd}
-                              onClick={() => addField(index)}
-                            />
                             <IconButton
                               name="trash-alt"
                               tooltip="Remove field"
