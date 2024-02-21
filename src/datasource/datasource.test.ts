@@ -232,6 +232,31 @@ describe('DataSource', () => {
       const valuesArray = frame.fields[0].values.toArray();
       expect(valuesArray).toEqual(['111']);
     });
+
+    it('Should return default data frames when app is "dashboard" and data frames are empty', async () => {
+      const targets = [
+        { refId: 'A', hide: false, frame: { fields: [] } },
+        { refId: 'B', hide: false, frame: { fields: [] } },
+      ];
+
+      const options = {
+        targets,
+        app: 'dashboard',
+        scopedVars: {},
+      };
+
+      const response = await dataSource.query(options as any);
+      const frames = response.data;
+
+      /**
+       * Assert that the frames contain the expected data
+       */
+      expect(frames.length).toEqual(2);
+      expect(frames[0].fields.length).toEqual(1);
+      expect(frames[0].fields[0].name).toEqual('Default');
+      expect(frames[0].fields[0].type).toEqual(FieldType.string);
+      expect(frames[0].fields[0].values.length).toEqual(0);
+    });
   });
 
   /**

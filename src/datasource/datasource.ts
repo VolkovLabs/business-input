@@ -1,15 +1,18 @@
 import {
+  CoreApp,
   DataFrameDTO,
   DataQueryRequest,
   DataQueryResponse,
   DataSourceApi,
   DataSourceInstanceSettings,
+  FieldType,
   toDataFrame,
 } from '@grafana/data';
 
 import { DataSourceTestStatus } from '../constants';
 import { StaticDataSourceOptions, StaticQuery, ValuesEditor } from '../types';
 import { interpolateVariables } from '../utils';
+import { VariableSupport } from './variable';
 
 /**
  * DataSource returns the data frame returned in the query model.
@@ -24,6 +27,11 @@ export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptio
     super(instanceSettings);
 
     this.codeEditorEnabled = instanceSettings.jsonData.codeEditorEnabled || false;
+
+    /**
+     * Enable variable support
+     */
+    this.variables = new VariableSupport();
   }
 
   /**
@@ -65,6 +73,27 @@ export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptio
         return { ...toDataFrame(target.frame), refId: target.refId };
       })
     );
+
+    /**
+     * Add default data frame
+     */
+    if (options.app === CoreApp.Dashboard && !dataFrames[0].fields.length) {
+      const defaultDataFrames = dataFrames.map((target) => ({
+        ...target,
+        fields: [
+          {
+            name: 'Default',
+            type: FieldType.string,
+            config: {},
+            values: [],
+          },
+        ],
+      }));
+
+      return {
+        data: defaultDataFrames.map((target) => interpolateVariables(target, options.scopedVars)),
+      };
+    }
 
     return {
       data: dataFrames.map((target) => interpolateVariables(target, options.scopedVars)),
