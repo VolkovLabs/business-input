@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.1.0 (IN PROGRESS)
+## 3.1.0 (2024-02-21)
 
 ### Features / Enhancements
 
@@ -10,6 +10,7 @@
 - Update custom code when switching the value editor from manual to JS (#59)
 - Add Variable Editor with Fields and Java Script (#58)
 - Add Collapse/Expand All for Fields and Values (#57)
+- Update to Grafana 10.3.3 (#59)
 
 ## 3.0.0 (2023-06-28)
 
