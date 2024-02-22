@@ -2,15 +2,19 @@
 
 ## 3.1.0 (2024-02-21)
 
+### Breaking changes
+
+- Requires Grafana 9.2 and Grafana 10
+
 ### Features / Enhancements
 
 - Increase tests coverage (#47)
-- Update ESLint configuration and refactoring (#52)
+- Update ESLint configuration and refactoring (#53)
 - Add drag-and-drop for rows and fields (#54)
 - Update custom code when switching the value editor from manual to JS (#59)
 - Add Variable Editor with Fields and Java Script (#58)
 - Add Collapse/Expand All for Fields and Values (#57)
-- Update to Grafana 10.3.3 (#59)
+- Update to Grafana 10.3.3 (#60)
 
 ## 3.0.0 (2023-06-28)
 
