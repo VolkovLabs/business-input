@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.1.1 (2024-03-03)
+
+### Bug fixes
+
+- Fix read property of undefined for empty fields (#63)
+
 ## 3.1.0 (2024-02-21)
 
 ### Breaking changes
