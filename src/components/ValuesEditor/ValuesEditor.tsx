@@ -312,7 +312,7 @@ export const ValuesEditor = ({ model, onChange }: Props) => {
                               name="copy"
                               tooltip="Copy row"
                               variant="secondary"
-                              ariaLabel="Copy row"
+                              aria-label="Copy row"
                               data-testid={TEST_IDS.valuesEditor.buttonCopy}
                               onClick={() => duplicateRow(i)}
                             />
@@ -321,7 +321,7 @@ export const ValuesEditor = ({ model, onChange }: Props) => {
                               size="md"
                               tooltip="Remove row"
                               variant="secondary"
-                              ariaLabel="Remove row"
+                              aria-label="Remove row"
                               data-testid={TEST_IDS.valuesEditor.buttonRemove}
                               onClick={() => removeRow(i)}
                             />

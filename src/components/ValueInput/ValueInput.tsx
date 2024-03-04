@@ -79,12 +79,9 @@ export const ValueInput: React.FC<Props> = ({ onChange, value, type, label }) =>
    * Icon
    */
   const suffixElement = (
-    <Icon
-      className={styles.suffixElement}
-      name={disabled ? 'eye-slash' : 'eye'}
-      data-testid={TEST_IDS.valueInput.iconDisable}
-      onClick={disableInput}
-    />
+    <div data-testid={TEST_IDS.valueInput.iconDisable} onClick={disableInput}>
+      <Icon className={styles.suffixElement} name={disabled ? 'eye-slash' : 'eye'} />
+    </div>
   );
 
   /**

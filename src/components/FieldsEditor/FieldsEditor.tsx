@@ -366,7 +366,7 @@ export const FieldsEditor = ({ model, onChange }: Props) => {
                               name="trash-alt"
                               tooltip="Remove field"
                               variant="secondary"
-                              ariaLabel="Remove field"
+                              aria-label="Remove field"
                               data-testid={TEST_IDS.fieldsEditor.buttonRemove}
                               onClick={() => removeField(index)}
                             />

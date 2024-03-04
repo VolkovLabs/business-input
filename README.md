@@ -2,7 +2,7 @@
 
 ![Screenshot](https://github.com/volkovlabs/volkovlabs-static-datasource/raw/main/src/img/dark.png)
 
-![Grafana 10](https://img.shields.io/badge/Grafana-10.0.0-orange)
+![Grafana](https://img.shields.io/badge/Grafana-10.3-orange)
 ![CI](https://github.com/volkovlabs/volkovlabs-static-datasource/workflows/CI/badge.svg)
 ![E2E](https://github.com/volkovlabs/volkovlabs-static-datasource/workflows/E2E/badge.svg)
 [![codecov](https://codecov.io/gh/VolkovLabs/volkovlabs-static-datasource/branch/main/graph/badge.svg?token=0m6f0ktUar)](https://codecov.io/gh/VolkovLabs/volkovlabs-static-datasource)
@@ -16,15 +16,15 @@ The Static Data Source is a plugin for Grafana that allows storing and emulating
 
 ## Requirements
 
-- **Grafana 9** and **Grafana 10** are required for major version 3.
-- **Grafana 8.5** and **Grafana 9** are required for major version 2.
-- **Grafana 7.3** is required for major version 1.
+- Version 3.X requires **Grafana 9.2** or **Grafana 10**.
+- Version 2.X requires **Grafana 8.5** or **Grafana 9**.
+- Version 1.X requires **Grafana 7.3**.
 
 ## Getting Started
 
 The Static Data Source can be installed from the [Grafana Catalog](https://grafana.com/grafana/plugins/marcusolsson-static-datasource/) or utilizing the Grafana command line tool.
 
-For the latter, use the following command.
+For the latter, please use the following command.
 
 ```bash
 grafana-cli plugins install marcusolsson-static-datasource
@@ -42,8 +42,8 @@ grafana-cli plugins install marcusolsson-static-datasource
 
 ## Documentation
 
-| Section                      | Description                                                  |
-| ---------------------------- | ------------------------------------------------------------ |
+| Section                                                                                  | Description                                                  |
+| ---------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
 | [Provisioning](https://volkovlabs.io/plugins/volkovlabs-static-datasource/provisioning/) | Demonstrates how to automatically provision the Data Source. |
 | [Variables](https://volkovlabs.io/plugins/volkovlabs-static-datasource/variables/)       | Demonstrates how to use variables.                           |
 | [Panels](https://volkovlabs.io/plugins/volkovlabs-static-datasource/panels/)             | Demonstrates how to use data source with panels.             |
@@ -52,12 +52,12 @@ grafana-cli plugins install marcusolsson-static-datasource
 
 ## Feedback
 
-We love to hear from you. There are various ways to get in touch with us.
+We're looking forward to hearing from you. You can use different ways to get in touch with us.
 
-- Ask a question, request a new feature, and file a bug with [GitHub issues](https://github.com/volkovlabs/volkovlabs-static-datasource/issues/new/choose).
-- Subscribe to our [YouTube Channel](https://www.youtube.com/@volkovlabs) and add a comment.
+- Ask a question, request a new feature, and file a bug with [GitHub issues](https://github.com/volkovlabs/volkovlabs-static-datasource/issues).
+- Subscribe to our [YouTube Channel](https://www.youtube.com/@volkovlabs) and leave your comments.
 - Sponsor our open-source plugins for Grafana with [GitHub Sponsor](https://github.com/sponsors/VolkovLabs).
-- Star the repository to show your support.
+- Support our project by starring the repository.
 
 ## License
 
