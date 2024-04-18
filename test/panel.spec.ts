@@ -14,7 +14,7 @@ test.describe('Static Data Source', () => {
     await page.waitForTimeout(1000);
 
     /**
-     * Find panel by title with chart
+     * Find panel by title with data
      * Should be visible
      */
     await expect(dashboardPage.getPanelByTitle('Logs').locator).toBeVisible();
