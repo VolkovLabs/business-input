@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.2.0 (IN PROGRESS)
+
+### Features / Enhancements
+
+-
+
 ## 3.1.1 (2024-03-03)
 
 ### Bug fixes
