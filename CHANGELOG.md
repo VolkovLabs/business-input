@@ -4,7 +4,7 @@
 
 ### Features / Enhancements
 
--
+- Add plugin e2e tests and remove cypress (#66)
 
 ## 3.1.1 (2024-03-03)
 
