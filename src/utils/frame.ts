@@ -1,4 +1,4 @@
-import { DataFrameDTO, FieldType, MutableDataFrame, toDataFrameDTO } from '@grafana/data';
+import { createDataFrame, DataFrameDTO, FieldType, toDataFrameDTO } from '@grafana/data';
 import { v4 as uuidv4 } from 'uuid';
 
 import { DataFrameModel, ModelField, ModelRows, NullableString } from '../types';
@@ -11,25 +11,23 @@ export const convertToDataFrame = (model: DataFrameModel): DataFrameDTO => {
   /**
    * Create Frame
    */
-  const frame = new MutableDataFrame({
-    name: model.name,
-    meta: {
-      preferredVisualisationType: model.meta?.preferredVisualisationType,
-      custom: model.meta?.custom,
-    },
-    fields: model.fields.map((field) => ({ name: field.name, type: field.type })),
-  });
+  let frame = createDataFrame(model);
 
   /**
    * Verify fields
    */
-  model.rows.forEach((row) =>
-    frame.appendRow(
-      row.value.map((field, i) => {
-        return verifyFieldValue(field, frame.fields[i].type).value;
-      })
-    )
+
+  const fields = frame.fields.map((field, fieldIndex) =>
+    model.rows.map((row) => verifyFieldValue(row.value[fieldIndex], field.type).value)
   );
+
+  frame = {
+    ...frame,
+    fields: frame.fields.map((field, fieldIndex) => ({
+      ...field,
+      values: fields[fieldIndex],
+    })),
+  };
 
   return toDataFrameDTO(frame);
 };
@@ -46,7 +44,7 @@ export const prepareModel = (frame: DataFrameDTO): DataFrameModel => {
    */
   if (frame.fields.length !== 0) {
     fields = frame.fields.map(
-      (field) => ({ name: field.name, type: field.type ?? FieldType.string, id: uuidv4() } as ModelField)
+      (field) => ({ name: field.name, type: field.type ?? FieldType.string, id: uuidv4() }) as ModelField
     );
 
     rows = Array.from({ length: frame.fields[0].values?.length ?? 0 }).map((row, i) => ({
