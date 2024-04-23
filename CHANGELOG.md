@@ -1,10 +1,16 @@
 # Changelog
 
-## 3.2.0 (IN PROGRESS)
+## 4.0.0 (IN PROGRESS)
+
+### Breaking changes
+
+- Requires Grafana 10 and Grafana 11
 
 ### Features / Enhancements
 
 - Add plugin e2e tests and remove cypress (#66)
+- Prepare for Grafana 11 (#67)
+- Update to Grafana 10.4.2 (#69)
 
 ## 3.1.1 (2024-03-03)
 

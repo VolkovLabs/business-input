@@ -2,7 +2,7 @@
 
 ![Screenshot](https://github.com/volkovlabs/volkovlabs-static-datasource/raw/main/src/img/dark.png)
 
-![Grafana](https://img.shields.io/badge/Grafana-10.3-orange)
+![Grafana](https://img.shields.io/badge/Grafana-10.4-orange)
 ![CI](https://github.com/volkovlabs/volkovlabs-static-datasource/workflows/CI/badge.svg)
 ![E2E](https://github.com/volkovlabs/volkovlabs-static-datasource/workflows/E2E/badge.svg)
 [![codecov](https://codecov.io/gh/VolkovLabs/volkovlabs-static-datasource/branch/main/graph/badge.svg?token=0m6f0ktUar)](https://codecov.io/gh/VolkovLabs/volkovlabs-static-datasource)
@@ -16,6 +16,7 @@ The Static Data Source is a plugin for Grafana that allows storing and emulating
 
 ## Requirements
 
+- Version 4.X requires **Grafana 10** or **Grafana 11**.
 - Version 3.X requires **Grafana 9.2** or **Grafana 10**.
 - Version 2.X requires **Grafana 8.5** or **Grafana 9**.
 - Version 1.X requires **Grafana 7.3**.

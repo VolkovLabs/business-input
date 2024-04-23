@@ -104,7 +104,8 @@
               "viz": false
             }
           },
-          "mappings": []
+          "mappings": [],
+          "unitScale": true
         },
         "overrides": []
       },
@@ -183,11 +184,15 @@
         "controls": true,
         "height": 0,
         "heightMode": "auto",
+        "infinityPlay": false,
+        "noResultsMessage": "Nothing to display...",
+        "scale": "auto",
         "title": "Volkov Labs",
         "toolbar": true,
         "url": "https://volkovlabs.io",
         "width": 0,
-        "widthMode": "auto"
+        "widthMode": "auto",
+        "zoomType": "default"
       },
       "targets": [
         {
@@ -232,7 +237,8 @@
               "viz": false
             }
           },
-          "mappings": []
+          "mappings": [],
+          "unitScale": true
         },
         "overrides": []
       },
@@ -300,30 +306,47 @@
     }
   ],
   "refresh": "",
-  "schemaVersion": 38,
-  "style": "dark",
+  "schemaVersion": 39,
   "tags": [],
   "templating": {
     "list": [
       {
         "current": {
           "selected": false,
-          "text": "sales",
-          "value": "sales"
+          "text": "Test",
+          "value": "Test"
         },
+        "definition": "",
         "hide": 0,
+        "includeAll": false,
         "label": "Sales",
+        "multi": false,
         "name": "sales",
-        "options": [
-          {
-            "selected": true,
-            "text": "sales",
-            "value": "sales"
+        "options": [],
+        "query": {
+          "frame": {
+            "fields": [
+              {
+                "config": {},
+                "name": "Test",
+                "type": "string",
+                "values": ["Test"]
+              }
+            ],
+            "meta": {
+              "custom": {
+                "customCode": "const result = {\n  ...frame,\n  fields: frame.fields.map((field) => ({\n    ...field,\n    values: []\n  }))\n}\n\nreturn Promise.resolve(result);",
+                "valuesEditor": "manual"
+              }
+            },
+            "name": "Test"
           }
-        ],
-        "query": "sales",
+        },
+        "refresh": 1,
+        "regex": "",
         "skipUrlSync": false,
-        "type": "textbox"
+        "sort": 0,
+        "type": "query"
       }
     ]
   },
@@ -335,6 +358,6 @@
   "timezone": "",
   "title": "Panels",
   "uid": "O4tc_E6Gz",
-  "version": 6,
+  "version": 1,
   "weekStart": ""
 }
