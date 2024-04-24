@@ -42,7 +42,7 @@ describe('DataSource', () => {
         () =>
           ({
             replace: jest.fn((str: string) => str),
-          } as any)
+          }) as any
       );
     });
 
@@ -131,6 +131,73 @@ describe('DataSource', () => {
 
       const valuesArray = frame.fields[0].values.toArray();
       expect(valuesArray).toEqual(['111', '123']);
+    });
+
+    it('Should replace variables in custom code', async () => {
+      /**
+       * Mock template srv
+       */
+      const templateServiceMock = {
+        replace: jest.fn(
+          () => `
+          return {
+            ...frame,
+            fields: frame.fields.map((field) => ({
+              ...field,
+              values: 'value1' === 'value1' ? ['111', '123'] : ['111'],
+            }))
+          }
+        `
+        ),
+      };
+      jest.mocked(getTemplateSrv).mockImplementationOnce(() => templateServiceMock as any);
+
+      const dataSource = new DataSource({ jsonData: { codeEditorEnabled: true } } as any);
+      const customCode = `
+        return {
+          ...frame,
+          fields: frame.fields.map((field) => ({
+            ...field,
+            values: '$var' === 'value1' ? ['111', '123'] : ['111'],
+          }))
+        }
+      `;
+      const customValuesDataFrame = toDataFrame({
+        meta: { custom: { valuesEditor: ValuesEditor.CUSTOM, customCode } },
+        fields: [
+          {
+            type: FieldType.string,
+            name: 'name',
+            values: [],
+          },
+        ],
+      });
+      const targets = [{ refId: 'A' }, { refId: 'B', frame: customValuesDataFrame }];
+
+      const scopedVars = { var: { value: 'value1' } };
+      const response = await dataSource.query({ targets, range, scopedVars } as any);
+      const frames = response.data;
+
+      const frame = frames.find((frame) => frame.refId === 'B');
+
+      expect(frame).toEqual(
+        expect.objectContaining({
+          fields: expect.arrayContaining([
+            expect.objectContaining({
+              name: 'name',
+              type: FieldType.string,
+            }),
+          ]),
+        })
+      );
+
+      const valuesArray = frame.fields[0].values.toArray();
+      expect(valuesArray).toEqual(['111', '123']);
+
+      /**
+       * Check if replace variables was called
+       */
+      expect(templateServiceMock.replace).toHaveBeenCalledWith(customCode, scopedVars);
     });
 
     it('Should throw error if custom code returns nothing', async () => {
