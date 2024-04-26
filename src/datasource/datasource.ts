@@ -6,8 +6,10 @@ import {
   DataSourceApi,
   DataSourceInstanceSettings,
   FieldType,
+  ScopedVars,
   toDataFrame,
 } from '@grafana/data';
+import { getTemplateSrv, TemplateSrv } from '@grafana/runtime';
 
 import { DataSourceTestStatus } from '../constants';
 import { StaticDataSourceOptions, StaticQuery, ValuesEditor } from '../types';
@@ -19,6 +21,7 @@ import { VariableSupport } from './variable';
  */
 export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptions> {
   readonly codeEditorEnabled: boolean;
+  readonly templateSrv: TemplateSrv = getTemplateSrv();
 
   /**
    * Constructor
@@ -37,8 +40,8 @@ export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptio
   /**
    * Run Code
    */
-  async runCode(code: string, frame: DataFrameDTO): Promise<DataFrameDTO> {
-    const func = new Function('frame', code);
+  async runCode(code: string, frame: DataFrameDTO, scopedVars: ScopedVars): Promise<DataFrameDTO> {
+    const func = new Function('frame', this.templateSrv.replace(code, scopedVars));
     const result = await func(frame);
 
     /**
@@ -63,7 +66,7 @@ export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptio
          * Execute custom code for Custom Values Editor
          */
         if (this.codeEditorEnabled && target.frame.meta?.custom?.valuesEditor === ValuesEditor.CUSTOM) {
-          const frame = await this.runCode(target.frame.meta?.custom?.customCode, target.frame);
+          const frame = await this.runCode(target.frame.meta?.custom?.customCode, target.frame, options.scopedVars);
           return { ...toDataFrame(frame), refId: target.refId };
         }
 

@@ -11,6 +11,7 @@
 - Add plugin e2e tests and remove cypress (#66)
 - Prepare for Grafana 11 (#67)
 - Update to Grafana 10.4.2 (#69)
+- Add supporting variables in code editor (#70)
 
 ## 3.1.1 (2024-03-03)
 
