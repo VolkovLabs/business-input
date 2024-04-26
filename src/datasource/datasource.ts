@@ -22,6 +22,7 @@ import { VariableSupport } from './variable';
 export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptions> {
   readonly codeEditorEnabled: boolean;
   readonly templateSrv: TemplateSrv = getTemplateSrv();
+
   /**
    * Constructor
    */
