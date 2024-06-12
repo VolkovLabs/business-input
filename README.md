@@ -33,6 +33,8 @@ grafana-cli plugins install marcusolsson-static-datasource
 
 ## Highlights
 
+- Create static visualizations that don't depend on a specific data source.
+- Allows specifying values manually or using the JavaScript Values Editor code.
 - Build custom query responses for testing or developing panel plugins.
 - Store data and images directly in the dashboard.
 - Supports variables in the text fields.
@@ -56,7 +58,7 @@ We're looking forward to hearing from you. You can use different ways to get in 
 
 - Ask a question, request a new feature, and file a bug with [GitHub issues](https://github.com/volkovlabs/volkovlabs-static-datasource/issues).
 - Subscribe to our [YouTube Channel](https://www.youtube.com/@volkovlabs) and leave your comments.
-- Sponsor our open-source plugins for Grafana with [GitHub Sponsor](https://github.com/sponsors/VolkovLabs).
+- Sponsor our open source plugins for Grafana through [GitHub](https://github.com/sponsors/VolkovLabs).
 - Support our project by starring the repository.
 
 ## License
