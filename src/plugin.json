@@ -11,7 +11,7 @@
       "name": "Volkov Labs",
       "url": "https://volkovlabs.io"
     },
-    "description": "Static Data Source for Grafana",
+    "description": "Store and create your data",
     "keywords": ["static", "test", "development", "mock", "javascript"],
     "links": [
       {

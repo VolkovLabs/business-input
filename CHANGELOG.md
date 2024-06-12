@@ -1,6 +1,6 @@
 # Changelog
 
-## 4.0.0 (IN PROGRESS)
+## 4.0.0 (2024-06-12)
 
 ### Breaking changes
 
