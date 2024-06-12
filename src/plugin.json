@@ -12,7 +12,7 @@
       "url": "https://volkovlabs.io"
     },
     "description": "Static Data Source for Grafana",
-    "keywords": ["static", "test", "development", "mock"],
+    "keywords": ["static", "test", "development", "mock", "javascript"],
     "links": [
       {
         "name": "Documentation",
@@ -38,6 +38,6 @@
   },
   "logs": true,
   "metrics": true,
-  "name": "Static",
+  "name": "Business Input",
   "type": "datasource"
 }
