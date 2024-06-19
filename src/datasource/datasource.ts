@@ -56,12 +56,18 @@ export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptio
 
     let llmResult;
 
+    /**
+     * Chat Completions
+     */
     if ((await openai.enabled()) && llmQuery?.openai?.message) {
       llmResult = await openai.chatCompletions({
         messages: [{ role: 'user', content: this.templateSrv.replace(llmQuery.openai.message, scopedVars) }],
       });
     }
 
+    /**
+     * Result
+     */
     const result = await func(
       frame,
       codeParameters.create({
