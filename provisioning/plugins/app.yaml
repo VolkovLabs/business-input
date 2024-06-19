@@ -1,0 +1,13 @@
+apiVersion: 1
+
+apps:
+  - type: grafana-llm-app
+    enabled: true
+    jsonData:
+      openAI:
+        disabled: false
+        organizationId: ${OPENAI_ORG_ID}
+        provider: openai
+        url: https://api.openai.com
+    secureJsonData:
+      openAIKey: ${OPENAI_API_KEY}

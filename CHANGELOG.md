@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.1.0 (IN PROGRESS)
+
+### Features / Enhancements
+
+- Added supporting OpenAI completions (#73)
+
 ## 4.0.0 (2024-06-12)
 
 ### Breaking changes

@@ -14,6 +14,18 @@ export interface StaticDataSourceOptions extends DataSourceJsonData {
 }
 
 /**
+ * LLM Query
+ */
+export interface LlmQuery {
+  /**
+   * OpenAI
+   */
+  openai?: {
+    message: string;
+  };
+}
+
+/**
  * Query
  */
 export interface StaticQuery extends DataQuery {
@@ -23,4 +35,9 @@ export interface StaticQuery extends DataQuery {
    * @type {DataFrameDTO}
    */
   frame: DataFrameDTO;
+
+  /**
+   * LLM
+   */
+  llm?: LlmQuery;
 }
