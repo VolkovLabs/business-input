@@ -1,6 +1,7 @@
 import { CodeEditorSuggestionItem, CodeEditorSuggestionItemKind } from '@grafana/ui';
 
 import { ValuesEditor } from '../types';
+import { codeParameters } from '../utils';
 
 /**
  * Custom Editor
@@ -45,4 +46,9 @@ export const CUSTOM_VALUES_EDITOR_SUGGESTIONS: CodeEditorSuggestionItem[] = [
     kind: CodeEditorSuggestionItemKind.Property,
     detail: 'DataFrameDTO',
   },
+
+  /**
+   * Context Parameters
+   */
+  ...codeParameters.suggestions,
 ];

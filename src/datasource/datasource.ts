@@ -9,11 +9,12 @@ import {
   ScopedVars,
   toDataFrame,
 } from '@grafana/data';
+import { openai } from '@grafana/llm';
 import { getTemplateSrv, TemplateSrv } from '@grafana/runtime';
 
 import { DataSourceTestStatus } from '../constants';
-import { StaticDataSourceOptions, StaticQuery, ValuesEditor } from '../types';
-import { interpolateVariables } from '../utils';
+import { LlmQuery, StaticDataSourceOptions, StaticQuery, ValuesEditor } from '../types';
+import { codeParameters, interpolateVariables } from '../utils';
 import { VariableSupport } from './variable';
 
 /**
@@ -40,9 +41,34 @@ export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptio
   /**
    * Run Code
    */
-  async runCode(code: string, frame: DataFrameDTO, scopedVars: ScopedVars): Promise<DataFrameDTO> {
-    const func = new Function('frame', this.templateSrv.replace(code, scopedVars));
-    const result = await func(frame);
+  async runCode({
+    code,
+    frame,
+    scopedVars,
+    llmQuery,
+  }: {
+    code: string;
+    frame: DataFrameDTO;
+    scopedVars: ScopedVars;
+    llmQuery?: LlmQuery;
+  }): Promise<DataFrameDTO> {
+    const func = new Function('frame', 'context', this.templateSrv.replace(code, scopedVars));
+
+    let llmResult;
+
+    if ((await openai.enabled()) && llmQuery?.openai?.message) {
+      llmResult = await openai.chatCompletions({
+        messages: [{ role: 'user', content: this.templateSrv.replace(llmQuery.openai.message, scopedVars) }],
+      });
+    }
+
+    const result = await func(
+      frame,
+      codeParameters.create({
+        frame,
+        llmResult,
+      })
+    );
 
     /**
      * Error
@@ -66,7 +92,12 @@ export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptio
          * Execute custom code for Custom Values Editor
          */
         if (this.codeEditorEnabled && target.frame.meta?.custom?.valuesEditor === ValuesEditor.CUSTOM) {
-          const frame = await this.runCode(target.frame.meta?.custom?.customCode, target.frame, options.scopedVars);
+          const frame = await this.runCode({
+            code: target.frame.meta?.custom?.customCode,
+            frame: target.frame,
+            scopedVars: options.scopedVars,
+            llmQuery: target.llm,
+          });
           return { ...toDataFrame(frame), refId: target.refId };
         }
 

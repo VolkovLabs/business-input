@@ -5,8 +5,9 @@ import {
   QueryEditorProps,
   SelectableValue,
 } from '@grafana/data';
-import { CollapsableSection, InlineField, InlineFieldRow, Input, Select, useStyles2 } from '@grafana/ui';
-import React, { useCallback, useState } from 'react';
+import { openai } from '@grafana/llm';
+import { CollapsableSection, InlineField, InlineFieldRow, Input, Select, TextArea, useStyles2 } from '@grafana/ui';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { CUSTOM_CODE, TEST_IDS, VALUES_EDITOR_OPTIONS } from '../../constants';
 import { DataSource } from '../../datasource';
@@ -34,6 +35,7 @@ export const QueryEditor: React.FC<Props> = ({ datasource, onChange, onRunQuery,
    * States
    */
   const [model, setModel] = useState(prepareModel(query.frame ?? { fields: [] }));
+  const [llmEnabled, setLlmEnabled] = useState(false);
 
   /**
    * Rename Frame
@@ -130,6 +132,39 @@ export const QueryEditor: React.FC<Props> = ({ datasource, onChange, onRunQuery,
     [model, onChange, onRunQuery, query]
   );
 
+  /**
+   * Change AI Message
+   */
+  const onChangeOpenaiMessage = useCallback(
+    (message: string) => {
+      onChange({
+        ...query,
+        frame: convertToDataFrame(model),
+        llm: {
+          ...query.llm,
+          openai: {
+            ...query.llm?.openai,
+            message,
+          },
+        },
+      });
+    },
+    [model, onChange, query]
+  );
+
+  /**
+   * Check AI enabled
+   */
+  useEffect(() => {
+    const check = async () => {
+      const enabled = await openai.enabled();
+
+      setLlmEnabled(enabled);
+    };
+
+    check();
+  }, []);
+
   return (
     <>
       <InlineFieldRow>
@@ -176,14 +211,27 @@ export const QueryEditor: React.FC<Props> = ({ datasource, onChange, onRunQuery,
       </CollapsableSection>
 
       {model.meta?.custom?.valuesEditor === ValuesEditorType.CUSTOM && datasource.codeEditorEnabled ? (
-        <CollapsableSection
-          label="JavaScript Values Editor"
-          isOpen={true}
-          contentDataTestId={TEST_IDS.queryEditor.customValuesEditor}
-          contentClassName={styles.content}
-        >
-          <CustomValuesEditor model={model} onChange={onChangeModel} />
-        </CollapsableSection>
+        <>
+          {llmEnabled && (
+            <CollapsableSection label="OpenAI" isOpen={true}>
+              <InlineField label="Message" grow={true}>
+                <TextArea
+                  value={query.llm?.openai?.message || ''}
+                  onChange={(event) => onChangeOpenaiMessage(event.currentTarget.value)}
+                  onBlur={() => onRunQuery()}
+                />
+              </InlineField>
+            </CollapsableSection>
+          )}
+          <CollapsableSection
+            label="JavaScript Values Editor"
+            isOpen={true}
+            contentDataTestId={TEST_IDS.queryEditor.customValuesEditor}
+            contentClassName={styles.content}
+          >
+            <CustomValuesEditor model={model} onChange={onChangeModel} />
+          </CollapsableSection>
+        </>
       ) : (
         <CollapsableSection
           label="Values"

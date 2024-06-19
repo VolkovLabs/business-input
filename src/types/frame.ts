@@ -69,6 +69,9 @@ export interface DataFrameModel {
       valuesEditor?: ValuesEditor;
       customCode?: string;
     };
+    ai?: {
+      message?: string;
+    };
   };
 
   /**
