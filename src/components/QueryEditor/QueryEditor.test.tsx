@@ -1,9 +1,11 @@
 import { CoreApp, DataSourcePluginContextProvider } from '@grafana/data';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { openai } from '@grafana/llm';
+import { act, fireEvent, render, screen } from '@testing-library/react';
+import { getJestSelectors } from '@volkovlabs/jest-selectors';
 import React from 'react';
 
 import { TEST_IDS } from '../../constants';
-import { ValuesEditor } from '../../types';
+import { StaticQuery, ValuesEditor } from '../../types';
 import { QueryEditor } from './QueryEditor';
 
 /**
@@ -36,9 +38,24 @@ jest.mock('@grafana/ui', () => ({
 }));
 
 /**
+ * Mock @grafana/llm
+ */
+jest.mock('@grafana/llm', () => ({
+  openai: {
+    enabled: jest.fn(),
+  },
+}));
+
+/**
  * Query Editor
  */
 describe('Query Editor', () => {
+  /**
+   * Selectors
+   */
+  const getSelectors = getJestSelectors(TEST_IDS.queryEditor);
+  const selectors = getSelectors(screen);
+
   const query = {
     frame: {
       fields: [],
@@ -71,10 +88,10 @@ describe('Query Editor', () => {
     );
   };
 
-  it('Should rename query', () => {
+  it('Should rename query', async () => {
     let currentQuery = query;
     const onChange = jest.fn((query) => (currentQuery = query));
-    const { rerender } = render(getComponent({ query: currentQuery, onChange }));
+    const { rerender } = await act(async () => render(getComponent({ query: currentQuery, onChange })));
 
     /**
      * Check name field presence
@@ -87,7 +104,7 @@ describe('Query Editor', () => {
     const newName = 'new';
     fireEvent.change(screen.getByTestId(TEST_IDS.queryEditor.fieldName), { target: { value: newName } });
 
-    rerender(getComponent({ query: currentQuery, onChange }));
+    await act(async () => rerender(getComponent({ query: currentQuery, onChange })));
 
     /**
      * Check if name is changed
@@ -95,10 +112,12 @@ describe('Query Editor', () => {
     expect(screen.getByTestId(TEST_IDS.queryEditor.fieldName)).toHaveValue(newName);
   });
 
-  it('Should Set Preferred Visualization Type', () => {
+  it('Should Set Preferred Visualization Type', async () => {
     let currentQuery = query;
     const onChange = jest.fn((query) => (currentQuery = query));
-    const { rerender } = render(getComponent({ query: currentQuery, onChange, app: CoreApp.Explore }));
+    const { rerender } = await act(async () =>
+      render(getComponent({ query: currentQuery, onChange, app: CoreApp.Explore }))
+    );
 
     /**
      * Check name field presence
@@ -113,7 +132,7 @@ describe('Query Editor', () => {
       target: { value: newType },
     });
 
-    rerender(getComponent({ query: currentQuery, onChange, app: CoreApp.Explore }));
+    await act(async () => rerender(getComponent({ query: currentQuery, onChange, app: CoreApp.Explore })));
 
     /**
      * Check if name is changed
@@ -121,10 +140,10 @@ describe('Query Editor', () => {
     expect(screen.getByLabelText(TEST_IDS.queryEditor.fieldPreferredVisualizationType)).toHaveValue(newType);
   });
 
-  it('Should show custom values editor', () => {
+  it('Should show custom values editor', async () => {
     let currentQuery = query;
     const onChange = jest.fn((query) => (currentQuery = query));
-    const { rerender } = render(getComponent({ query: currentQuery, onChange }));
+    const { rerender } = await act(async () => render(getComponent({ query: currentQuery, onChange })));
 
     /**
      * Check if CustomValuesEditor is not rendered
@@ -138,7 +157,7 @@ describe('Query Editor', () => {
      */
     fireEvent.change(fieldValuesEditor, { target: { value: ValuesEditor.CUSTOM } });
 
-    rerender(getComponent({ query: currentQuery, onChange }));
+    await act(async () => rerender(getComponent({ query: currentQuery, onChange })));
 
     /**
      * Check if CustomValuesEditor is rendered
@@ -146,10 +165,10 @@ describe('Query Editor', () => {
     expect(screen.getByTestId(TEST_IDS.queryEditor.customValuesEditor)).toBeInTheDocument();
   });
 
-  it('Should not allow to select values editor if disabled', () => {
+  it('Should not allow to select values editor if disabled', async () => {
     let currentQuery = query;
     const onChange = jest.fn((query) => (currentQuery = query));
-    render(getComponent({ query: currentQuery, onChange, datasource: {} }));
+    await act(async () => render(getComponent({ query: currentQuery, onChange, datasource: {} })));
 
     /**
      * Check if Select values editor is not rendered
@@ -157,9 +176,116 @@ describe('Query Editor', () => {
     expect(screen.queryByLabelText(TEST_IDS.queryEditor.fieldValuesEditor)).not.toBeInTheDocument();
   });
 
-  it('Should render fields if frame is not specified', () => {
-    render(getComponent({ query: { frame: null } }));
+  it('Should render fields if frame is not specified', async () => {
+    await act(async () => render(getComponent({ query: { frame: null } })));
 
     expect(screen.getByTestId(TEST_IDS.queryEditor.fieldName)).toBeInTheDocument();
+  });
+
+  describe('llm', () => {
+    it('Should show openai message if enabled', async () => {
+      /**
+       * Enable openai
+       */
+      jest.mocked(openai.enabled).mockResolvedValue(true);
+
+      const currentQuery: StaticQuery = {
+        refId: '',
+        frame: {
+          fields: [],
+          name: '123',
+          meta: {
+            custom: {
+              valuesEditor: ValuesEditor.CUSTOM,
+            },
+          },
+        },
+      };
+
+      await act(async () => render(getComponent({ query: currentQuery, onChange })));
+
+      /**
+       * Check openai message shown
+       */
+      expect(selectors.fieldOpenaiMessage()).toBeInTheDocument();
+    });
+
+    it('Should not show openai message if disabled', async () => {
+      /**
+       * Disable openai
+       */
+      jest.mocked(openai.enabled).mockResolvedValue(false);
+
+      const currentQuery: StaticQuery = {
+        refId: '',
+        frame: {
+          fields: [],
+          name: '123',
+          meta: {
+            custom: {
+              valuesEditor: ValuesEditor.CUSTOM,
+            },
+          },
+        },
+      };
+
+      await act(async () => render(getComponent({ query: currentQuery, onChange })));
+
+      /**
+       * Check openai message hidden
+       */
+      expect(selectors.fieldOpenaiMessage(true)).not.toBeInTheDocument();
+    });
+
+    it('Should change openai message and run query on blur', async () => {
+      /**
+       * Enable openai
+       */
+      jest.mocked(openai.enabled).mockResolvedValue(true);
+
+      const currentQuery: StaticQuery = {
+        refId: '',
+        frame: {
+          fields: [],
+          name: '123',
+          meta: {
+            custom: {
+              valuesEditor: ValuesEditor.CUSTOM,
+            },
+          },
+        },
+      };
+
+      const onChangeQuery = jest.fn();
+      const onRunQuery = jest.fn();
+
+      await act(async () => render(getComponent({ query: currentQuery, onChange: onChangeQuery, onRunQuery })));
+
+      /**
+       * Check openai message shown
+       */
+      expect(selectors.fieldOpenaiMessage()).toBeInTheDocument();
+
+      /**
+       * Change
+       */
+      fireEvent.change(selectors.fieldOpenaiMessage(), { target: { value: '123' } });
+
+      /**
+       * Check change query called without running query
+       */
+      expect(onChangeQuery).toHaveBeenCalled();
+      expect(onRunQuery).not.toHaveBeenCalled();
+
+      /**
+       * Blur field
+       */
+      fireEvent.blur(selectors.fieldOpenaiMessage());
+
+      /**
+       * Check run query called
+       */
+      expect(onRunQuery).toHaveBeenCalled();
+    });
   });
 });

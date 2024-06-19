@@ -219,6 +219,7 @@ export const QueryEditor: React.FC<Props> = ({ datasource, onChange, onRunQuery,
                   value={query.llm?.openai?.message || ''}
                   onChange={(event) => onChangeOpenaiMessage(event.currentTarget.value)}
                   onBlur={() => onRunQuery()}
+                  data-testid={TEST_IDS.queryEditor.fieldOpenaiMessage}
                 />
               </InlineField>
             </CollapsableSection>

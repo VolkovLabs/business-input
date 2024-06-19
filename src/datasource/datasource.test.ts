@@ -1,4 +1,5 @@
 import { dateTime, FieldType, toDataFrame } from '@grafana/data';
+import { openai } from '@grafana/llm';
 import { getTemplateSrv } from '@grafana/runtime';
 
 import { DataSourceTestStatus } from '../constants';
@@ -10,6 +11,16 @@ import { DataSource } from './datasource';
  */
 jest.mock('@grafana/runtime', () => ({
   getTemplateSrv: jest.fn(),
+}));
+
+/**
+ * Mock @grafana/llm
+ */
+jest.mock('@grafana/llm', () => ({
+  openai: {
+    enabled: jest.fn(),
+    chatCompletions: jest.fn(),
+  },
 }));
 
 /**
@@ -32,6 +43,10 @@ describe('DataSource', () => {
       to: dateTime(),
     },
   };
+
+  beforeEach(() => {
+    jest.mocked(openai.chatCompletions).mockClear();
+  });
 
   /**
    * Query
@@ -131,6 +146,62 @@ describe('DataSource', () => {
 
       const valuesArray = frame.fields[0].values.toArray();
       expect(valuesArray).toEqual(['111', '123']);
+    });
+
+    it('Should run openai if enabled and message set', async () => {
+      const dataSource = new DataSource({ jsonData: { codeEditorEnabled: true } } as any);
+      const customCode = `
+        return {
+          ...frame,
+          fields: frame.fields.map((field) => ({
+            ...field,
+            values: context.llmResult,
+          }))
+        }
+      `;
+      const customValuesDataFrame = toDataFrame({
+        meta: { custom: { valuesEditor: ValuesEditor.CUSTOM, customCode } },
+        fields: [
+          {
+            type: FieldType.string,
+            name: 'name',
+            values: [],
+          },
+        ],
+      });
+      const targets = [
+        { refId: 'A' },
+        {
+          refId: 'B',
+          frame: customValuesDataFrame,
+          llm: {
+            openai: {
+              message: 'get list',
+            },
+          },
+        },
+      ];
+
+      /**
+       * Enable openai
+       */
+      jest.mocked(openai.enabled).mockResolvedValue(true);
+      jest.mocked(openai.chatCompletions).mockResolvedValue([1, 2] as any);
+
+      const response = await dataSource.query({ targets, range } as any);
+      const frames = response.data;
+
+      const frame = frames.find((frame) => frame.refId === 'B');
+
+      const valuesArray = frame.fields[0].values.toArray();
+      expect(valuesArray).toEqual([1, 2]);
+
+      /**
+       * Check if message passed to openai
+       */
+      expect(openai.chatCompletions).toHaveBeenCalledWith({
+        messages: [{ role: 'user', content: 'get list' }],
+      });
     });
 
     it('Should replace variables in custom code', async () => {

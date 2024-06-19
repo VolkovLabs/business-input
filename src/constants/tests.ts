@@ -20,6 +20,7 @@ export const TEST_IDS = {
     fieldPreferredVisualizationType: 'query-editor field-preferred-visualization-type',
     fieldValuesEditor: 'query-editor field-values-editor',
     valuesEditor: 'data-testid query-editor values-editor',
+    fieldOpenaiMessage: 'data-testid query-editor field-openai-message',
   },
   valueInput: {
     fieldDateTime: 'data-testid value-input field-date-time',
