@@ -5,6 +5,7 @@
 ### Features / Enhancements
 
 - Added supporting OpenAI completions (#73)
+- Update E2E workflow to use Docker (#75)
 
 ## 4.0.0 (2024-06-12)
 
