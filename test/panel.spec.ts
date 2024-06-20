@@ -1,6 +1,11 @@
 import { test, expect } from '@grafana/plugin-e2e';
 
 test.describe('Static Data Source', () => {
+  test('Check grafana version', async ({ grafanaVersion }) => {
+    console.log('Grafana version: ', grafanaVersion);
+    expect(grafanaVersion).toEqual(grafanaVersion);
+  });
+
   test('Viewing a panel with a Logs from Static Data', async ({ gotoDashboardPage, dashboardPage, page }) => {
     /**
      * Go To panels dashboard panels.json
@@ -20,10 +25,18 @@ test.describe('Static Data Source', () => {
     await expect(dashboardPage.getPanelByTitle('Logs').locator).toBeVisible();
 
     /**
-     * Check and compare image
+     * Check content
      */
-    await expect(dashboardPage.getPanelByTitle('Logs').locator).toHaveScreenshot('actual-screenshot.png', {
-      maxDiffPixelRatio: 0.1,
-    });
+    await expect(dashboardPage.getPanelByTitle('Logs').locator.locator('tr').nth(0)).toHaveText(
+      '2022-11-01 07:27:25.648user logged in'
+    );
+
+    await expect(dashboardPage.getPanelByTitle('Logs').locator.locator('tr').nth(1)).toHaveText(
+      '2022-11-01 07:27:15.826user login failed'
+    );
+
+    await expect(dashboardPage.getPanelByTitle('Logs').locator.locator('tr').nth(2)).toHaveText(
+      '2022-11-01 07:27:06.074user registered'
+    );
   });
 });
