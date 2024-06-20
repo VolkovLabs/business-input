@@ -24,7 +24,7 @@ services:
       - GF_USERS_DEFAULT_THEME=light
       - GF_INSTALL_PLUGINS=marcusolsson-static-datasource
     volumes:
-      - ./dist:/var/lib/grafana/plugins/marcusolsson-dynamictext-panel
+      - ./dist:/var/lib/grafana/plugins/marcusolsson-static-datasource
       - ./provisioning:/etc/grafana/provisioning
     profiles:
       - main
