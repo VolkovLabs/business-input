@@ -35,12 +35,12 @@ grafana-cli plugins install marcusolsson-static-datasource
 
 - Create static visualizations that don't depend on a specific data source.
 - Allows specifying values manually or using the JavaScript Values Editor code.
+- Allows to generate data with OpenAI and LLM App.
 - Build custom query responses for testing or developing panel plugins.
 - Store data and images directly in the dashboard.
 - Supports variables in the text fields.
 - Uses Number input for Number, Date Time Picker for Time fields.
 - Uses Text Area for String inputs with more than 100 symbols.
-- Allows to temporarily hide values for specific fields.
 
 ## Documentation
 
