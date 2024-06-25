@@ -1,11 +1,11 @@
 # Changelog
 
-## 4.1.0 (2024-06-24)
+## 4.1.0 (2024-06-25)
 
 ### Features / Enhancements
 
 - Added supporting OpenAI completions (#73)
-- Update E2E workflow to use Docker (#75)
+- Update E2E workflow to use Docker (#75, #77)
 - Update plugin logo (#76)
 
 ## 4.0.0 (2024-06-12)
