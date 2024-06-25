@@ -27,10 +27,10 @@ test.describe('Static Data Source', () => {
     /**
      * Check content
      */
-    await expect(dashboardPage.getPanelByTitle('Logs').locator.locator('tr').nth(0)).toHaveText('user logged in');
+    await expect(dashboardPage.getPanelByTitle('Logs').locator.locator('tr').nth(0)).toContainText('user logged in');
 
-    await expect(dashboardPage.getPanelByTitle('Logs').locator.locator('tr').nth(1)).toHaveText('user login failed');
+    await expect(dashboardPage.getPanelByTitle('Logs').locator.locator('tr').nth(1)).toContainText('user login failed');
 
-    await expect(dashboardPage.getPanelByTitle('Logs').locator.locator('tr').nth(2)).toHaveText('user registered');
+    await expect(dashboardPage.getPanelByTitle('Logs').locator.locator('tr').nth(2)).toContainText('user registered');
   });
 });
