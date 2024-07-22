@@ -4,7 +4,7 @@ import { VariableSupport } from './variable';
  * Variable Support
  */
 describe('VariableSupport', () => {
-  const variableSupport = new VariableSupport();
+  const variableSupport = new VariableSupport({} as any);
 
   /**
    * Type
@@ -12,7 +12,7 @@ describe('VariableSupport', () => {
   describe('GetType', () => {
     it('Should return correct type', async () => {
       const type = variableSupport.getType();
-      expect(type).toEqual('datasource');
+      expect(type).toEqual('custom');
     });
   });
 });

@@ -35,7 +35,7 @@ export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptio
     /**
      * Enable variable support
      */
-    this.variables = new VariableSupport();
+    this.variables = new VariableSupport(this);
   }
 
   /**
