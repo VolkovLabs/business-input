@@ -1,9 +1,9 @@
 import { CustomVariableSupport, DataQueryRequest, DataQueryResponse } from '@grafana/data';
+import { from, Observable } from 'rxjs';
 import { StaticQuery } from 'types';
-import { Observable, from } from 'rxjs';
 
-import { DataSource } from './datasource';
 import { QueryEditor } from '../components';
+import { DataSource } from './datasource';
 
 /**
  * Variable Support
