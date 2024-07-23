@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.2.0 (IN PROGRESS)
+
+### Features / Enhancements
+
+- Update variable support in Scenes dashboard (#79)
+
 ## 4.1.0 (2024-06-25)
 
 ### Features / Enhancements
