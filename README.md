@@ -16,7 +16,7 @@ The Business Input Data Source is a plugin for Grafana that allows storing and e
 
 ## Requirements
 
-- Business Input Data Source version 4.X requires **Grafana 10** or **Grafana 11**.
+- Business Input Data Source version 4.X requires **Grafana 10.2** or **Grafana 11**.
 - Static Data Source version 3.X requires **Grafana 9.2** or **Grafana 10**.
 - Static Data Source version 2.X requires **Grafana 8.5** or **Grafana 9**.
 - Static Data Source version 1.X requires **Grafana 7.3**.

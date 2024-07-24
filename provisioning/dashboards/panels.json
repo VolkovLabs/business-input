@@ -104,8 +104,7 @@
               "viz": false
             }
           },
-          "mappings": [],
-          "unitScale": true
+          "mappings": []
         },
         "overrides": []
       },
@@ -182,6 +181,7 @@
         "autoPlay": true,
         "buttons": [],
         "controls": true,
+        "formats": ["audio", "image", "pdf", "video"],
         "height": 0,
         "heightMode": "auto",
         "infinityPlay": false,
@@ -237,8 +237,7 @@
               "viz": false
             }
           },
-          "mappings": [],
-          "unitScale": true
+          "mappings": []
         },
         "overrides": []
       },
@@ -313,8 +312,12 @@
       {
         "current": {
           "selected": false,
-          "text": "Test",
-          "value": "Test"
+          "text": "1950",
+          "value": "1950"
+        },
+        "datasource": {
+          "type": "marcusolsson-static-datasource",
+          "uid": "P1D2C73DC01F2359B"
         },
         "definition": "",
         "hide": 0,
@@ -330,13 +333,13 @@
                 "config": {},
                 "name": "Test",
                 "type": "string",
-                "values": ["Test"]
+                "values": [null]
               }
             ],
             "meta": {
               "custom": {
-                "customCode": "const result = {\n  ...frame,\n  fields: frame.fields.map((field) => ({\n    ...field,\n    values: []\n  }))\n}\n\nreturn Promise.resolve(result);",
-                "valuesEditor": "manual"
+                "customCode": "const array = new Array(100).fill(null);\n\nconst result = {\n  ...frame,\n  fields: frame.fields.map((field) => ({\n    ...field,\n    values: array.map((_, index) => `${1950 + index}`)\n  }))\n}\n\nreturn Promise.resolve(result);",
+                "valuesEditor": "custom"
               }
             },
             "name": "Test"
@@ -358,6 +361,6 @@
   "timezone": "",
   "title": "Panels",
   "uid": "O4tc_E6Gz",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
