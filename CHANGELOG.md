@@ -1,6 +1,6 @@
 # Changelog
 
-## 4.2.0 (IN PROGRESS)
+## 4.2.0 (2024-07-24)
 
 ### Breaking changes
 
@@ -8,7 +8,8 @@
 
 ### Features / Enhancements
 
-- Update variable support in Scenes dashboard (#79)
+- Updated variable support in Scenes dashboard (#79)
+- Updated to Grafana 11.1 and dependencies (#80)
 
 ## 4.1.0 (2024-06-25)
 
