@@ -2,7 +2,7 @@
 
 ![Screenshot](https://github.com/volkovlabs/volkovlabs-static-datasource/raw/main/src/img/dark.png)
 
-![Grafana](https://img.shields.io/badge/Grafana-11.0-orange)
+![Grafana](https://img.shields.io/badge/Grafana-11.1-orange)
 ![CI](https://github.com/volkovlabs/volkovlabs-static-datasource/workflows/CI/badge.svg)
 ![E2E](https://github.com/volkovlabs/volkovlabs-static-datasource/workflows/E2E/badge.svg)
 [![codecov](https://codecov.io/gh/VolkovLabs/volkovlabs-static-datasource/branch/main/graph/badge.svg?token=0m6f0ktUar)](https://codecov.io/gh/VolkovLabs/volkovlabs-static-datasource)
