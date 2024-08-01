@@ -276,15 +276,6 @@ export const ValuesEditor = ({ model, onChange }: Props) => {
             data-testid={TEST_IDS.valuesEditor.buttonCollapseAll}
           />
         </ButtonGroup>
-        <Button
-          variant="primary"
-          title="Add Field"
-          icon="plus"
-          data-testid={TEST_IDS.valuesEditor.buttonAdd}
-          onClick={() => addRow(model.rows.length ? model.rows.length - 1 : 0)}
-        >
-          Add a Row
-        </Button>
       </div>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="dataset">
@@ -354,6 +345,16 @@ export const ValuesEditor = ({ model, onChange }: Props) => {
           )}
         </Droppable>
       </DragDropContext>
+      <Button
+        className={styles.add}
+        variant="primary"
+        title="Add Field"
+        icon="plus"
+        data-testid={TEST_IDS.valuesEditor.buttonAdd}
+        onClick={() => addRow(model.rows.length ? model.rows.length - 1 : 0)}
+      >
+        Add a Row
+      </Button>
     </div>
   );
 };
