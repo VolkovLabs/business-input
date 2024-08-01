@@ -112,10 +112,12 @@ export const ValueInput: React.FC<Props> = ({ onChange, value, type, label }) =>
       <InlineField invalid={!valid} label={label} grow>
         <DateTimePicker
           date={dateTime(Number(value))}
-          onChange={(dateTime: DateTime) => {
-            const timestamp = dateTime.valueOf().toString();
-            setValid(verifyFieldValue(timestamp, type).ok);
-            onChange(timestamp);
+          onChange={(dateTime?: DateTime) => {
+            if (dateTime) {
+              const timestamp = dateTime.valueOf().toString();
+              setValid(verifyFieldValue(timestamp, type).ok);
+              onChange(timestamp);
+            }
           }}
           data-testid={TEST_IDS.valueInput.fieldDateTime}
         />

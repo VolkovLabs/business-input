@@ -1,5 +1,16 @@
 # Changelog
 
+## 4.2.0 (2024-07-24)
+
+### Breaking changes
+
+- Requires Grafana 10.2 and Grafana 11
+
+### Features / Enhancements
+
+- Updated variable support in Scenes dashboard (#79)
+- Updated to Grafana 11.1 and dependencies (#80)
+
 ## 4.1.0 (2024-06-25)
 
 ### Features / Enhancements
