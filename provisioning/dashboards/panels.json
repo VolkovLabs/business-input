@@ -179,21 +179,29 @@
       "id": 4,
       "options": {
         "autoPlay": true,
+        "autoPlayInfinity": false,
         "buttons": [],
         "controls": true,
-        "formats": ["audio", "image", "pdf", "video"],
         "height": 0,
         "heightMode": "auto",
         "infinityPlay": false,
+        "mediaSources": [
+          {
+            "field": "image",
+            "id": "77df14c8-5946-4a4a-8405-4aa64343397e",
+            "refId": "A",
+            "type": "image"
+          }
+        ],
         "noResultsMessage": "Nothing to display...",
+        "pdfToolbar": true,
         "scale": "auto",
-        "title": "Volkov Labs",
         "toolbar": true,
-        "url": "https://volkovlabs.io",
         "width": 0,
         "widthMode": "auto",
         "zoomType": "default"
       },
+      "pluginVersion": "6.0.0",
       "targets": [
         {
           "datasource": {

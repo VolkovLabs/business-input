@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.3.0 (IN PROGRESS)
+
+### Features / Enhancements
+
+- Updated "Add a row" below the rows list (#83)
+
 ## 4.2.0 (2024-07-24)
 
 ### Breaking changes
