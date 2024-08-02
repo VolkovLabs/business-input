@@ -284,7 +284,7 @@ export const ValuesEditor = ({ model, onChange }: Props) => {
           onClick={() => addRow(model.rows.length ? model.rows.length - 1 : 0)}
         >
           Add a Row
-        </Button>{' '}
+        </Button>
       </div>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="dataset">
