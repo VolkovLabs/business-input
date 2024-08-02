@@ -32,6 +32,8 @@ export const TEST_IDS = {
   valuesEditor: {
     root: 'data-testid values-editor',
     buttonAdd: 'data-testid values-editor button-add',
+    buttonAddTop: 'data-testid values-editor button-add-start',
+    buttonAddEnd: 'data-testid values-editor button-add-end',
     buttonCopy: 'data-testid values-editor button-copy',
     buttonRemove: 'data-testid values-editor button-remove',
     row: 'data-testid values-editor row',
