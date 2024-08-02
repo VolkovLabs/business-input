@@ -185,18 +185,34 @@ describe('Editor', () => {
     );
   });
 
-  it('Should add row', async () => {
+  it('Should add row to the top', async () => {
     render(getComponent({ model }));
 
     expect(selectors.root()).toBeInTheDocument();
-    fireEvent.click(selectors.buttonAdd());
+    fireEvent.click(selectors.buttonAddTop());
 
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
-        rows: expect.arrayContaining([
+        rows: [
+          { id: '123456', value: [''] },
+          { id: '121', value: ['key1'] },
+        ],
+      })
+    );
+  });
+
+  it('Should add row to the end', async () => {
+    render(getComponent({ model }));
+
+    expect(selectors.root()).toBeInTheDocument();
+    fireEvent.click(selectors.buttonAddEnd());
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        rows: [
           { id: '121', value: ['key1'] },
           { id: '123456', value: [''] },
-        ]),
+        ],
       })
     );
   });

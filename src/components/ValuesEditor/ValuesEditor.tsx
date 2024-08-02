@@ -280,8 +280,8 @@ export const ValuesEditor = ({ model, onChange }: Props) => {
           variant="primary"
           title="Add Field"
           icon="plus"
-          data-testid={TEST_IDS.valuesEditor.buttonAdd}
-          onClick={() => addRow(model.rows.length ? model.rows.length - 1 : 0)}
+          data-testid={TEST_IDS.valuesEditor.buttonAddTop}
+          onClick={() => addRow(model.rows.length ? -1 : 0)}
         >
           Add a Row
         </Button>
@@ -359,7 +359,7 @@ export const ValuesEditor = ({ model, onChange }: Props) => {
         variant="primary"
         title="Add Field"
         icon="plus"
-        data-testid={TEST_IDS.valuesEditor.buttonAdd}
+        data-testid={TEST_IDS.valuesEditor.buttonAddEnd}
         onClick={() => addRow(model.rows.length ? model.rows.length - 1 : 0)}
       >
         Add a Row

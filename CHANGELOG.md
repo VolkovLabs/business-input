@@ -4,7 +4,7 @@
 
 ### Features / Enhancements
 
-- Updated "Add a row" below the rows list (#83)
+- Updated "Add a row" below the rows list (#83, #84)
 
 ## 4.2.0 (2024-07-24)
 
