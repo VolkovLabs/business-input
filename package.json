@@ -14,7 +14,7 @@
     "tslib": "^2.6.3",
     "uuid": "^10.0.0"
   },
-  "description": "Business Input Data Source for Grafana",
+  "description": "Store and create your data",
   "devDependencies": {
     "@babel/core": "^7.24.9",
     "@grafana/eslint-config": "^7.0.0",
@@ -60,8 +60,8 @@
     "node": ">=20"
   },
   "license": "Apache-2.0",
-  "name": "marcusolsson-static-datasource",
-  "repository": "github:volkovlabs/volkovlabs-static-datasource",
+  "name": "business-input",
+  "repository": "github:volkovlabs/business-input",
   "scripts": {
     "build": "webpack -c ./.config/webpack/webpack.config.ts --env production",
     "dev": "webpack -w -c ./.config/webpack/webpack.config.ts --env development",
@@ -74,10 +74,10 @@
     "stop": "docker compose down",
     "stop:e2e": "docker-compose -f test/docker-compose.yml down",
     "test": "jest --watch --onlyChanged",
+    "test:ci": "jest --maxWorkers 4 --coverage",
     "test:e2e": "npx playwright test",
     "test:e2e:docker": "docker compose --profile e2e up --exit-code-from test",
-    "test:ci": "jest --maxWorkers 4 --coverage",
     "upgrade": "npm upgrade --save"
   },
-  "version": "4.2.0"
+  "version": "4.3.0"
 }

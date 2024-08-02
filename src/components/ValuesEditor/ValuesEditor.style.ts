@@ -32,5 +32,8 @@ export const getStyles = (theme: GrafanaTheme2) => {
     dragIcon: css`
       color: ${theme.colors.text.disabled};
     `,
+    add: css`
+      margin-top: ${theme.spacing(1)};
+    `,
   };
 };
