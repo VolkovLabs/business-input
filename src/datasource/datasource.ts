@@ -73,6 +73,9 @@ export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptio
       codeParameters.create({
         frame,
         llmResult,
+        utils: {
+          toDataFrame,
+        },
       })
     );
 
