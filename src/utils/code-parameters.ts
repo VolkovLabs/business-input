@@ -15,7 +15,7 @@ export const codeParameters = new CodeParametersBuilder({
       detail: 'Utils and helpers functions.',
       items: {
         toDataFrame: new CodeParameterItem<(data: unknown) => void>(
-          'To Data Frame',
+          'Return as a Data Frame',
           CodeEditorSuggestionItemKind.Method
         ),
       },
