@@ -5,6 +5,7 @@
 ### Features / Enhancements
 
 - Updated "Add a row" below the rows list (#83, #84)
+- Added toDataFrame helper to code parameters (#86)
 
 ## 4.2.0 (2024-07-24)
 
