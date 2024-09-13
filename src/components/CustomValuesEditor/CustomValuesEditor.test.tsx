@@ -12,6 +12,14 @@ import { CustomValuesEditor } from './CustomValuesEditor';
 jest.mock('@grafana/ui', () => ({
   ...jest.requireActual('@grafana/ui'),
   CodeEditor: jest.fn(() => null),
+  PageToolbar: jest.fn(({ leftItems, children }) => {
+    return (
+      <>
+        {leftItems}
+        {children}
+      </>
+    );
+  }),
 }));
 
 /**
@@ -148,7 +156,7 @@ describe('Custom Values Editor', () => {
       () =>
         ({
           getVariables: jest.fn().mockImplementation(() => variables),
-        } as any)
+        }) as any
     );
 
     render(getComponent({}));

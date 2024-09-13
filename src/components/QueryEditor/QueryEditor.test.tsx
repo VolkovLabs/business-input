@@ -14,6 +14,14 @@ import { QueryEditor } from './QueryEditor';
 jest.mock('@grafana/ui', () => ({
   ...jest.requireActual('@grafana/ui'),
   CodeEditor: jest.fn(() => null),
+  PageToolbar: jest.fn(({ leftItems, children }) => {
+    return (
+      <>
+        {leftItems}
+        {children}
+      </>
+    );
+  }),
   Select: jest.fn().mockImplementation(({ options, onChange, value, isClearable, ...restProps }) => (
     <select
       onChange={(event: any) => {
