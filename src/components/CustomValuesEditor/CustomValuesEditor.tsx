@@ -1,5 +1,6 @@
 import { getTemplateSrv } from '@grafana/runtime';
-import { CodeEditor, CodeEditorSuggestionItem, CodeEditorSuggestionItemKind, InlineField } from '@grafana/ui';
+import { CodeEditorSuggestionItem, CodeEditorSuggestionItemKind, InlineField } from '@grafana/ui';
+import { AutosizeCodeEditor } from '@volkovlabs/components';
 /**
  * Monaco
  */
@@ -85,7 +86,7 @@ export const CustomValuesEditor = ({ model, onChange }: Props) => {
   return (
     <>
       <InlineField grow={true} data-testid={TEST_IDS.customValuesEditor.root}>
-        <CodeEditor
+        <AutosizeCodeEditor
           value={model?.meta?.custom?.customCode || CUSTOM_CODE}
           language={CodeLanguage.JAVASCRIPT}
           height={300}
@@ -95,6 +96,9 @@ export const CustomValuesEditor = ({ model, onChange }: Props) => {
           showLineNumbers={true}
           getSuggestions={getSuggestions}
           onEditorDidMount={onEditorMount}
+          modalTitle="JavaScript Values Editor"
+          modalButtonTooltip="Expand JavaScript Values Editor"
+          showMiniMap={true}
         />
       </InlineField>
     </>
