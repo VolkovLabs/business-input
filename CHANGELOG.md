@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.4.0 (IN PROGRESS)
+
+### Features / Enhancements
+
+- Updated Autosize Code Editor toolbar (#91)
+
 ## 4.3.0 (2024-09-13)
 
 ### Features / Enhancements

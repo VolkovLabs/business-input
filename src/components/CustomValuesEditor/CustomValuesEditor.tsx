@@ -96,8 +96,6 @@ export const CustomValuesEditor = ({ model, onChange }: Props) => {
           showLineNumbers={true}
           getSuggestions={getSuggestions}
           onEditorDidMount={onEditorMount}
-          modalTitle="JavaScript Values Editor"
-          modalButtonTooltip="Expand JavaScript Values Editor"
           showMiniMap={true}
         />
       </InlineField>
