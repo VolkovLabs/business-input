@@ -23,7 +23,7 @@ The Business Input data source is a plugin for Grafana that allows storing and e
 
 ## Getting Started
 
-The Business Input data source can be installed from the [Grafana Catalog](https://grafana.com/grafana/plugins/marcusolsson-static-datasource/) or utilizing the Grafana command line tool.
+The Business Input data source can be installed from the [Grafana Plugins catalog](https://grafana.com/grafana/plugins/marcusolsson-static-datasource/) or utilizing the Grafana command line tool.
 
 For the latter, please use the following command.
 
@@ -49,7 +49,6 @@ grafana-cli plugins install marcusolsson-static-datasource
 | [Provisioning](https://volkovlabs.io/plugins/business-input/provisioning/) | Demonstrates how to automatically provision the Data Source. |
 | [Variables](https://volkovlabs.io/plugins/business-input/variables/)       | Demonstrates how to use variables.                           |
 | [Panels](https://volkovlabs.io/plugins/business-input/panels/)             | Demonstrates how to use data source with panels.             |
-| [Variables](https://volkovlabs.io/plugins/business-input/variables/)       | Demonstrates how to use variables.                           |
 | [Release Notes](https://volkovlabs.io/plugins/business-input/release/)     | Stay up to date with the latest features and updates.        |
 
 ## Business Suite for Grafana
@@ -60,14 +59,17 @@ The collection aims to solve the most frequent business tasks by providing an in
 
 [![Business Suite for Grafana](https://raw.githubusercontent.com/VolkovLabs/.github/main/business.png)](https://volkovlabs.io/plugins/)
 
-## Feedback
+### Enterprise Support
 
-We're looking forward to hearing from you. You can use different ways to get in touch with us.
+With the [Business Suite Enterprise](https://volkovlabs.io/pricing/), you're not just getting a product, you're getting a complete support system. You'll have a designated support team ready to tackle any issues.
+
+You can contact us via Zendesk, receive priority in feature requests and bug fixes, meet with us for in-person consultation, and get access to the Business Intelligence. It's a package that's designed to make your life easier.
+
+## Always happy to hear from you
 
 - Ask a question, request a new feature, and file a bug with [GitHub issues](https://github.com/volkovlabs/business-input/issues).
-- Subscribe to our [YouTube Channel](https://www.youtube.com/@volkovlabs) and leave your comments.
-- Sponsor our open source plugins for Grafana through [GitHub](https://github.com/sponsors/VolkovLabs).
-- Support our project by starring the repository.
+- Subscribe to our [YouTube Channel](https://youtube.com/@volkovlabs) and leave your comments.
+- Become a [Business Suite sponsor](https://github.com/sponsors/VolkovLabs).
 
 ## License
 
