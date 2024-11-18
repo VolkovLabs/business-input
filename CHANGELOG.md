@@ -1,10 +1,11 @@
 # Changelog
 
-## 4.4.0 (IN PROGRESS)
+## 4.4.0 (2024-11-18)
 
 ### Features / Enhancements
 
 - Updated Autosize Code Editor toolbar (#91)
+- Updated to Grafana 11.3 and dependencies (#95)
 
 ## 4.3.0 (2024-09-13)
 
