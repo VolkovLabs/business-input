@@ -5,7 +5,7 @@
 ### Features / Enhancements
 
 - Updated Autosize Code Editor toolbar (#91)
-- Updated to Grafana 11.3 and dependencies (#92)
+- Updated to Grafana 11.3 and dependencies (#95)
 
 ## 4.3.0 (2024-09-13)
 
