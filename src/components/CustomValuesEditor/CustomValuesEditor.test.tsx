@@ -1,7 +1,7 @@
 import { getTemplateSrv } from '@grafana/runtime';
 import { CodeEditor, CodeEditorSuggestionItemKind } from '@grafana/ui';
 import { render, screen } from '@testing-library/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { CUSTOM_VALUES_EDITOR_SUGGESTIONS, TEST_IDS } from '../../constants';
 import { CustomValuesEditor } from './CustomValuesEditor';
@@ -68,7 +68,9 @@ describe('Custom Values Editor', () => {
     };
 
     jest.mocked(CodeEditor).mockImplementation(({ onEditorDidMount }: any) => {
-      onEditorDidMount(editor);
+      useEffect(() => {
+        onEditorDidMount(editor);
+      }, [onEditorDidMount]);
       return null;
     });
 
