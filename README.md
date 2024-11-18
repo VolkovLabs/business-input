@@ -2,7 +2,7 @@
 
 ![Screenshot](https://github.com/volkovlabs/business-input/raw/main/src/img/dark.png)
 
-![Grafana](https://img.shields.io/badge/Grafana-11.2-orange)
+![Grafana](https://img.shields.io/badge/Grafana-11.3-orange)
 ![CI](https://github.com/volkovlabs/business-input/workflows/CI/badge.svg)
 ![E2E](https://github.com/volkovlabs/business-input/workflows/E2E/badge.svg)
 [![codecov](https://codecov.io/gh/VolkovLabs/business-input/branch/main/graph/badge.svg)](https://codecov.io/gh/VolkovLabs/business-input)
@@ -28,8 +28,10 @@ The Business Input data source can be installed from the [Grafana Plugins catalo
 For the latter, please use the following command.
 
 ```bash
-grafana-cli plugins install marcusolsson-static-datasource
+grafana cli plugins install marcusolsson-static-datasource
 ```
+
+[![Install Business Suite plugins in Cloud, OSS, Enterprise | Open source community plugins](https://raw.githubusercontent.com/volkovlabs/.github/main/started.png)](https://youtu.be/1qYzHfPXJF8)
 
 ## Highlights
 
