@@ -1,11 +1,11 @@
 import { FieldType } from '@grafana/data';
 
-import { FieldResult, NullableString } from '../types';
+import { FieldResult, FieldValue } from '../types';
 
 /**
  * Parses nullable strings into the given type.
  */
-export const verifyFieldValue = (value: NullableString, type: FieldType): FieldResult => {
+export const verifyFieldValue = (value: FieldValue, type: FieldType): FieldResult => {
   /**
    * Null is ok
    */
@@ -37,7 +37,7 @@ export const verifyFieldValue = (value: NullableString, type: FieldType): FieldR
 
       return { ok: true, value: time };
     case FieldType.boolean:
-      if (!['1', '0', 'true', 'yes', 'false', 'no'].includes(value)) {
+      if (!['1', '0', 'true', 'yes', 'false', 'no', true, false].includes(value)) {
         return { ok: false, error: 'Invalid boolean', value: null };
       }
 

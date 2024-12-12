@@ -1,6 +1,6 @@
 import { Field, PreferredVisualisationType } from '@grafana/data';
 
-import { NullableString } from './field';
+import { FieldValue } from './field';
 
 /**
  * Values Editor
@@ -29,9 +29,9 @@ export interface ModelRow {
   /**
    * Value
    *
-   * @type {NullableString[]}
+   * @type {FieldValue[]}
    */
-  value: NullableString[];
+  value: FieldValue[];
 
   /**
    * Id
@@ -81,7 +81,7 @@ export interface DataFrameModel {
   /**
    * Rows
    *
-   * @type {NullableString[][]}
+   * @type {FieldValue[][]}
    */
   rows: ModelRows;
 }

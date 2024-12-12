@@ -2,13 +2,13 @@ import { FieldType } from '@grafana/data';
 import { Button, ButtonGroup, Icon, IconButton, InlineField, InlineFieldRow, useStyles2 } from '@grafana/ui';
 import { DragDropContext, Draggable, DraggingStyle, Droppable, DropResult, NotDraggingStyle } from '@hello-pangea/dnd';
 import { Collapse } from '@volkovlabs/components';
+import { ValueEditor } from 'components/ValueEditor';
 import React, { useCallback, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { TEST_IDS } from '../../constants';
-import { DataFrameModel, ModelRow, NullableString } from '../../types';
+import { DataFrameModel, FieldValue, ModelRow } from '../../types';
 import { reorder } from '../../utils';
-import { ValueInput } from '../ValueInput';
 import { getStyles } from './ValuesEditor.style';
 /**
  * Properties
@@ -101,7 +101,7 @@ export const ValuesEditor = ({ model, onChange }: Props) => {
             case FieldType.time:
               return Date.now().valueOf().toString();
             case FieldType.boolean:
-              return 'false';
+              return false;
             default:
               return '';
           }
@@ -185,7 +185,7 @@ export const ValuesEditor = ({ model, onChange }: Props) => {
    * Edit Value
    */
   const editValue = useCallback(
-    (value: NullableString, rowIndex: number, fieldIndex: number) => {
+    (value: FieldValue, rowIndex: number, fieldIndex: number) => {
       /**
        * Create another object to prevent mutations
        */
@@ -333,8 +333,8 @@ export const ValuesEditor = ({ model, onChange }: Props) => {
                       >
                         <InlineFieldRow data-testid={TEST_IDS.valuesEditor.row}>
                           <div className={styles.controls}>
-                            {row.value.map((value: NullableString, index: number) => (
-                              <ValueInput
+                            {row.value.map((value: FieldValue, index: number) => (
+                              <ValueEditor
                                 key={index}
                                 value={value}
                                 type={model.fields[index].type}

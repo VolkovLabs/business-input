@@ -178,7 +178,7 @@ describe('Editor', () => {
         ]),
         rows: expect.arrayContaining([
           expect.objectContaining({
-            value: expect.arrayContaining(['false']),
+            value: expect.arrayContaining([false]),
           }),
         ]),
       })

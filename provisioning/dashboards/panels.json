@@ -24,13 +24,17 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 2,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
       "datasource": {
         "type": "marcusolsson-static-datasource",
         "uid": "P1D2C73DC01F2359B"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -49,6 +53,7 @@
         "sortOrder": "Descending",
         "wrapLogMessage": false
       },
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
@@ -134,7 +139,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "9.2.2",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
@@ -170,6 +175,10 @@
         "type": "marcusolsson-static-datasource",
         "uid": "P1D2C73DC01F2359B"
       },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 11,
         "w": 12,
@@ -201,7 +210,7 @@
         "widthMode": "auto",
         "zoomType": "default"
       },
-      "pluginVersion": "6.0.0",
+      "pluginVersion": "6.2.0",
       "targets": [
         {
           "datasource": {
@@ -275,7 +284,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "9.2.2",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
@@ -310,16 +319,178 @@
       ],
       "title": "Custom Code",
       "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 23,
+        "w": 12,
+        "x": 0,
+        "y": 19
+      },
+      "id": 8,
+      "options": {
+        "afterRender": "",
+        "content": "```json\n{{{json @root}}}\n```",
+        "contentPartials": [],
+        "defaultContent": "The query didn't return any results.",
+        "editor": {
+          "format": "auto",
+          "language": "markdown"
+        },
+        "editors": [],
+        "externalStyles": [],
+        "helpers": "",
+        "renderMode": "allRows",
+        "styles": "",
+        "wrap": true
+      },
+      "pluginVersion": "5.5.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "marcusolsson-static-datasource",
+            "uid": "P1D2C73DC01F2359B"
+          },
+          "frame": {
+            "fields": [
+              {
+                "config": {},
+                "name": "time",
+                "type": "time",
+                "values": [
+                  1667276826074, 1667276835826, 1667276845648, 1667276845648, 1667276845648, 1667276845648,
+                  1667276845648, 1667276845648, 1667276845648, 1667276845648, 1667276845648, 1667276845648,
+                  1667276845648, 1667276845648, 1667276845648, 1667276845648, 1667276845648, 1667276845648,
+                  1667276845648, 1667276845648, 1667276845648
+                ]
+              },
+              {
+                "config": {},
+                "name": "message",
+                "type": "string",
+                "values": [
+                  "enable: true",
+                  "enable: false",
+                  "user logged in",
+                  "enable: 1",
+                  "enable: 0",
+                  "enable: yes",
+                  "enable: no",
+                  "enable: none",
+                  "enable: fals",
+                  "enable: falsy",
+                  "enable: trylli",
+                  "enable: 123!",
+                  "enable: 126asd",
+                  "enable: 198",
+                  "enable: asb",
+                  "enable null",
+                  "enable empty",
+                  "enable No",
+                  "enable TrUe",
+                  "enable FALSE",
+                  "enable TRUE"
+                ]
+              },
+              {
+                "config": {},
+                "name": "level",
+                "type": "string",
+                "values": [
+                  "info",
+                  "error",
+                  "info",
+                  "info",
+                  "info",
+                  "info",
+                  "info",
+                  "info",
+                  "info",
+                  "info",
+                  "info",
+                  "info",
+                  "info",
+                  "info",
+                  "info",
+                  "info",
+                  "info",
+                  "info",
+                  "info",
+                  "info",
+                  "info"
+                ]
+              },
+              {
+                "config": {},
+                "name": "enable",
+                "type": "boolean",
+                "values": [
+                  "true",
+                  "false",
+                  null,
+                  "1",
+                  "0",
+                  "yes",
+                  "no",
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null
+                ]
+              }
+            ],
+            "meta": {
+              "preferredVisualisationType": "logs"
+            },
+            "name": "Server Logs"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Logs",
+      "type": "marcusolsson-dynamictext-panel"
     }
   ],
+  "preload": false,
   "refresh": "",
-  "schemaVersion": 39,
+  "schemaVersion": 40,
   "tags": [],
   "templating": {
     "list": [
       {
         "current": {
-          "selected": false,
           "text": "1950",
           "value": "1950"
         },
@@ -328,10 +499,8 @@
           "uid": "P1D2C73DC01F2359B"
         },
         "definition": "",
-        "hide": 0,
         "includeAll": false,
         "label": "Sales",
-        "multi": false,
         "name": "sales",
         "options": [],
         "query": {
@@ -355,8 +524,6 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
         "type": "query"
       }
     ]
@@ -369,6 +536,6 @@
   "timezone": "",
   "title": "Panels",
   "uid": "O4tc_E6Gz",
-  "version": 2,
+  "version": 8,
   "weekStart": ""
 }
