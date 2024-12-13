@@ -1,5 +1,5 @@
 import { FieldType } from '@grafana/data';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import React from 'react';
 
 import { TEST_IDS } from '../../constants';
