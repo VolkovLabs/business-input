@@ -53,7 +53,6 @@
         "sortOrder": "Descending",
         "wrapLogMessage": false
       },
-      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
@@ -139,7 +138,6 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
@@ -210,7 +208,6 @@
         "widthMode": "auto",
         "zoomType": "default"
       },
-      "pluginVersion": "6.2.0",
       "targets": [
         {
           "datasource": {
@@ -284,7 +281,6 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
@@ -366,7 +362,6 @@
         "styles": "",
         "wrap": true
       },
-      "pluginVersion": "5.5.0",
       "targets": [
         {
           "datasource": {
