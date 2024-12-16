@@ -29,6 +29,10 @@ export const TEST_IDS = {
     fieldTextarea: 'data-testid value-input field-textarea',
     iconDisable: 'data-testid value-input icon-disable',
   },
+  booleanEditor: {
+    fieldSwitch: 'data-testid boolean-input field-switch',
+    iconDisable: 'data-testid boolean-input icon-disable',
+  },
   valuesEditor: {
     root: 'data-testid values-editor',
     buttonAdd: 'data-testid values-editor button-add',

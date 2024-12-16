@@ -1,6 +1,6 @@
 import { FieldType } from '@grafana/data';
 
-import { convertToDataFrame, prepareModel } from './frame';
+import { convertStringValueToBoolean, convertToDataFrame, convertValueToBoolean, prepareModel } from './frame';
 
 jest.mock('uuid', () => ({
   v4: jest.fn(() => '123456'),
@@ -156,6 +156,41 @@ describe('Frame Utils', () => {
        */
       expect(frame.fields[0].values).toEqual(['Test 1', 'Test 2']);
       expect(frame.fields[1].values).toEqual([null, null]);
+    });
+  });
+
+  /**
+   * convertStringValueToBoolean
+   */
+  describe('convertStringValueToBoolean', () => {
+    it.each([
+      ['true', true],
+      ['yes', true],
+      ['1', true],
+      ['false', false],
+      ['no', false],
+      ['random', false],
+      ['', false],
+      ['0', false],
+    ])('should return value as boolean', (input, expected) => {
+      expect(convertStringValueToBoolean(input)).toBe(expected);
+    });
+  });
+
+  /**
+   * convertStringValueToBoolean
+   */
+  describe('convertValueToBoolean', () => {
+    it.each([
+      [true, true, true],
+      [true, false, false],
+      [true, 'true', true],
+      [true, 'false', false],
+      [true, 'random', false],
+      [false, null, false],
+      [false, 'fals', false],
+    ])('should correct convert to boolean', (isVerified, value, expected) => {
+      expect(convertValueToBoolean(isVerified, value)).toBe(expected);
     });
   });
 });

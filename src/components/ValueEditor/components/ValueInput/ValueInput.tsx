@@ -2,9 +2,9 @@ import { DateTime, dateTime, FieldType } from '@grafana/data';
 import { DateTimePicker, Icon, InlineField, Input, TextArea, useStyles2 } from '@grafana/ui';
 import React, { useCallback, useState } from 'react';
 
-import { TEST_IDS, TEXT_AREA_LENGTH } from '../../constants';
-import { NullableString } from '../../types';
-import { verifyFieldValue } from '../../utils';
+import { TEST_IDS, TEXT_AREA_LENGTH } from '../../../../constants';
+import { FieldValue } from '../../../../types';
+import { verifyFieldValue } from '../../../../utils';
 import { getStyles } from './ValueInput.styles';
 
 /**
@@ -14,9 +14,9 @@ interface Props {
   /**
    * Value
    *
-   * @type {NullableString}
+   * @type {Exclude<FieldValue, boolean>}
    */
-  value: NullableString;
+  value: Exclude<FieldValue, boolean>;
 
   /**
    * Type
@@ -35,7 +35,7 @@ interface Props {
   /**
    * On Change
    */
-  onChange: (value: NullableString) => void;
+  onChange: (value: FieldValue) => void;
 }
 
 /**
@@ -96,7 +96,7 @@ export const ValueInput: React.FC<Props> = ({ onChange, value, type, label }) =>
             onChange(event.currentTarget.value);
           }}
           type="number"
-          value={disabled ? undefined : value ?? ''}
+          value={disabled ? undefined : (value ?? '')}
           suffix={suffixElement}
           data-testid={TEST_IDS.valueInput.fieldNumber}
         />
@@ -153,7 +153,7 @@ export const ValueInput: React.FC<Props> = ({ onChange, value, type, label }) =>
           setValid(verifyFieldValue(event.currentTarget.value, type).ok);
           onChange(event.currentTarget.value);
         }}
-        value={disabled ? 'null' : value ?? ''}
+        value={disabled ? 'null' : (value ?? '')}
         suffix={suffixElement}
         data-testid={TEST_IDS.valueInput.fieldString}
       />

@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.5.0 (IN PROGRESS)
+
+### Features / Enhancements
+
+- Added editor for boolean values (#97)
+
 ## 4.4.0 (2024-11-18)
 
 ### Features / Enhancements

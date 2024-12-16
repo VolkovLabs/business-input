@@ -1,7 +1,7 @@
 /**
- * NullableString
+ * Field Value
  */
-export type NullableString = string | null;
+export type FieldValue = string | null | boolean;
 
 /**
  * Result
