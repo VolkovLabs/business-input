@@ -79,7 +79,7 @@ export const ValueInput: React.FC<Props> = ({ onChange, value, type, label }) =>
    * Icon
    */
   const suffixElement = (
-    <div data-testid={TEST_IDS.valueInput.iconDisable} onClick={disableInput}>
+    <div data-testid={TEST_IDS.valueInput.iconDisable(label)} onClick={disableInput}>
       <Icon className={styles.suffixElement} name={disabled ? 'eye-slash' : 'eye'} />
     </div>
   );
@@ -98,7 +98,7 @@ export const ValueInput: React.FC<Props> = ({ onChange, value, type, label }) =>
           type="number"
           value={disabled ? undefined : (value ?? '')}
           suffix={suffixElement}
-          data-testid={TEST_IDS.valueInput.fieldNumber}
+          data-testid={TEST_IDS.valueInput.fieldNumber(label)}
         />
       </InlineField>
     );
@@ -119,7 +119,7 @@ export const ValueInput: React.FC<Props> = ({ onChange, value, type, label }) =>
               onChange(timestamp);
             }
           }}
-          data-testid={TEST_IDS.valueInput.fieldDateTime}
+          data-testid={TEST_IDS.valueInput.fieldDateTime(label)}
         />
       </InlineField>
     );
@@ -137,7 +137,7 @@ export const ValueInput: React.FC<Props> = ({ onChange, value, type, label }) =>
             setValid(verifyFieldValue(event.currentTarget.value, type).ok);
             onChange(event.currentTarget.value);
           }}
-          data-testid={TEST_IDS.valueInput.fieldTextarea}
+          data-testid={TEST_IDS.valueInput.fieldTextarea(label)}
         />
       </InlineField>
     );
@@ -155,7 +155,7 @@ export const ValueInput: React.FC<Props> = ({ onChange, value, type, label }) =>
         }}
         value={disabled ? 'null' : (value ?? '')}
         suffix={suffixElement}
-        data-testid={TEST_IDS.valueInput.fieldString}
+        data-testid={TEST_IDS.valueInput.fieldString(label)}
       />
     </InlineField>
   );
