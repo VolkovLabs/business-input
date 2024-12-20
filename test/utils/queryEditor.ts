@@ -165,14 +165,9 @@ export class ValuesEditorHelper {
  */
 export class CodeEditorHelper {
   private readonly locator: Locator;
-  private readonly page: Page;
 
-  constructor(
-    public readonly editor: Locator,
-    page: Page
-  ) {
+  constructor(public readonly editor: Locator) {
     this.locator = editor;
-    this.page = page;
   }
 
   private getMsg(msg: string): string {
@@ -257,13 +252,13 @@ export class QueryEditorHelper {
       .click();
   }
 
-  public getCodeEditor(page: Page) {
+  public getCodeEditor() {
     const codeEditor = this.selectors
       .root()
       .getByTestId(this.grafanaSelectors.components.CodeEditor.container)
       .getByRole('textbox');
 
-    return new CodeEditorHelper(codeEditor, page);
+    return new CodeEditorHelper(codeEditor);
   }
 
   public getFieldsEditor() {

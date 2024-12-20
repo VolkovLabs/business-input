@@ -94,7 +94,7 @@ test.describe('Static Data Source', () => {
       await fieldValue.setName('value');
       await fieldName.setName('name');
 
-      const codeEditor = queryEditor.getCodeEditor(page);
+      const codeEditor = queryEditor.getCodeEditor();
       await codeEditor.checkPresence();
 
       /**
