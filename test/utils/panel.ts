@@ -1,3 +1,4 @@
+import * as semver from 'semver';
 import { Locator } from '@playwright/test';
 import { DashboardPage, E2ESelectorGroups, expect, Panel } from '@grafana/plugin-e2e';
 
@@ -63,8 +64,11 @@ export class PanelHelper {
     return new TableHelper(table);
   }
 
-  public async checkContent(text: string) {
-    return expect(this.getContainer(), this.getMsg('Check If No Errors')).toContainText(text);
+  public async checkContent(text: string, grafanaVersion: string) {
+    if (semver.gte(grafanaVersion, '11.3.0')) {
+      return expect(this.getContainer(), this.getMsg('Check If No Errors')).toContainText(text);
+    }
+    return expect(this.get().getByTestId('data-testid text content')).toContainText(text);
   }
 
   public async checkIfNoErrors() {

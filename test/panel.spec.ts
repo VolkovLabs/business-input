@@ -173,7 +173,12 @@ test.describe('Static Data Source', () => {
       await table.checkRowContent(2, 'user registered');
     });
 
-    test('Should return configured data', async ({ gotoDashboardPage, readProvisionedDashboard, selectors }) => {
+    test('Should return configured data', async ({
+      gotoDashboardPage,
+      readProvisionedDashboard,
+      selectors,
+      grafanaVersion,
+    }) => {
       /**
        * Go To Panels dashboard panels.json
        * return dashboardPage
@@ -184,7 +189,8 @@ test.describe('Static Data Source', () => {
       const panel = new PanelHelper(dashboardPage, 'Data', selectors);
       await panel.checkIfNoErrors();
 
-      await panel.checkContent(`{
+      await panel.checkContent(
+        `{
   "data": [
     {
       "time": 1667276845648,
@@ -199,7 +205,9 @@ test.describe('Static Data Source', () => {
       "enable": false
     }
   ]
-}`);
+}`,
+        grafanaVersion
+      );
     });
   });
 });
