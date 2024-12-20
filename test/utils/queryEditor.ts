@@ -199,12 +199,6 @@ export class CodeEditorHelper {
     await this.get().blur();
   }
 
-  public async removeEmptyLines() {
-    await this.get().click();
-    await this.page.keyboard.press('End');
-    await this.page.keyboard.press('Backspace');
-  }
-
   public async checkValue(value: string) {
     return expect(this.get()).toHaveValue(value);
   }
