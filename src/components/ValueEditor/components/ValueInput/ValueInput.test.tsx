@@ -51,72 +51,76 @@ describe('Input', () => {
   });
 
   it('Should update string value', async () => {
-    render(getComponent({ value: '123', type: FieldType.string }));
+    render(getComponent({ value: '123', type: FieldType.string, label: 'name' }));
 
-    expect(screen.getByTestId(TEST_IDS.valueInput.fieldString)).toBeInTheDocument();
+    expect(screen.getByTestId(TEST_IDS.valueInput.fieldString('name'))).toBeInTheDocument();
 
-    fireEvent.change(screen.getByTestId(TEST_IDS.valueInput.fieldString), { target: { value: 'hello' } });
+    fireEvent.change(screen.getByTestId(TEST_IDS.valueInput.fieldString('name')), { target: { value: 'hello' } });
 
     expect(onChange).toHaveBeenCalledWith('hello');
   });
 
   it('Should render disabled string value', async () => {
-    render(getComponent({ value: null, type: FieldType.string }));
+    render(getComponent({ value: null, type: FieldType.string, label: 'name' }));
 
-    expect(screen.getByTestId(TEST_IDS.valueInput.fieldString)).toBeInTheDocument();
-    expect(screen.getByTestId(TEST_IDS.valueInput.fieldString)).toHaveValue('null');
+    expect(screen.getByTestId(TEST_IDS.valueInput.fieldString('name'))).toBeInTheDocument();
+    expect(screen.getByTestId(TEST_IDS.valueInput.fieldString('name'))).toHaveValue('null');
   });
 
   it('Should disable string value', async () => {
-    render(getComponent({ value: 'hello', type: FieldType.string }));
+    render(getComponent({ value: 'hello', type: FieldType.string, label: 'name' }));
 
-    expect(screen.getByTestId(TEST_IDS.valueInput.fieldString)).toBeInTheDocument();
-    expect(screen.getByTestId(TEST_IDS.valueInput.fieldString)).toHaveValue('hello');
+    expect(screen.getByTestId(TEST_IDS.valueInput.fieldString('name'))).toBeInTheDocument();
+    expect(screen.getByTestId(TEST_IDS.valueInput.fieldString('name'))).toHaveValue('hello');
 
-    fireEvent.click(screen.getByTestId(TEST_IDS.valueInput.iconDisable));
+    fireEvent.click(screen.getByTestId(TEST_IDS.valueInput.iconDisable('name')));
 
-    expect(screen.getByTestId(TEST_IDS.valueInput.fieldString)).toHaveValue('null');
+    expect(screen.getByTestId(TEST_IDS.valueInput.fieldString('name'))).toHaveValue('null');
   });
 
   it('Should enable string value', async () => {
-    render(getComponent({ value: null, type: FieldType.string }));
+    render(getComponent({ value: null, type: FieldType.string, label: 'name' }));
 
-    expect(screen.getByTestId(TEST_IDS.valueInput.fieldString)).toBeInTheDocument();
-    expect(screen.getByTestId(TEST_IDS.valueInput.fieldString)).toHaveValue('null');
+    expect(screen.getByTestId(TEST_IDS.valueInput.fieldString('name'))).toBeInTheDocument();
+    expect(screen.getByTestId(TEST_IDS.valueInput.fieldString('name'))).toHaveValue('null');
 
-    fireEvent.click(screen.getByTestId(TEST_IDS.valueInput.iconDisable));
+    fireEvent.click(screen.getByTestId(TEST_IDS.valueInput.iconDisable('name')));
 
-    expect(screen.getByTestId(TEST_IDS.valueInput.fieldString)).toHaveValue('');
+    expect(screen.getByTestId(TEST_IDS.valueInput.fieldString('name'))).toHaveValue('');
   });
 
   it('Should update textarea value', async () => {
     const value = new Array(TEXT_AREA_LENGTH + 1).fill('a').join('');
-    render(getComponent({ value: value, type: FieldType.string }));
+    render(getComponent({ value: value, type: FieldType.string, label: 'name' }));
 
-    expect(screen.getByTestId(TEST_IDS.valueInput.fieldTextarea)).toBeInTheDocument();
+    expect(screen.getByTestId(TEST_IDS.valueInput.fieldTextarea('name'))).toBeInTheDocument();
 
-    fireEvent.change(screen.getByTestId(TEST_IDS.valueInput.fieldTextarea), { target: { value: value + 'new' } });
+    fireEvent.change(screen.getByTestId(TEST_IDS.valueInput.fieldTextarea('name')), {
+      target: { value: value + 'new' },
+    });
 
     expect(onChange).toHaveBeenCalledWith(value + 'new');
   });
 
   it('Should update number value', async () => {
-    render(getComponent({ value: '123', type: FieldType.number }));
+    render(getComponent({ value: '123', type: FieldType.number, label: 'age' }));
 
-    expect(screen.getByTestId(TEST_IDS.valueInput.fieldNumber)).toBeInTheDocument();
+    expect(screen.getByTestId(TEST_IDS.valueInput.fieldNumber('age'))).toBeInTheDocument();
 
-    fireEvent.change(screen.getByTestId(TEST_IDS.valueInput.fieldNumber), { target: { value: '111' } });
+    fireEvent.change(screen.getByTestId(TEST_IDS.valueInput.fieldNumber('age')), { target: { value: '111' } });
 
     expect(onChange).toHaveBeenCalledWith('111');
   });
 
   it('Should update date time value', async () => {
-    render(getComponent({ value: '123', type: FieldType.time }));
+    render(getComponent({ value: '123', type: FieldType.time, label: 'time' }));
 
-    expect(screen.getByTestId(TEST_IDS.valueInput.fieldDateTime)).toBeInTheDocument();
+    expect(screen.getByTestId(TEST_IDS.valueInput.fieldDateTime('time'))).toBeInTheDocument();
 
     const safeDate = new Date('02-02-2023');
-    fireEvent.change(screen.getByTestId(TEST_IDS.valueInput.fieldDateTime), { target: { value: dateTime(safeDate) } });
+    fireEvent.change(screen.getByTestId(TEST_IDS.valueInput.fieldDateTime('time')), {
+      target: { value: dateTime(safeDate) },
+    });
 
     expect(onChange).toHaveBeenCalledWith(dateTime(safeDate).toString());
   });

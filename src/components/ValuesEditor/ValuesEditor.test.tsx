@@ -257,7 +257,7 @@ describe('Editor', () => {
     expect(items[0]).toBeInTheDocument();
     const item1Selectors = within(items[0]);
 
-    fireEvent.change(item1Selectors.getByTestId(TEST_IDS.valueInput.fieldString), {
+    fireEvent.change(item1Selectors.getByTestId(TEST_IDS.valueInput.fieldString('key')), {
       target: { value: 'New Key' },
     });
 

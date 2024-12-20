@@ -15,6 +15,7 @@ export const TEST_IDS = {
     buttonExpandAll: 'data-testid fields-editor button-expand-all',
   },
   queryEditor: {
+    root: 'data-testid query-editor root',
     customValuesEditor: 'data-testid query-editor custom-values-editor',
     fieldName: 'data-testid query-editor field-name',
     fieldPreferredVisualizationType: 'query-editor field-preferred-visualization-type',
@@ -23,11 +24,11 @@ export const TEST_IDS = {
     fieldOpenaiMessage: 'data-testid query-editor field-openai-message',
   },
   valueInput: {
-    fieldDateTime: 'data-testid value-input field-date-time',
-    fieldNumber: 'data-testid value-input field-number',
-    fieldString: 'data-testid value-input field-string',
-    fieldTextarea: 'data-testid value-input field-textarea',
-    iconDisable: 'data-testid value-input icon-disable',
+    fieldDateTime: (name: string) => `data-testid value-input field-date-time-${name}`,
+    fieldNumber: (name: string) => `data-testid value-input field-number-${name}`,
+    fieldString: (name: string) => `data-testid value-input field-string-${name}`,
+    fieldTextarea: (name: string) => `data-testid value-input field-textarea-${name}`,
+    iconDisable: (name: string) => `data-testid value-input icon-disable-${name}`,
   },
   booleanEditor: {
     fieldSwitch: 'data-testid boolean-input field-switch',

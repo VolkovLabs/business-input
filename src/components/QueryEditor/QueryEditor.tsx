@@ -166,7 +166,7 @@ export const QueryEditor: React.FC<Props> = ({ datasource, onChange, onRunQuery,
   }, []);
 
   return (
-    <>
+    <div data-testid={TEST_IDS.queryEditor.root}>
       <InlineFieldRow>
         <InlineField label="Name" tooltip="Name of the data frame" grow>
           <Input
@@ -195,8 +195,9 @@ export const QueryEditor: React.FC<Props> = ({ datasource, onChange, onRunQuery,
         )}
 
         {datasource.codeEditorEnabled && (
-          <InlineField label="Values Editor">
+          <InlineField htmlFor="config-values-editor" label="Values Editor">
             <Select
+              inputId="config-values-editor"
               width={17}
               value={model.meta?.custom?.valuesEditor || ValuesEditorType.MANUAL}
               onChange={onChangeValuesEditor}
@@ -243,6 +244,6 @@ export const QueryEditor: React.FC<Props> = ({ datasource, onChange, onRunQuery,
           <ValuesEditor model={model} onChange={onChangeModel} />
         </CollapsableSection>
       )}
-    </>
+    </div>
   );
 };

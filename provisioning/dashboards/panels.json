@@ -98,45 +98,44 @@
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
-          },
-          "mappings": []
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 10,
+        "h": 8,
         "w": 12,
         "x": 12,
         "y": 0
       },
-      "id": 2,
+      "id": 8,
       "options": {
-        "displayLabels": ["name"],
-        "legend": {
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true,
-          "values": ["percent"]
+        "afterRender": "",
+        "content": "```json\n{{{json @root}}}\n```",
+        "contentPartials": [],
+        "defaultContent": "The query didn't return any results.",
+        "editor": {
+          "format": "auto",
+          "language": "markdown"
         },
-        "pieType": "pie",
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
+        "editors": [],
+        "externalStyles": [],
+        "helpers": "",
+        "renderMode": "allRows",
+        "styles": "",
+        "wrap": true
       },
       "targets": [
         {
@@ -148,25 +147,39 @@
             "fields": [
               {
                 "config": {},
-                "name": "Name",
-                "type": "string",
-                "values": ["Graph", "Logs", "Node Graph", "Table", "Trace"]
+                "name": "time",
+                "type": "time",
+                "values": [1667276845648, 1667276845648]
               },
               {
                 "config": {},
-                "name": "Amount",
-                "type": "number",
-                "values": [10, 7, 3, 4, 2]
+                "name": "message",
+                "type": "string",
+                "values": ["enable: 198", "enable: asb"]
+              },
+              {
+                "config": {},
+                "name": "level",
+                "type": "string",
+                "values": ["info", "info"]
+              },
+              {
+                "config": {},
+                "name": "enable",
+                "type": "boolean",
+                "values": [true, false]
               }
             ],
-            "meta": {},
-            "name": "sales"
+            "meta": {
+              "preferredVisualisationType": "logs"
+            },
+            "name": "Server Logs"
           },
           "refId": "A"
         }
       ],
-      "title": "Getting Started",
-      "type": "piechart"
+      "title": "Data",
+      "type": "marcusolsson-dynamictext-panel"
     },
     {
       "datasource": {
@@ -241,88 +254,6 @@
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
-          },
-          "mappings": []
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 12,
-        "x": 12,
-        "y": 10
-      },
-      "id": 7,
-      "options": {
-        "displayLabels": ["name"],
-        "legend": {
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true,
-          "values": ["percent"]
-        },
-        "pieType": "pie",
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "marcusolsson-static-datasource",
-            "uid": "P1D2C73DC01F2359B"
-          },
-          "frame": {
-            "fields": [
-              {
-                "config": {},
-                "name": "Name",
-                "type": "string",
-                "values": ["Graph", "Logs", "Node Graph", "Table", "Trace"]
-              },
-              {
-                "config": {},
-                "name": "Amount",
-                "type": "number",
-                "values": [10, 7, 3, 4, 2]
-              }
-            ],
-            "meta": {
-              "custom": {
-                "customCode": "const values = [['Graph', 'Logs', 'Node Graph', 'Table', 'Trace'], [10, 7, 3, 4, 2]];\n\nconst result = {\n  ...frame,\n  fields: frame.fields.map((field, i) => ({\n    ...field,\n    values: values[i]\n  }))\n}\n\nreturn Promise.resolve(result);",
-                "valuesEditor": "custom"
-              }
-            },
-            "name": "sales"
-          },
-          "refId": "A"
-        }
-      ],
-      "title": "Custom Code",
-      "type": "piechart"
-    },
-    {
-      "datasource": {
-        "type": "marcusolsson-static-datasource",
-        "uid": "P1D2C73DC01F2359B"
-      },
-      "fieldConfig": {
-        "defaults": {
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -342,10 +273,10 @@
       "gridPos": {
         "h": 23,
         "w": 12,
-        "x": 0,
-        "y": 19
+        "x": 12,
+        "y": 8
       },
-      "id": 8,
+      "id": 9,
       "options": {
         "afterRender": "",
         "content": "```json\n{{{json @root}}}\n```",
@@ -474,8 +405,167 @@
           "refId": "A"
         }
       ],
-      "title": "Logs",
+      "title": "Logs (Enable)",
       "type": "marcusolsson-dynamictext-panel"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 19
+      },
+      "id": 2,
+      "options": {
+        "displayLabels": ["name"],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": ["percent"]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "marcusolsson-static-datasource",
+            "uid": "P1D2C73DC01F2359B"
+          },
+          "frame": {
+            "fields": [
+              {
+                "config": {},
+                "name": "Name",
+                "type": "string",
+                "values": ["Graph", "Logs", "Node Graph", "Table", "Trace"]
+              },
+              {
+                "config": {},
+                "name": "Amount",
+                "type": "number",
+                "values": [10, 7, 3, 4, 2]
+              }
+            ],
+            "meta": {},
+            "name": "sales"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Getting Started",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 31
+      },
+      "id": 7,
+      "options": {
+        "displayLabels": ["name"],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": ["percent"]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "marcusolsson-static-datasource",
+            "uid": "P1D2C73DC01F2359B"
+          },
+          "frame": {
+            "fields": [
+              {
+                "config": {},
+                "name": "Name",
+                "type": "string",
+                "values": ["Graph", "Logs", "Node Graph", "Table", "Trace"]
+              },
+              {
+                "config": {},
+                "name": "Amount",
+                "type": "number",
+                "values": [10, 7, 3, 4, 2]
+              }
+            ],
+            "meta": {
+              "custom": {
+                "customCode": "const values = [['Graph', 'Logs', 'Node Graph', 'Table', 'Trace'], [10, 7, 3, 4, 2]];\n\nconst result = {\n  ...frame,\n  fields: frame.fields.map((field, i) => ({\n    ...field,\n    values: values[i]\n  }))\n}\n\nreturn Promise.resolve(result);",
+                "valuesEditor": "custom"
+              }
+            },
+            "name": "sales"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Custom Code",
+      "type": "piechart"
     }
   ],
   "preload": false,
@@ -531,6 +621,6 @@
   "timezone": "",
   "title": "Panels",
   "uid": "O4tc_E6Gz",
-  "version": 8,
+  "version": 1,
   "weekStart": ""
 }
