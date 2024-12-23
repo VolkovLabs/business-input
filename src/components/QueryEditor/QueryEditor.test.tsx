@@ -22,27 +22,30 @@ jest.mock('@grafana/ui', () => ({
       </>
     );
   }),
-  Select: jest.fn().mockImplementation(({ options, onChange, value, isClearable, ...restProps }) => (
-    <select
-      onChange={(event: any) => {
-        if (onChange) {
-          onChange(options.find((option: any) => option.value === event.target.value));
-        }
-      }}
-      /**
-       * Fix jest warnings because null value.
-       * For Select component in @grafana/io should be used null to reset value.
-       */
-      value={value === null ? '' : value}
-      {...restProps}
-    >
-      {options.map(({ label, value }: any) => (
-        <option key={value} value={value}>
-          {label}
-        </option>
-      ))}
-    </select>
-  )),
+  Select: jest.fn().mockImplementation(({ options, onChange, value, inputId, isClearable, ...restProps }) => {
+    return (
+      <select
+        onChange={(event: any) => {
+          if (onChange) {
+            onChange(options.find((option: any) => option.value === event.target.value));
+          }
+        }}
+        /**
+         * Fix jest warnings because null value.
+         * For Select component in @grafana/io should be used null to reset value.
+         */
+        value={value === null ? '' : value}
+        htmlFor={inputId}
+        {...restProps}
+      >
+        {options.map(({ label, value }: any) => (
+          <option key={value} value={value}>
+            {label}
+          </option>
+        ))}
+      </select>
+    );
+  }),
 }));
 
 /**
