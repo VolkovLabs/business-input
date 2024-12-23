@@ -5,6 +5,7 @@
 ### Features / Enhancements
 
 - Added editor for boolean values (#97)
+- Updated e2e test (#98)
 
 ## 4.4.0 (2024-11-18)
 

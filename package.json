@@ -11,6 +11,7 @@
     "@volkovlabs/components": "^3.5.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "semver": "^7.6.3",
     "tslib": "^2.8.1",
     "uuid": "^11.0.3"
   },
@@ -18,7 +19,7 @@
   "devDependencies": {
     "@babel/core": "^7.26.0",
     "@grafana/eslint-config": "^8.0.0",
-    "@grafana/plugin-e2e": "^1.12.1",
+    "@grafana/plugin-e2e": "^1.13.1",
     "@grafana/tsconfig": "^2.0.0",
     "@playwright/test": "^1.48.2",
     "@swc/core": "^1.9.2",
@@ -69,12 +70,14 @@
     "lint:fix": "eslint --fix --ignore-path ./.eslintignore --ext .js,.jsx,.ts,.tsx .",
     "sign": "npx --yes @grafana/sign-plugin@latest",
     "start": "docker compose pull grafana && docker compose --profile dev up",
+    "start:dep": "docker compose pull grafana-dep && docker compose --profile dependency up",
     "start:main": "docker compose pull grafana-main && docker compose --profile main up",
     "stop": "docker compose down",
     "stop:e2e": "docker-compose -f test/docker-compose.yml down",
     "test": "jest --watch --onlyChanged",
     "test:ci": "jest --maxWorkers 4 --coverage",
     "test:e2e": "npx playwright test",
+    "test:e2e:dev": "npx playwright test --ui",
     "test:e2e:docker": "docker compose --profile e2e up --exit-code-from test",
     "upgrade": "npm upgrade --save"
   },

@@ -33,12 +33,12 @@ describe('Value Editor', () => {
   });
 
   it('Should render default ValueInput for string type', () => {
-    render(getComponent({ value: '123', type: FieldType.string }));
-    expect(screen.getByTestId(TEST_IDS.valueInput.fieldString)).toBeInTheDocument();
+    render(getComponent({ value: '123', type: FieldType.string, label: 'string' }));
+    expect(screen.getByTestId(TEST_IDS.valueInput.fieldString('string'))).toBeInTheDocument();
   });
 
   it('Should render default ValueInput for number type', () => {
-    render(getComponent({ value: '123', type: FieldType.number }));
-    expect(screen.getByTestId(TEST_IDS.valueInput.fieldNumber)).toBeInTheDocument();
+    render(getComponent({ value: '123', type: FieldType.number, label: 'number' }));
+    expect(screen.getByTestId(TEST_IDS.valueInput.fieldNumber('number'))).toBeInTheDocument();
   });
 });
