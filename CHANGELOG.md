@@ -1,11 +1,12 @@
 # Changelog
 
-## 4.5.0 (IN PROGRESS)
+## 4.5.0 (2024-12-23)
 
 ### Features / Enhancements
 
 - Added editor for boolean values (#97)
 - Updated e2e test (#98)
+- Updated to Grafana 11.4 and dependencies (#99)
 
 ## 4.4.0 (2024-11-18)
 
