@@ -2,7 +2,7 @@
   "$schema": "https://github.com/grafana/grafana/raw/main/docs/sources/developers/plugins/plugin.schema.json",
   "annotations": true,
   "dependencies": {
-    "grafanaDependency": ">=10.3.0",
+    "grafanaDependency": ">=11.0.0",
     "plugins": []
   },
   "id": "marcusolsson-static-datasource",
@@ -11,7 +11,7 @@
       "name": "Volkov Labs",
       "url": "https://volkovlabs.io"
     },
-    "description": "Store and create your data",
+    "description": "Simulates and manages data with JavaScript and LLM, offering flexible control",
     "keywords": ["input", "test", "development", "mock", "javascript"],
     "links": [
       {
