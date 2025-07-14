@@ -1,5 +1,15 @@
 # Changelog
 
+## 5.0.0 (2025-07-12)
+
+### Breaking changes
+
+- Requires Grafana 11 and Grafana 12
+
+### Features / Enhancements
+
+- Update to Grafana 12 and dependencies
+
 ## 4.5.0 (2024-12-23)
 
 ### Features / Enhancements
