@@ -1,14 +1,13 @@
 import tsParser from '@typescript-eslint/parser';
 import { defineConfig, globalIgnores } from 'eslint/config';
 import prettierConfig from 'eslint-config-prettier/flat';
-import storybookPlugin from 'eslint-plugin-storybook';
-
+import grafanaConfig from '@grafana/eslint-config/flat.js';
 import eslintConfig from '@volkovlabs/eslint-config';
 
 export default defineConfig(
+  ...grafanaConfig,
   eslintConfig,
   prettierConfig,
-  storybookPlugin.configs['flat/recommended'],
   {
     languageOptions: {
       parser: tsParser,
@@ -21,5 +20,18 @@ export default defineConfig(
       '@typescript-eslint/no-empty-object-type': 'off',
     },
   },
-  globalIgnores(['dist/*', 'src/**/*.test.tsx', 'src/**/*.test.ts', 'src/__mocks__/**'])
+  globalIgnores([
+    'dist/*',
+    'src/**/*.test.tsx',
+    'src/**/*.test.ts',
+    'src/__mocks__/**',
+    'coverage/*',
+    'test/*',
+    'coverage/*',
+    '.config/*',
+    '.prettierrc.js',
+    'jest*.js',
+    'eslint.config.mjs',
+    'playwright.config.ts',
+  ])
 );
