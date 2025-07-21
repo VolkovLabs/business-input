@@ -11,6 +11,7 @@ All notable changes to **Business Input Data Source** will be documented in this
 ### Features & Enhancements
 
 - Updated to Grafana 12 and dependencies ([#103](https://github.com/VolkovLabs/business-input/pull/103)).
+- Update ESLint configuration ([#104](https://github.com/VolkovLabs/business-input/pull/104)).
 
 ## [4.5.0] - 2024-12-23
 
