@@ -1,204 +1,206 @@
 # Changelog
 
-## 5.0.0 (2025-07-12)
+All notable changes to **Business Input Data Source** will be documented in this file. This changelog follows the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format and adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html). Thank you for using our plugin! For any questions or contributions, feel free to visit our [GitHub repository](https://github.com/VolkovLabs/business-input).
 
-### Breaking changes
+## [5.0.0] - 2025-07-21
 
-- Requires Grafana 11 and Grafana 12
+### Breaking Changes
 
-### Features / Enhancements
+- Requires Grafana 11 and Grafana 12.
 
-- Update to Grafana 12 and dependencies
+### Features & Enhancements
 
-## 4.5.0 (2024-12-23)
+- Updated to Grafana 12 and dependencies ([#103](https://github.com/VolkovLabs/business-input/pull/103)).
 
-### Features / Enhancements
+## [4.5.0] - 2024-12-23
 
-- Added editor for boolean values (#97)
-- Updated e2e test (#98)
-- Updated to Grafana 11.4 and dependencies (#99)
+### Features & Enhancements
 
-## 4.4.0 (2024-11-18)
+- Added editor for boolean values ([#97](https://github.com/VolkovLabs/business-input/pull/97)).
+- Updated end-to-end (E2E) tests ([#98](https://github.com/VolkovLabs/business-input/pull/98)).
+- Updated to Grafana 11.4 and dependencies ([#99](https://github.com/VolkovLabs/business-input/pull/99)).
 
-### Features / Enhancements
+## [4.4.0] - 2024-11-18
 
-- Updated Autosize Code Editor toolbar (#91)
-- Updated to Grafana 11.3 and dependencies (#95)
+### Features & Enhancements
 
-## 4.3.0 (2024-09-13)
+- Updated Autosize Code Editor toolbar ([#91](https://github.com/VolkovLabs/business-input/pull/91)).
+- Updated to Grafana 11.3 and dependencies ([#95](https://github.com/VolkovLabs/business-input/pull/95)).
 
-### Features / Enhancements
+## [4.3.0] - 2024-09-13
 
-- Updated "Add a row" below the rows list (#83, #84)
-- Added toDataFrame helper to code parameters (#86)
-- Updated to Grafana 11.2 and dependencies (#87)
-- Updated code editor from business components (#89)
+### Features & Enhancements
 
-## 4.2.0 (2024-07-24)
+- Updated "Add a row" below the rows list ([#83](https://github.com/VolkovLabs/business-input/pull/83), [#84](https://github.com/VolkovLabs/business-input/pull/84)).
+- Added `toDataFrame` helper to code parameters ([#86](https://github.com/VolkovLabs/business-input/pull/86)).
+- Updated to Grafana 11.2 and dependencies ([#87](https://github.com/VolkovLabs/business-input/pull/87)).
+- Updated code editor from business components ([#89](https://github.com/VolkovLabs/business-input/pull/89)).
 
-### Breaking changes
+## [4.2.0] - 2024-07-24
 
-- Requires Grafana 10.2 and Grafana 11
+### Breaking Changes
 
-### Features / Enhancements
+- Requires Grafana 10.2 and Grafana 11.
 
-- Updated variable support in Scenes dashboard (#79)
-- Updated to Grafana 11.1 and dependencies (#80)
+### Features & Enhancements
 
-## 4.1.0 (2024-06-25)
+- Updated variable support in Scenes dashboard ([#79](https://github.com/VolkovLabs/business-input/pull/79)).
+- Updated to Grafana 11.1 and dependencies ([#80](https://github.com/VolkovLabs/business-input/pull/80)).
 
-### Features / Enhancements
+## [4.1.0] - 2024-06-25
 
-- Added supporting OpenAI completions (#73)
-- Update E2E workflow to use Docker (#75, #77)
-- Update plugin logo (#76)
+### Features & Enhancements
 
-## 4.0.0 (2024-06-12)
+- Added support for OpenAI completions ([#73](https://github.com/VolkovLabs/business-input/pull/73)).
+- Updated E2E workflow to use Docker ([#75](https://github.com/VolkovLabs/business-input/pull/75), [#77](https://github.com/VolkovLabs/business-input/pull/77)).
+- Updated plugin logo ([#76](https://github.com/VolkovLabs/business-input/pull/76)).
 
-### Breaking changes
+## [4.0.0] - 2024-06-12
 
-- Requires Grafana 10 and Grafana 11
+### Breaking Changes
 
-### Features / Enhancements
+- Requires Grafana 10 and Grafana 11.
 
-- Updated name to Business Input Data Source (#268)
-- Add plugin e2e tests and remove cypress (#66)
-- Prepare for Grafana 11 (#67)
-- Update to Grafana 11 and dependencies (#69)
-- Add supporting variables in code editor (#70)
+### Features & Enhancements
 
-## 3.1.1 (2024-03-03)
+- Updated name to **Business Input Data Source** ([#268](https://github.com/VolkovLabs/business-input/pull/268)).
+- Added plugin E2E tests and removed Cypress ([#66](https://github.com/VolkovLabs/business-input/pull/66)).
+- Prepared for Grafana 11 ([#67](https://github.com/VolkovLabs/business-input/pull/67)).
+- Updated to Grafana 11 and dependencies ([#69](https://github.com/VolkovLabs/business-input/pull/69)).
+- Added support for variables in code editor ([#70](https://github.com/VolkovLabs/business-input/pull/70)).
 
-### Bug fixes
+## [3.1.1] - 2024-03-03
 
-- Fix read property of undefined for empty fields (#63)
+### Bug Fixes
 
-## 3.1.0 (2024-02-21)
+- Fixed issue with reading property of undefined for empty fields ([#63](https://github.com/VolkovLabs/business-input/pull/63)).
 
-### Breaking changes
+## [3.1.0] - 2024-02-21
 
-- Requires Grafana 9.2 and Grafana 10
+### Breaking Changes
 
-### Features / Enhancements
+- Requires Grafana 9.2 and Grafana 10.
 
-- Increase tests coverage (#47)
-- Update ESLint configuration and refactoring (#53)
-- Add drag-and-drop for rows and fields (#54)
-- Update custom code when switching the value editor from manual to JS (#59)
-- Add Variable Editor with Fields and Java Script (#58)
-- Add Collapse/Expand All for Fields and Values (#57)
-- Update to Grafana 10.3.3 (#60)
+### Features & Enhancements
 
-## 3.0.0 (2023-06-28)
+- Increased test coverage ([#47](https://github.com/VolkovLabs/business-input/pull/47)).
+- Updated ESLint configuration and refactoring ([#53](https://github.com/VolkovLabs/business-input/pull/53)).
+- Added drag-and-drop for rows and fields ([#54](https://github.com/VolkovLabs/business-input/pull/54)).
+- Updated custom code when switching value editor from manual to JS ([#59](https://github.com/VolkovLabs/business-input/pull/59)).
+- Added Variable Editor with Fields and JavaScript ([#58](https://github.com/VolkovLabs/business-input/pull/58)).
+- Added Collapse/Expand All for Fields and Values ([#57](https://github.com/VolkovLabs/business-input/pull/57)).
+- Updated to Grafana 10.3.3 ([#60](https://github.com/VolkovLabs/business-input/pull/60)).
 
-### Breaking changes
+## [3.0.0] - 2023-06-28
 
-- Requires Grafana 9 and Grafana 10
+### Breaking Changes
 
-### Features / Enhancements
+- Requires Grafana 9 and Grafana 10.
 
-- Refactor Types and Fields Editor (#37)
-- Update tests with testing-library/react (#40)
-- Update to Grafana 10.0.0 (#41, #46)
-- Migrate to Plugin Tools 1.5.2 (#42)
-- Update to Node 18 and npm (#42)
-- Add E2E Cypress testing (#43)
-- Add JavaScript Values Editor (#44)
-- Remove Grafana 8.5 support (#46)
+### Features & Enhancements
 
-## 2.2.0 (2023-03-27)
+- Refactored Types and Fields Editor ([#37](https://github.com/VolkovLabs/business-input/pull/37)).
+- Updated tests with `testing-library/react` ([#40](https://github.com/VolkovLabs/business-input/pull/40)).
+- Updated to Grafana 10.0.0 ([#41](https://github.com/VolkovLabs/business-input/pull/41), [#46](https://github.com/VolkovLabs/business-input/pull/46)).
+- Migrated to Plugin Tools 1.5.2 ([#42](https://github.com/VolkovLabs/business-input/pull/42)).
+- Updated to Node 18 and npm ([#42](https://github.com/VolkovLabs/business-input/pull/42)).
+- Added E2E Cypress testing ([#43](https://github.com/VolkovLabs/business-input/pull/43)).
+- Added JavaScript Values Editor ([#44](https://github.com/VolkovLabs/business-input/pull/44)).
+- Removed Grafana 8.5 support ([#46](https://github.com/VolkovLabs/business-input/pull/46)).
 
-### Features / Enhancements
+## [2.2.0] - 2023-03-27
 
-- Update CI and Release workflows (#33)
-- Update to Grafana 9.4.7 (#34)
-- Update README with Documentation (#35)
-- Add Scoped Variables for Variables replacement (#35)
+### Features & Enhancements
 
-## 2.1.0 (2022-12-29)
+- Updated CI and Release workflows ([#33](https://github.com/VolkovLabs/business-input/pull/33)).
+- Updated to Grafana 9.4.7 ([#34](https://github.com/VolkovLabs/business-input/pull/34)).
+- Updated README with documentation ([#35](https://github.com/VolkovLabs/business-input/pull/35)).
+- Added Scoped Variables for variable replacement ([#35](https://github.com/VolkovLabs/business-input/pull/35)).
 
-### Breaking changes
+## [2.1.0] - 2022-12-29
 
-Refactoring may introduce breaking changes. Please test before upgrading in Production.
+### Breaking Changes
 
-### Features / Enhancements
+- Refactoring may introduce breaking changes. Please test before upgrading in production.
 
-- Update CI to upload signed artifacts (#23)
-- Add "Static data source for Grafana | Mimic any data source | Tutorial and examples" video in README (#23)
-- Update to Grafana 9.3.2 (#24)
-- Refactoring and improving Test Coverage for data source (#25)
-- Update Field and Values Editors to labels and fields structure (#27)
-- Remove Frame Reducer to simplify code (#28)
-- Refactoring frame, field utilities (#29)
-- Add Date Time Picker, Number and Text Area Inputs (#30)
+### Features & Enhancements
 
-## 2.0.0 (2022-11-01)
+- Updated CI to upload signed artifacts ([#23](https://github.com/VolkovLabs/business-input/pull/23)).
+- Added "Static data source for Grafana | Mimic any data source | Tutorial and examples" video in README ([#23](https://github.com/VolkovLabs/business-input/pull/23)).
+- Updated to Grafana 9.3.2 ([#24](https://github.com/VolkovLabs/business-input/pull/24)).
+- Refactored and improved test coverage for data source ([#25](https://github.com/VolkovLabs/business-input/pull/25)).
+- Updated Field and Values Editors to labels and fields structure ([#27](https://github.com/VolkovLabs/business-input/pull/27)).
+- Removed Frame Reducer to simplify code ([#28](https://github.com/VolkovLabs/business-input/pull/28)).
+- Refactored frame and field utilities ([#29](https://github.com/VolkovLabs/business-input/pull/29)).
+- Added Date Time Picker, Number, and Text Area Inputs ([#30](https://github.com/VolkovLabs/business-input/pull/30)).
 
-### Features / Enhancements
+## [2.0.0] - 2022-11-01
 
-- Maintained by Volkov Labs (#19)
-- Updated based on Volkov Labs Panel Template (#19)
-- Update CI to Node 16 and Synchronize with Release workflow (#20)
-- Update to Grafana 9.2.2 (#21)
-- Refactor Components and update Theme (#22)
+### Features & Enhancements
 
-## 1.4.4 (2022-08-28)
+- Maintained by Volkov Labs ([#19](https://github.com/VolkovLabs/business-input/pull/19)).
+- Updated based on Volkov Labs Panel Template ([#19](https://github.com/VolkovLabs/business-input/pull/19)).
+- Updated CI to Node 16 and synchronized with Release workflow ([#20](https://github.com/VolkovLabs/business-input/pull/20)).
+- Updated to Grafana 9.2.2 ([#21](https://github.com/VolkovLabs/business-input/pull/21)).
+- Refactored components and updated theme ([#22](https://github.com/VolkovLabs/business-input/pull/22)).
 
-### Features / Enhancements
+## [1.4.4] - 2022-08-28
 
-- Update to Grafana 9.
+### Features & Enhancements
 
-## 1.4.3 (2021-09-03)
+- Updated to Grafana 9.
 
-### Features / Enhancements
+## [1.4.3] - 2021-09-03
 
-- Update dependencies
+### Features & Enhancements
 
-### Bug fixes
+- Updated dependencies.
 
-- Fix an issue where an fields and rows are added twice in development
+### Bug Fixes
 
-## 1.4.2 (2021-07-08)
+- Fixed an issue where fields and rows were added twice in development.
 
-### Features / Enhancements
+## [1.4.2] - 2021-07-08
 
-- Update metadata, docs, and dependencies
+### Features & Enhancements
 
-### Bug fixes
+- Updated metadata, docs, and dependencies.
 
-- Frame changes aren't being synced correctly
+### Bug Fixes
 
-## 1.4.1 (2021-06-12)
+- Fixed an issue where frame changes were not synced correctly.
 
-### Features / Enhancements
+## [1.4.1] - 2021-06-12
 
-- Minor docs and metadata updates
-- Changed from useState to useReducer for manipulating form model
-- Replace custom input component with Input from @grafana/ui
+### Features & Enhancements
 
-## 1.4.0 (2021-06-10)
+- Minor docs and metadata updates.
+- Changed from `useState` to `useReducer` for manipulating form model.
+- Replaced custom input component with `Input` from `@grafana/ui`.
 
-### Features / Enhancements
+## [1.4.0] - 2021-06-10
 
-- Add support for annotations
-- Add button for duplicating value rows
-- Add option to set preferred visualisation type for Explore
+### Features & Enhancements
 
-## 1.3.1 (2021-01-29)
+- Added support for annotations.
+- Added button for duplicating value rows.
+- Added option to set preferred visualization type for Explore.
 
-### Bug fixes
+## [1.3.1] - 2021-01-29
 
-- Set reference id on data frames
+### Bug Fixes
 
-## 1.3.0 (2021-01-29)
+- Set reference ID on data frames.
 
-### Features / Enhancements
+## [1.3.0] - 2021-01-29
 
-- Update to new form styles. Bumps the minimum required Grafana version to 7.3.
+### Features & Enhancements
 
-## 1.2.1 (2020-11-27)
+- Updated to new form styles. Bumps the minimum required Grafana version to 7.3.
 
-### Features / Enhancements
+## [1.2.1] - 2020-11-27
 
-- Updated `@grafana` dependencies from `^7.0.0` to `^7.3.0`
-- Improved release process using the new [GitHub workflows](https://github.com/grafana/plugin-workflows) for Grafana plugins
+### Features & Enhancements
+
+- Updated `@grafana` dependencies from `^7.0.0` to `^7.3.0`.
+- Improved release process using the new [GitHub workflows](https://github.com/grafana/plugin-workflows) for Grafana plugins.
