@@ -23,7 +23,7 @@
     "@grafana/plugin-e2e": "^2.1.7",
     "@grafana/tsconfig": "^2.0.0",
     "@playwright/test": "^1.54.1",
-    "@stylistic/eslint-plugin": "^4.4.1",
+    "@stylistic/eslint-plugin": "^5.2.2",
     "@swc/core": "^1.13.1",
     "@swc/helpers": "^0.5.17",
     "@swc/jest": "^0.2.39",
@@ -31,7 +31,7 @@
     "@testing-library/react": "^16.3.0",
     "@types/jest": "^30.0.0",
     "@types/lodash": "^4.17.20",
-    "@types/node": "^24.0.15",
+    "@types/node": "^24.1.0",
     "@types/uuid": "^10.0.0",
     "@volkovlabs/eslint-config": "^2.0.0",
     "@volkovlabs/jest-selectors": "^1.5.0",
@@ -83,5 +83,5 @@
     "test:e2e:docker": "docker compose --profile e2e up --exit-code-from test",
     "upgrade": "npm upgrade --save"
   },
-  "version": "5.0.0"
+  "version": "5.1.0"
 }

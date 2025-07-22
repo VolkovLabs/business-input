@@ -4,6 +4,9 @@ import prettierConfig from 'eslint-config-prettier/flat';
 import grafanaConfig from '@grafana/eslint-config/flat.js';
 import eslintConfig from '@volkovlabs/eslint-config';
 
+/**
+ * Config
+ */
 export default defineConfig(
   ...grafanaConfig,
   eslintConfig,
@@ -21,17 +24,15 @@ export default defineConfig(
     },
   },
   globalIgnores([
-    'dist/*',
-    'src/**/*.test.tsx',
-    'src/**/*.test.ts',
-    'src/__mocks__/**',
-    'coverage/*',
-    'test/*',
-    'coverage/*',
     '.config/*',
     '.prettierrc.js',
-    'jest*.js',
+    'coverage/*',
+    'dist/*',
     'eslint.config.mjs',
+    'jest*.js',
     'playwright.config.ts',
+    'src/__mocks__/**',
+    'src/**/*.test.ts*',
+    'test/*',
   ])
 );
