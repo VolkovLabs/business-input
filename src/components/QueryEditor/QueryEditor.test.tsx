@@ -1,5 +1,5 @@
 import { CoreApp, DataSourcePluginContextProvider } from '@grafana/data';
-import { openai } from '@grafana/llm';
+import { llm } from '@grafana/llm';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { getJestSelectors } from '@volkovlabs/jest-selectors';
 import React from 'react';
@@ -52,7 +52,7 @@ jest.mock('@grafana/ui', () => ({
  * Mock @grafana/llm
  */
 jest.mock('@grafana/llm', () => ({
-  openai: {
+  llm: {
     enabled: jest.fn(),
   },
 }));
@@ -198,7 +198,7 @@ describe('Query Editor', () => {
       /**
        * Enable openai
        */
-      jest.mocked(openai.enabled).mockResolvedValue(true);
+      jest.mocked(llm.enabled).mockResolvedValue(true);
 
       const currentQuery: StaticQuery = {
         refId: '',
@@ -225,7 +225,7 @@ describe('Query Editor', () => {
       /**
        * Disable openai
        */
-      jest.mocked(openai.enabled).mockResolvedValue(false);
+      jest.mocked(llm.enabled).mockResolvedValue(false);
 
       const currentQuery: StaticQuery = {
         refId: '',
@@ -252,7 +252,7 @@ describe('Query Editor', () => {
       /**
        * Enable openai
        */
-      jest.mocked(openai.enabled).mockResolvedValue(true);
+      jest.mocked(llm.enabled).mockResolvedValue(true);
 
       const currentQuery: StaticQuery = {
         refId: '',
