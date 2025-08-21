@@ -5,7 +5,7 @@ import {
   QueryEditorProps,
   SelectableValue,
 } from '@grafana/data';
-import { openai } from '@grafana/llm';
+import { llm } from '@grafana/llm';
 import { CollapsableSection, InlineField, InlineFieldRow, Input, Select, TextArea, useStyles2 } from '@grafana/ui';
 import React, { useCallback, useEffect, useState } from 'react';
 
@@ -157,7 +157,7 @@ export const QueryEditor: React.FC<Props> = ({ datasource, onChange, onRunQuery,
    */
   useEffect(() => {
     const check = async () => {
-      const enabled = await openai.enabled();
+      const enabled = await llm.enabled();
 
       setLlmEnabled(enabled);
     };
