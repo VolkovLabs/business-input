@@ -61,21 +61,6 @@ Business Input is part of the **Business Suite**, a collection of open-source pl
 
 [![Business Suite for Grafana](https://raw.githubusercontent.com/VolkovLabs/.github/main/business.png)](https://volkovlabs.io/plugins/)
 
-### Enterprise Support
-
-Elevate your experience with [Business Suite Enterprise](https://volkovlabs.io/pricing/):
-
-- Dedicated support via Zendesk.
-- Priority feature requests and bug fixes.
-- In-person consultations and access to Business Intelligence tools.
-
-## 💬 Get Involved
-
-We value your feedback and contributions! Connect with us through:
-
-- **GitHub Issues**: [Ask questions, request features, or report bugs](https://github.com/volkovlabs/business-input/issues).
-- **YouTube**: [Subscribe to our channel](https://youtube.com/@volkovlabs) and leave comments.
-
 ## 📜 License
 
 This project is licensed under the Apache License Version 2.0. See the [LICENSE](https://github.com/volkovlabs/business-input/blob/main/LICENSE) file for details.

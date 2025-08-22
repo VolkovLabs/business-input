@@ -6,7 +6,8 @@ All notable changes to **Business Input Data Source** will be documented in this
 
 ### Changed
 
-- Update ESLint configuration ([#104](https://github.com/VolkovLabs/business-input/pull/104)).
+- Updated ESLint configuration ([#104](https://github.com/VolkovLabs/business-input/pull/104)).
+- Updated LLM behavior and plugin not found ([#106](https://github.com/VolkovLabs/business-input/pull/106)).
 
 ## [5.0.0] - 2025-07-21
 
