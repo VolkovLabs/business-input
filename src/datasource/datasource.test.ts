@@ -1,5 +1,5 @@
 import { dateTime, FieldType, toDataFrame } from '@grafana/data';
-import { openai } from '@grafana/llm';
+import { llm } from '@grafana/llm';
 import { getTemplateSrv } from '@grafana/runtime';
 
 import { DataSourceTestStatus } from '../constants';
@@ -17,7 +17,7 @@ jest.mock('@grafana/runtime', () => ({
  * Mock @grafana/llm
  */
 jest.mock('@grafana/llm', () => ({
-  openai: {
+  llm: {
     enabled: jest.fn(),
     chatCompletions: jest.fn(),
   },
@@ -45,7 +45,7 @@ describe('DataSource', () => {
   };
 
   beforeEach(() => {
-    jest.mocked(openai.chatCompletions).mockClear();
+    jest.mocked(llm.chatCompletions).mockClear();
   });
 
   /**
@@ -185,8 +185,8 @@ describe('DataSource', () => {
       /**
        * Enable openai
        */
-      jest.mocked(openai.enabled).mockResolvedValue(true);
-      jest.mocked(openai.chatCompletions).mockResolvedValue([1, 2] as any);
+      jest.mocked(llm.enabled).mockResolvedValue(true);
+      jest.mocked(llm.chatCompletions).mockResolvedValue([1, 2] as any);
 
       const response = await dataSource.query({ targets, range } as any);
       const frames = response.data;
@@ -199,7 +199,7 @@ describe('DataSource', () => {
       /**
        * Check if message passed to openai
        */
-      expect(openai.chatCompletions).toHaveBeenCalledWith({
+      expect(llm.chatCompletions).toHaveBeenCalledWith({
         messages: [{ role: 'user', content: 'get list' }],
       });
     });

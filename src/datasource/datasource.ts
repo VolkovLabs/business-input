@@ -9,7 +9,7 @@ import {
   ScopedVars,
   toDataFrame,
 } from '@grafana/data';
-import { openai } from '@grafana/llm';
+import { llm } from '@grafana/llm';
 import { getTemplateSrv, TemplateSrv } from '@grafana/runtime';
 
 import { DataSourceTestStatus } from '../constants';
@@ -59,8 +59,8 @@ export class DataSource extends DataSourceApi<StaticQuery, StaticDataSourceOptio
     /**
      * Chat Completions
      */
-    if ((await openai.enabled()) && llmQuery?.openai?.message) {
-      llmResult = await openai.chatCompletions({
+    if ((await llm.enabled()) && llmQuery?.openai?.message) {
+      llmResult = await llm.chatCompletions({
         messages: [{ role: 'user', content: this.templateSrv.replace(llmQuery.openai.message, scopedVars) }],
       });
     }
