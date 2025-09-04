@@ -1,5 +1,6 @@
 import { test, expect } from '@grafana/plugin-e2e';
 import { ConfigEditorHelper, QueryEditorHelper, PanelHelper } from './utils';
+import * as semver from 'semver';
 
 test.describe('Static Data Source', () => {
   test('Check grafana version', async ({ grafanaVersion }) => {
@@ -23,6 +24,7 @@ test.describe('Static Data Source', () => {
       page,
       selectors,
       panelEditPage,
+      grafanaVersion,
       readProvisionedDataSource,
     }) => {
       const ds = await readProvisionedDataSource({ fileName: 'datasources.yaml' });
@@ -63,14 +65,19 @@ test.describe('Static Data Source', () => {
       await secondRow.setValue('name', 'name 2');
       await secondRow.setValue('value', 'value 2');
 
-      const panelContent = panelEditPage.panel.getByGrafanaSelector(selectors.components.Panels.Panel.content);
-      await expect(panelContent).toContainText(['valuenamevalue 1name 1value 2name 2']);
+      if (semver.lt(grafanaVersion, '11.1.0')) {
+        await expect(panelEditPage.panel.data).toContainText(['value 1', 'name 1', 'value 2', 'name 2']);
+      } else {
+        const panelContent = panelEditPage.panel.getByGrafanaSelector(selectors.components.Panels.Panel.content);
+        await expect(panelContent).toContainText(['valuenamevalue 1name 1value 2name 2']);
+      }
     });
 
     test('Table query should return columns via code query editor', async ({
       page,
       selectors,
       panelEditPage,
+      grafanaVersion,
       readProvisionedDataSource,
     }) => {
       const ds = await readProvisionedDataSource({ fileName: 'datasources.yaml' });
@@ -114,8 +121,13 @@ test.describe('Static Data Source', () => {
       await fieldName.checkName('name');
 
       await expect(panelEditPage.panel.fieldNames).toContainText(['value', 'name']);
-      const panelContent = panelEditPage.panel.getByGrafanaSelector(selectors.components.Panels.Panel.content);
-      await expect(panelContent).toContainText(['valuenametest1test1test2test2']);
+
+      if (semver.lt(grafanaVersion, '11.1.0')) {
+        await expect(panelEditPage.panel.data).toContainText(['test1', 'test1', 'test2', 'test2']);
+      } else {
+        const panelContent = panelEditPage.panel.getByGrafanaSelector(selectors.components.Panels.Panel.content);
+        await expect(panelContent).toContainText(['valuenametest1test1test2test2']);
+      }
     });
   });
 
