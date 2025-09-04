@@ -63,7 +63,8 @@ test.describe('Static Data Source', () => {
       await secondRow.setValue('name', 'name 2');
       await secondRow.setValue('value', 'value 2');
 
-      await expect(panelEditPage.panel.data).toContainText(['value 1', 'name 1', 'value 2', 'name 2']);
+      const panelContent = panelEditPage.panel.getByGrafanaSelector(selectors.components.Panels.Panel.content);
+      await expect(panelContent).toContainText(['valuenamevalue 1name 1value 2name 2']);
     });
 
     test('Table query should return columns via code query editor', async ({
@@ -113,7 +114,8 @@ test.describe('Static Data Source', () => {
       await fieldName.checkName('name');
 
       await expect(panelEditPage.panel.fieldNames).toContainText(['value', 'name']);
-      await expect(panelEditPage.panel.data).toContainText(['test1', 'test1', 'test2', 'test2']);
+      const panelContent = panelEditPage.panel.getByGrafanaSelector(selectors.components.Panels.Panel.content);
+      await expect(panelContent).toContainText(['valuenametest1test1test2test2']);
     });
   });
 
